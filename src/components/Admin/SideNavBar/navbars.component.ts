@@ -11,9 +11,15 @@ import { RouterModule } from '@angular/router';
 export class NavbarsComponent {
  isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
+  submenuState: { [index: number]: boolean } = {};
+
+
+isSubmenuOpen(index: number): boolean {
+  return this.submenuState[index];
+}
   items = [
     {
-      routeLink: 'home',
+      routeLink: 'AdminDashboard',
       icon: 'fal fa-home',
       label: 'Home',
     },
@@ -27,12 +33,25 @@ export class NavbarsComponent {
       icon: 'fal fa-file',
       label: 'Pages',
     },
-    {
-      routeLink: 'settings',
-      icon: 'fal fa-cog',
-      label: 'Settings',
-    },
+   {
+    label: 'Settings',
+    icon: 'fa fa-cog',
+   
+    children: [
+      { label: 'Branches', routeLink: '/settings/branches', icon: 'fa fa-code-branch'},
+      { label: 'Cities', routeLink: '/settings/cities',icon: 'fa fa-city' },
+      { label: 'Governments', routeLink: 'settings/government', icon: 'fa fa-landmark' },
+      { label: 'Weight Settings', routeLink: 'settings/weightSetting', icon: 'fa fa-weight' }
+
+
+    ]
+  }
   ];
+toggleSubmenu(index: number): void {
+  if (this.items[index]?.children) {
+    this.submenuState[index] = !this.submenuState[index];
+  }
+}
 
   toggleCollapse(): void {
     this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed());

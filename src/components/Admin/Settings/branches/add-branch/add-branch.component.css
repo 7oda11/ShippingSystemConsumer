@@ -1,0 +1,64 @@
+/* Custom styles for this design */
+.add-branch-form {
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.icon-circle {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.bg-primary-soft {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Floating label styles */
+.floating-form-group {
+  position: relative;
+}
+
+.floating-input {
+  height: 50px;
+  padding-left: 40px;
+  padding-top: 10px;
+}
+
+.floating-label {
+  position: absolute;
+  top: 15px;
+  left: 40px;
+  color: #6c757d;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.floating-input:focus ~ .floating-label,
+.floating-input:not(:placeholder-shown) ~ .floating-label {
+  top: 5px;
+  left: 40px;
+  font-size: 12px;
+  color: #155293;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  color: #6c757d;
+}
+
+.floating-input:focus ~ .input-icon {
+  color: #155293;
+}
+.card-header{
+    background-color: #155293;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}

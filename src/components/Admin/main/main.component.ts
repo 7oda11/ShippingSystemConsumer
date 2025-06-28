@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TopnavbarComponent } from "../topnavbar/topnavbar.component";
 
 @Component({
   selector: 'app-main',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, TopnavbarComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
