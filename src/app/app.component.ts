@@ -2,6 +2,9 @@ import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarsComponent } from '../components/Admin/SideNavBar/navbars.component';
 import { CommonModule } from '@angular/common';
+
+  import { RegisterComponent } from '../components/Auth/register/register.component';
+
 import { HomeComponent } from "../components/Admin/home/home.component";
 import { MainComponent } from '../components/Admin/main/main.component';
 import { TopnavbarComponent } from '../components/Admin/topnavbar/topnavbar.component';
@@ -10,11 +13,13 @@ import { AddBranchComponent } from '../components/Admin/Settings/branches/add-br
 import { SharedNavbarComponent } from "../components/shared-navbar/shared-navbar.component";
 import { FooterComponent } from "../components/footer/footer.component";
 
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarsComponent, CommonModule, HomeComponent, MainComponent, TopnavbarComponent, BranchesComponent, AddBranchComponent, SharedNavbarComponent, FooterComponent],
+  imports: [RouterOutlet, NavbarsComponent, CommonModule, HomeComponent, MainComponent, TopnavbarComponent, BranchesComponent  ,  RegisterComponent,
+, AddBranchComponent, SharedNavbarComponent, FooterComponent,RouterModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   public title = 'ShippingSystemConsumer';

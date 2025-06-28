@@ -10,8 +10,13 @@ import { AddBranchComponent } from '../components/Admin/Settings/branches/add-br
 import { GovernmentsComponent } from '../components/Admin/Settings/governments/governments.component';
 import { WeightSettingsComponent } from '../components/Admin/Settings/weight-settings/weight-settings.component';
 import { HomeComponent } from '../components/home/home.component';
+import { RegisterComponent } from '../components/Auth/register/register.component';
+import { LoginComponent } from '../components/Auth/login/login.component';
 
 export const routes: Routes = [
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
