@@ -9,6 +9,7 @@ import { CitiesComponent } from '../components/Admin/Settings/cities/cities.comp
 import { AddBranchComponent } from '../components/Admin/Settings/branches/add-branch/add-branch.component';
 import { GovernmentsComponent } from '../components/Admin/Settings/governments/governments.component';
 import { WeightSettingsComponent } from '../components/Admin/Settings/weight-settings/weight-settings.component';
+import { HomeComponent } from '../components/home/home.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
