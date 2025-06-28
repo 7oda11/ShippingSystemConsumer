@@ -1,0 +1,130 @@
+<div class="d-flex min-vh-100">
+  <div
+    class="d-flex flex-column justify-content-between bg-custom text-white p-4 w-50 position-relative"
+  >
+    <div>
+      <img src="/images/Logo.png" alt="Logo" style="max-width: 120px" />
+    </div>
+
+    <div class="text-center px-3">
+      <h2 class="fw-bold mb-3">Welcome to Tayara</h2>
+      <p class="mb-2">This is your business partner for success.</p>
+      <p class="mb-2">You'll configure your page settings here,</p>
+      <p class="mb-2">change the tab label, and create an admin profile.</p>
+      <p class="mb-0">Please complete all required information to proceed.</p>
+    </div>
+
+    <div>
+      <img src="/images/truck.png" alt="Truck" style="max-width: 200px" />
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-center p-4 w-50">
+    <form class="w-100" style="max-width: 400px">
+      <h4 class="mb-3 text-custom">Initial Setup Steps</h4>
+      <p class="text-muted">
+        Please fill out the following form to complete setup.
+      </p>
+
+      <div class="mb-3">
+        <label class="form-label text-custom text-bold">Full Name</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter your full name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-custom">Phone Number</label>
+        <div class="input-group">
+          <span class="input-group-text p-1">
+            <img
+              src="/images/egypt-flag.png"
+              alt="EG"
+              style="width: 24px; height: 16px"
+            />
+            <span class="ms-1">+20</span>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your phone number"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-custom">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="fatma@gmail.com"
+        />
+      </div>
+
+      <div class="mb-3 position-relative">
+        <label class="form-label text-custom">Password</label>
+        <div class="input-group">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            placeholder="Enter your password"
+          />
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="showPassword = !showPassword"
+          >
+            <i
+              class="bi"
+              [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"
+            ></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3 position-relative">
+        <label class="form-label text-custom">Confirm Password</label>
+        <div class="input-group">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            class="form-control"
+            placeholder="Confirm your password"
+          />
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="showConfirmPassword = !showConfirmPassword"
+          >
+            <i
+              class="bi"
+              [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"
+            ></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="termsCheck" />
+        <label class="form-check-label" for="termsCheck">
+          I agree to the app's <a href="#">terms and conditions</a>.
+        </label>
+      </div>
+
+      <p class="small text-muted">
+        Please enter a valid phone number and email address to use for logging
+        in, receiving messages, notifications, and other updates like offers,
+        promotions, and order details.
+      </p>
+      <p class="text-center mt-3">
+        Already have an account?
+        <!-- <a routerLink="/login" class="text-custom">Login</a> -->
+        <a href="/login" class="text-primary">Login</a>
+      </p>
+
+      <button type="submit" class="btn bg-custom text-white w-100 mb-3">
+        Save & Continue Registration
+      </button>
+    </form>
+  </div>
+</div>
