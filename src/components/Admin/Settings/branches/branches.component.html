@@ -1,0 +1,54 @@
+<div class="container my-5">
+ <div class="container-fluid">
+  <div class="row">
+    <div class="col-6"><h4 class="mb-4 text-primary fw-bold ">Branches Management</h4></div>
+    <div class="col-6 text-end"><button class="btn btn-primary btn-add-branch shadow" routerLink="/settings/branches/add-branch"> <i class="fas fa-plus me-2"></i>New Branch</button></div>
+  </div>
+ 
+  <div class="table-responsive rounded-3 shadow">
+    <table class="table table-hover align-middle mb-0 bg-white">
+      <thead class="bg-light">
+        <tr>
+          <th class="text-center fw-medium text-uppercase text-secondary" style="width: 50px;">#</th>
+          <th class="fw-medium text-uppercase text-secondary">Branch Name</th>
+          <th class="fw-medium text-uppercase text-secondary">Phone</th>
+          <th class="fw-medium text-uppercase text-secondary">Address</th>
+          <th class="text-center fw-medium text-uppercase text-secondary" style="width: 100px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let branch of branches; let i = index" class="border-top">
+          <td class="text-center text-muted fw-semibold">{{ i + 1 }}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="ms-3">
+                <p class="fw-semibold mb-1">{{ branch.name }}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="badge bg-primary bg-opacity-10 text-primary p-2">
+              <i class="fas fa-phone-alt me-2"></i>{{ branch.phone }}
+            </span>
+          </td>
+          <td>
+            <span class="text-muted">
+              <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+              {{ branch.address }}
+            </span>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-warning me-2"
+                    title="Edit" data-bs-toggle="tooltip">
+              <i class="far fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteBranch(branch)" 
+                    title="Delete" data-bs-toggle="tooltip">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

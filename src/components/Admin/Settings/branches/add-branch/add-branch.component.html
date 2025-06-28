@@ -1,0 +1,44 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-12 col-md-8">
+      <div class="card shadow border-0">
+        <div class="card-header text-white py-3">
+          <h4 class="mb-0 fw-bold text-center"><i class="fas fa-store-alt me-2"></i>Add New Branch</h4>
+        </div>
+        <div class="card-body p-4">
+          <form>
+            <div class="mb-4">
+              <label for="branchName" class="form-label fw-semibold">Branch Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-signature text-primary"></i></span>
+                <input type="text" class="form-control" id="branchName" placeholder="Enter branch name" required>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="branchPhone" class="form-label fw-semibold">Phone</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-phone-alt text-primary"></i></span>
+                <input type="text" class="form-control" id="branchPhone" placeholder="Enter phone number" required>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="branchAddress" class="form-label fw-semibold">Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt text-primary"></i></span>
+                <input type="text" class="form-control" id="branchAddress" placeholder="Enter full address" required>
+              </div>
+            </div>
+            
+            <div class="text-end">
+              <button type="submit" class="btn  py-2 fw-bold shadow" (click)="AddBranch()" style="background-color: #155293; color: white;">
+                <i class="fas fa-plus-circle me-2 "></i>Add Branch
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
