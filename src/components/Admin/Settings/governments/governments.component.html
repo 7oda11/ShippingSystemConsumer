@@ -1,1 +1,47 @@
-<p>governments works!</p>
+<div class="container my-5">
+ <div class="container-fluid">
+  <div class="row">
+    <div class="col-6"><h4 class="mb-4 text-primary fw-bold ">Governments Management</h4></div>
+    <div class="col-6 text-end"><button class="btn btn-primary btn-add-branch shadow" routerLink="/settings/branches/add-government"> <i class="fas fa-plus me-2"></i>New Government</button></div>
+  </div>
+ 
+  <div class="table-responsive rounded-3 shadow">
+    <table class="table table-hover align-middle mb-0 bg-white">
+      <thead class="bg-light">
+        <tr>
+          <th class="text-center fw-medium text-uppercase " style="width: 50px; color: rgb(58, 56, 56);">#</th>
+          <th class="fw-medium text-uppercase ">Governmernt Name</th>
+          <th class="fw-medium text-uppercase ">Cities</th>
+          <!-- <th class="fw-medium text-uppercase">Address</th>
+          <th class="text-center fw-medium text-uppercase " style="width: 100px;">Actions</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gov of governments;let i = index" class="border-top">
+          <td   class="text-center text-muted fw-semibold">{{i+1}}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="ms-3">
+                <p class="fw-semibold mb-1">{{gov.name}}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <ul>
+          <li *ngFor="let city of gov.listCities">{{ city }}</li>
+        </ul>
+     
+            <button class="btn btn-sm btn-outline-warning me-2"
+                    title="Edit" data-bs-toggle="tooltip">
+              <i class="far fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" 
+                    title="Delete" data-bs-toggle="tooltip">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
