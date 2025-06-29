@@ -1,0 +1,17 @@
+
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table > :not(:first-child) {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.badge.bg-opacity-10 {
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+.btn-addcity{
+ margin-top: 50px;
+ margin-bottom: 20px;
+}

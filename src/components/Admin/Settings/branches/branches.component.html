@@ -9,11 +9,11 @@
     <table class="table table-hover align-middle mb-0 bg-white">
       <thead class="bg-light">
         <tr>
-          <th class="text-center fw-medium text-uppercase text-secondary" style="width: 50px;">#</th>
-          <th class="fw-medium text-uppercase text-secondary">Branch Name</th>
-          <th class="fw-medium text-uppercase text-secondary">Phone</th>
-          <th class="fw-medium text-uppercase text-secondary">Address</th>
-          <th class="text-center fw-medium text-uppercase text-secondary" style="width: 100px;">Actions</th>
+          <th class="text-center fw-medium text-uppercase " style="width: 50px; color: rgb(58, 56, 56);">#</th>
+          <th class="fw-medium text-uppercase " style=" color: rgb(58, 56, 56);">Branch Name</th>
+          <th class="fw-medium text-uppercase "style=" color: rgb(58, 56, 56);">Phone</th>
+          <th class="fw-medium text-uppercase" style=" color: rgb(58, 56, 56);">Address</th>
+          <th class="text-center fw-medium text-uppercase " style="width: 100px;color: rgb(58, 56, 56);">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@
             </div>
           </td>
           <td>
-            <span class="badge bg-primary bg-opacity-10 text-primary p-2">
+            <span class="badge  bg-opacity-10 text-primary p-2">
               <i class="fas fa-phone-alt me-2"></i>{{ branch.phone }}
             </span>
           </td>
@@ -38,7 +38,7 @@
             </span>
           </td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-warning me-2"
+            <button class="btn btn-sm btn-outline-warning me-2" (click)="openEditModal(branch)"
                     title="Edit" data-bs-toggle="tooltip">
               <i class="far fa-edit"></i>
             </button>
@@ -50,5 +50,36 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+<!-- Edit Branch Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form #editForm="ngForm" (ngSubmit)="updateBranch()" novalidate>
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" style="color: aliceblue;" id="editModalLabel">Edit Branch</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Branch Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedBranch.name" name="editBranchName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedBranch.phone" name="editBranchPhone" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Address</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedBranch.address" name="editBranchAddress" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn " style="background-color: rgb(238, 100, 100); color: aliceblue;" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Save Changes</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
