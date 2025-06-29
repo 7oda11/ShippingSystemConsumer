@@ -1,0 +1,86 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-12 col-md-8">
+      <div class="card shadow border-0">
+        <div class="card-header text-white py-3">
+          <h4 class="mb-0 fw-bold text-center" style="color: aliceblue;">
+            <i class="fas fa-city me-2"></i>Add New City
+          </h4>
+        </div>
+        <div class="card-body p-4">
+          <form class="needs-validation" novalidate (ngSubmit)="addCity()" #cityForm="ngForm">
+            <!-- City Name -->
+            <div class="mb-4">
+              <label for="cityName" class="form-label fw-semibold">City Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-signature text-primary"></i>
+                </span>
+                <input type="text" class="form-control" [(ngModel)]="newCity.name" name="name" id="cityName"
+                  placeholder="Enter city name" required>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-4">
+              <label for="price" class="form-label fw-semibold">Price</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-money-bill-wave text-success"></i>
+                </span>
+                <input type="number" class="form-control" [(ngModel)]="newCity.price" name="price" id="price"
+                  placeholder="Enter price" required>
+              </div>
+            </div>
+
+            <!-- Picked Price -->
+            <div class="mb-4">
+              <label for="pickedPrice" class="form-label fw-semibold">Picked Price</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-hand-holding-usd text-warning"></i>
+                </span>
+                <input type="number" class="form-control" [(ngModel)]="newCity.pickedPrice" name="pickedPrice"
+                  id="pickedPrice" placeholder="Enter picked price" required>
+              </div>
+            </div>
+
+            <!-- Government Dropdown -->
+            <div class="mb-4">
+              <label for="govName" class="form-label fw-semibold">Government</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-landmark text-info"></i>
+                </span>
+                <select class="form-select"
+                  id="govName"
+                  [(ngModel)]="selectedGovId"
+                  name="governmentId"
+                  (ngModelChange)="onGovernmentChange()"
+                  required>
+
+                  <option value="" disabled>Select a government</option>
+                  <option *ngFor="let gov of governments" [value]="gov.id">
+                    {{ gov.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Hidden GovName input -->
+        <input type="hidden" [(ngModel)]="newCity.govName" name="govName">
+<h2>{{ newCity.govName }}</h2>
+
+
+            <!-- Submit Button -->
+            <div class="text-end">
+              <button type="submit" class="btn py-2 fw-bold shadow" style="background-color: #155293; color: white;">
+                <i class="fas fa-plus-circle me-2"></i>Add City
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

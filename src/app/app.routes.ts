@@ -12,6 +12,7 @@ import { WeightSettingsComponent } from '../components/Admin/Settings/weight-set
 import { HomeComponent } from '../components/home/home.component';
 import { RegisterComponent } from '../components/Auth/register/register.component';
 import { LoginComponent } from '../components/Auth/login/login.component';
+import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -30,4 +31,7 @@ export const routes: Routes = [
   { path: 'settings/branches/add-branch', component: AddBranchComponent },
   { path: 'settings/government', component: GovernmentsComponent },
   { path: 'settings/weightSetting', component: WeightSettingsComponent },
+  { path: 'settings/cities/add-city', component: AddCityComponent },
+  
+
 ];

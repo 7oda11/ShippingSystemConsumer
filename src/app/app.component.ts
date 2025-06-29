@@ -11,6 +11,8 @@ import { BranchesComponent } from '../components/Admin/Settings/branches/branche
 import { AddBranchComponent } from '../components/Admin/Settings/branches/add-branch/add-branch.component';
 import { SharedNavbarComponent } from '../components/shared-navbar/shared-navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
+import { CitiesComponent } from '../components/Admin/Settings/cities/cities.component';
+import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +30,7 @@ import { FooterComponent } from '../components/footer/footer.component';
     AddBranchComponent,
     SharedNavbarComponent,
     FooterComponent,
+    AddCityComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
