@@ -1,5 +1,5 @@
 export interface Government {
-  id: number;   
+  id: string;   
     name: string;
     listCities: string[];
 }
