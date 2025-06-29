@@ -13,3 +13,12 @@
  margin-top: 50px;
  margin-bottom: 20px;
 }
+.btn-add-branch:hover{
+  background-color: rgb(131, 131, 230);
+  cursor: pointer;
+
+}
+ .table-responsive .table .btn-details{
+  background-color: rgb(131, 131, 230);
+  cursor: pointer;
+}
