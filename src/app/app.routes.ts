@@ -13,6 +13,10 @@ import { HomeComponent } from '../components/home/home.component';
 import { RegisterComponent } from '../components/Auth/register/register.component';
 import { LoginComponent } from '../components/Auth/login/login.component';
 import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
+import { AddGovernmentComponent } from '../components/Admin/Settings/governments/add-government/add-government.component';
+import { EditGovernmentComponent } from '../components/Admin/Settings/governments/edit-government/edit-government.component';
+import { GovernmentDetailsComponent } from '../components/Admin/Settings/governments/government-details/government-details.component';
+
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -34,4 +38,11 @@ export const routes: Routes = [
   { path: 'settings/cities/add-city', component: AddCityComponent },
   
 
+  {path:'settings/government/details/:id',component:GovernmentDetailsComponent},
+  {path:'settings/government/add-government', component:AddGovernmentComponent},
+  {path:'settings/government/edit/:id', 
+    loadComponent: ()=>import('../components/Admin/Settings/governments/edit-government/edit-government.component')
+    .then(g=>g.EditGovernmentComponent)},
+
+  { path: 'settings/weightSetting', component: WeightSettingsComponent }
 ];

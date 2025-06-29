@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NavbarsComponent } from '../components/Admin/SideNavBar/navbars.component';
 import { RegisterComponent } from '../components/Auth/register/register.component';
@@ -14,13 +14,18 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { CitiesComponent } from '../components/Admin/Settings/cities/cities.component';
 import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+
     RouterOutlet,
     RouterModule,
     CommonModule,
+    FormsModule,
+   
+
     NavbarsComponent,
     RegisterComponent,
     HomeComponent,
