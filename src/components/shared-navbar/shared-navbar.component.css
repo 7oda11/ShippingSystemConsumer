@@ -1,1 +1,17 @@
- 
+.h-65 {
+  height: 65px;
+}
+.h-58 {
+  height: 58px;
+}
+.w-150 {
+  width: 150px;
+}
+.login-but {
+  background: red;
+  color: white;
+  border-radius: circle;
+  margin-right: 10px;
+  font-size: 19px;
+  font-weight: 600;
+}
