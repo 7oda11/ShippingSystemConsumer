@@ -13,6 +13,9 @@ import { SharedNavbarComponent } from '../components/shared-navbar/shared-navbar
 import { FooterComponent } from '../components/footer/footer.component';
 import { CitiesComponent } from '../components/Admin/Settings/cities/cities.component';
 import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
+import { VendorComponent } from '../components/Users/vendor/vendor.component';
+import { EmployeesComponent } from '../components/Users/employees/employees.component';
+import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 
 
 @Component({
@@ -36,6 +39,10 @@ import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/a
     SharedNavbarComponent,
     FooterComponent,
     AddCityComponent,
+
+    VendorComponent,
+    EmployeesComponent,
+    DeliveriesComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

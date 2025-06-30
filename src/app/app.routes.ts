@@ -18,6 +18,9 @@ import { EditGovernmentComponent } from '../components/Admin/Settings/government
 import { GovernmentDetailsComponent } from '../components/Admin/Settings/governments/government-details/government-details.component';
 import { StatusComponent } from '../components/Admin/Settings/status/status.component';
 import { AddStatusComponent } from '../components/Admin/Settings/status/add-status/add-status.component';
+import { VendorComponent } from '../components/Users/vendor/vendor.component';
+import { EmployeesComponent } from '../components/Users/employees/employees.component';
+import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 
 
 export const routes: Routes = [
@@ -48,5 +51,11 @@ export const routes: Routes = [
     loadComponent: ()=>import('../components/Admin/Settings/governments/edit-government/edit-government.component')
     .then(g=>g.EditGovernmentComponent)},
 
-  { path: 'settings/weightSetting', component: WeightSettingsComponent }
+  { path: 'settings/weightSetting', component: WeightSettingsComponent },
+
+  //users routes
+  
+  { path: 'users/vendors', component: VendorComponent },
+  { path: 'users/employees', component: EmployeesComponent },
+  { path: 'users/deliveries', component: DeliveriesComponent }
 ];

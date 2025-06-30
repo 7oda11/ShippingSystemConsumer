@@ -1,5 +1,5 @@
 import { Government } from '../../../../models/Governmernt';
-import { GovernmentService } from './../../../../services/GovernmentServise';
+import { GovernmentService } from '../../../../services/admin/GovernmentServise';
 import { Component, OnInit  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';

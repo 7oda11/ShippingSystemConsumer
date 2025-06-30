@@ -1,4 +1,4 @@
-import { GovernmentService } from './../../../../../services/GovernmentServise';
+import { GovernmentService } from '../../../../../services/admin/GovernmentServise';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
