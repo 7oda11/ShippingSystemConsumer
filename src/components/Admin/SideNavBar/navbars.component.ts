@@ -41,7 +41,9 @@ isSubmenuOpen(index: number): boolean {
       { label: 'Branches', routeLink: '/settings/branches', icon: 'fa fa-code-branch'},
       { label: 'Cities', routeLink: '/settings/cities',icon: 'fa fa-city' },
       { label: 'Governments', routeLink: 'settings/government', icon: 'fa fa-landmark' },
-      { label: 'Weight Settings', routeLink: 'settings/weightSetting', icon: 'fa fa-weight' }
+      { label: 'Weight Settings', routeLink: 'settings/weightSetting', icon: 'fa fa-weight' },
+      { label: 'Status', routeLink: 'settings/status', icon: 'fa fa-toggle-on' }
+
 
 
     ]
