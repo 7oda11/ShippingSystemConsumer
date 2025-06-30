@@ -16,6 +16,11 @@ import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/a
 import { AddGovernmentComponent } from '../components/Admin/Settings/governments/add-government/add-government.component';
 import { EditGovernmentComponent } from '../components/Admin/Settings/governments/edit-government/edit-government.component';
 import { GovernmentDetailsComponent } from '../components/Admin/Settings/governments/government-details/government-details.component';
+import { StatusComponent } from '../components/Admin/Settings/status/status.component';
+import { AddStatusComponent } from '../components/Admin/Settings/status/add-status/add-status.component';
+import { VendorComponent } from '../components/Users/vendor/vendor.component';
+import { EmployeesComponent } from '../components/Users/employees/employees.component';
+import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 
 
 export const routes: Routes = [
@@ -36,13 +41,21 @@ export const routes: Routes = [
   { path: 'settings/government', component: GovernmentsComponent },
   { path: 'settings/weightSetting', component: WeightSettingsComponent },
   { path: 'settings/cities/add-city', component: AddCityComponent },
-  
+   { path: 'settings/status', component: StatusComponent },
+   { path: 'settings/status/add-status', component: AddStatusComponent },
 
   {path:'settings/government/details/:id',component:GovernmentDetailsComponent},
   {path:'settings/government/add-government', component:AddGovernmentComponent},
+  
   {path:'settings/government/edit/:id', 
     loadComponent: ()=>import('../components/Admin/Settings/governments/edit-government/edit-government.component')
     .then(g=>g.EditGovernmentComponent)},
 
-  { path: 'settings/weightSetting', component: WeightSettingsComponent }
+  { path: 'settings/weightSetting', component: WeightSettingsComponent },
+
+  //users routes
+  
+  { path: 'users/vendors', component: VendorComponent },
+  { path: 'users/employees', component: EmployeesComponent },
+  { path: 'users/deliveries', component: DeliveriesComponent }
 ];

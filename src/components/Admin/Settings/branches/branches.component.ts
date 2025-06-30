@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { BranchService } from '../../../../services/admin/branch.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Branch } from '../../../../models/Branch';
 
 
 declare var bootstrap: any;
@@ -15,9 +16,9 @@ declare var bootstrap: any;
   styleUrl: './branches.component.css'
 })
 export class BranchesComponent implements OnInit {
-  selectedBranch: any = { id: 0, name: '', phone: '', address: '' };
+  selectedBranch: Branch = { id: '0', name: '', phone: '', address: '' };
 
-  branches: any[] = [];
+  branches: Branch[] = [];
 
   constructor(private branchService: BranchService) { }
 

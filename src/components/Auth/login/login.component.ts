@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthServiceService } from '../../../services/Auth/auth-service.service';
 import { AuthResponse } from '../../../models/AuthResponse';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthServiceService,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -41,6 +43,7 @@ export class LoginComponent {
     this.authService.login(username, password).subscribe({
       next: (response: AuthResponse) => {
         this.toastr.success('Login successful!', 'Success');
+        this.router.navigate(['/AdminDashboard']);
         console.log(response);
         // handle successful login (e.g., redirect, store token, etc.)
       },

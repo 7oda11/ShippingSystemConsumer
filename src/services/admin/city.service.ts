@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { City } from '../../models/City';
+import { Branch } from '../../models/Branch';
+import { Government } from '../../models/Governmernt';
 
 @Injectable({
   providedIn: 'root'
@@ -11,28 +14,27 @@ export class CityService {
 
   constructor(private http: HttpClient) { }
 
-  getCities() {
-    return this.http.get<any[]>(this.apiUrl+'City/');
+  getCities(): Observable<City[]> {
+    return this.http.get<City[]>(this.apiUrl+'City/');
   }
 
-  getCityById(id: number) {
-    return this.http.get<any>(`${this.apiUrl}City/${id}`);
+  getCityById(id: number): Observable<City> {
+    return this.http.get<City>(`${this.apiUrl}City/${id}`);
   }
 
-  createCity(city: any) {
-    return this.http.post(`${this.apiUrl}City/`, city);
+  createCity(city: City): Observable<City> {
+    return this.http.post<City>(`${this.apiUrl}City/`, city);
   }
 
- updateCity(city: any) {
-  return this.http.put(`${this.apiUrl}City/${city.id}`, city); 
+ updateCity(city: City): Observable<City> {
+  return this.http.put<City>(`${this.apiUrl}City/${city.id}`, city);
 }
 
-deleteCity(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}City/${id}`);
+deleteCity(id: number): Observable<City> {
+  return this.http.delete<City>(`${this.apiUrl}City/${id}`);
 }
 
-  getGovernments() {
-    return this.http.get<any[]>(`https://localhost:7109/api/Government`);
-
+  getGovernments(): Observable<Government[]> {
+    return this.http.get<Government[]>(`https://localhost:7109/api/Government`);
   }
 }

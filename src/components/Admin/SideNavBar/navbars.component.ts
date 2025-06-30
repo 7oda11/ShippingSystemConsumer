@@ -29,9 +29,14 @@ isSubmenuOpen(index: number): boolean {
       label: 'Products',
     },
     {
-      routeLink: 'pages',
-      icon: 'fal fa-file',
-      label: 'Pages',
+      
+      icon: 'fa fa-users',
+      label: 'Users',
+      children: [
+        { label: 'Vendor', routeLink: '/users/vendors', icon: 'fa fa-users' },
+        { label: 'Employees', routeLink: '/users/employees', icon: 'fa fa-user-shield' },
+        { label: 'Deliveries', routeLink: '/users/deliveries', icon: 'fa fa-truck' },
+      ]
     },
    {
     label: 'Settings',
@@ -41,7 +46,9 @@ isSubmenuOpen(index: number): boolean {
       { label: 'Branches', routeLink: '/settings/branches', icon: 'fa fa-code-branch'},
       { label: 'Cities', routeLink: '/settings/cities',icon: 'fa fa-city' },
       { label: 'Governments', routeLink: 'settings/government', icon: 'fa fa-landmark' },
-      { label: 'Weight Settings', routeLink: 'settings/weightSetting', icon: 'fa fa-weight' }
+      { label: 'Weight Settings', routeLink: 'settings/weightSetting', icon: 'fa fa-weight' },
+      { label: 'Status', routeLink: 'settings/status', icon: 'fa fa-toggle-on' }
+
 
 
     ]
