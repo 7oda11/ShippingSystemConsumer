@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CityService } from '../../../../../services/admin/city.service';
+import { City } from '../../../../../models/City';
+import { Government } from '../../../../../models/Governmernt';
 
 @Component({
   selector: 'app-add-city',
@@ -11,21 +13,42 @@ import { CityService } from '../../../../../services/admin/city.service';
   styleUrl: './add-city.component.css',
 })
 export class AddCityComponent implements OnInit {
-  newCity = {
-    name: '',
+  newCity :City = {
+    name: '', 
     price: 0,
     pickedPrice: 0,
+
     governmentId: 0,
     govName: '',
   };
   governments: any[] = [];
   selectedGovId: number | null = null;
 
+    governmentId: '',
+    govName: ''
+  };
+  governments: Government[] = [];
+  selectedGovId: string | null = null;
+  
+  constructor(private cityService: CityService, private router: Router) { }
+
+
   constructor(private cityService: CityService, private router: Router) {}
 
   getGovernments() {
+
     this.cityService.getGovernments().subscribe({
       next: (data) => (this.governments = data),
+
+    this.cityService.getGovernments().subscribe( {
+     next: (data) => {
+       this.governments = data.map((item: any) => ({
+         id: item.id,
+         name: item.name,
+         listCities: item.listCities ?? []
+       }));
+     },
+
       error: (err) => {
         console.error('Error fetching governments:', err);
         alert('Failed to load governments. Please try again later.');

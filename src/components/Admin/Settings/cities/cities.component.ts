@@ -4,6 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CityService } from '../../../../services/admin/city.service';
 import Swal from 'sweetalert2';
+import { City } from '../../../../models/City';
+import { Government } from '../../../../models/Governmernt';
+
+// Add this line to let TypeScript know about the global 'bootstrap' variable
+declare var bootstrap: any;
 
 
 @Component({
@@ -13,7 +18,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./cities.component.css']  // ✅ fixed typo
 })
 export class CitiesComponent implements OnInit {
-  cities: any[] = [];
+  cities: City[] = [];
+   selectedCity: City = {
+     id: '0', name: '', price: 0, pickedPrice: 0, govName: '',
+     governmentId: ''
+   };
+
+   governments: Government[] = [];
+   selectedGovId: string | null = null;
+
+
 
   /**
    *
@@ -21,6 +35,7 @@ export class CitiesComponent implements OnInit {
   constructor(private cityService: CityService) { }
   ngOnInit(): void {
     this.getCities();
+     this.getGovernments();
   }
 
 
@@ -92,4 +107,60 @@ export class CitiesComponent implements OnInit {
    });
  }
  
+  getGovernments() {
+    this.cityService.getGovernments().subscribe( {
+     next: (data) => {
+       this.governments = data.map((item: any) => ({
+         id: item.id,
+         name: item.name,
+         listCities: item.listCities ?? []
+       }));
+     },
+      error: (err) => {
+        console.error('Error fetching governments:', err);
+        alert('Failed to load governments. Please try again later.');
+      }
+    });
+  }
+
+ 
+  //update branch
+updateCity() {
+  // ✅ Set govName based on selected ID before calling API
+  const selectedGov = this.governments.find(g => g.id == this.selectedCity.governmentId);
+  this.selectedCity.govName = selectedGov ? selectedGov.name : '';
+
+  console.log('Sending data to API:', this.selectedCity);
+
+  this.cityService.updateCity(this.selectedCity).subscribe({
+    next: (res) => {
+      console.log('Updated:', res);
+      this.getCities();
+
+      const modalElement = document.getElementById('editModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance.hide();
+    },
+    error: (err) => {
+      console.error('Update failed:', err);
+      alert('Failed to update city');
+    }
+  });
+}
+
+
+
+  openEditModal(city: any) {
+    this.selectedCity = { ...city };
+    const modal = new bootstrap.Modal(document.getElementById('editModal')!);
+    modal.show();
+  }
+
+  ngAfterViewInit() {
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(tooltipTriggerEl => {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
 }

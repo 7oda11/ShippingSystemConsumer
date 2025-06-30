@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Branch } from '../../models/Branch';
 
 @Injectable({
   providedIn: 'root'
@@ -9,20 +10,20 @@ export class BranchService {
  private apiUrl='https://localhost:7109/api/Branch/'
   constructor(private http: HttpClient) { }
 
-  gitBranches(): Observable<any> {
-      return this.http.get<any[]>(this.apiUrl+'GetAll');
+  gitBranches(): Observable<Branch[]> {
+      return this.http.get<Branch[]>(this.apiUrl+'GetAll');
   }
 
-  addBranch(branch: any): Observable<any> {
+  addBranch(branch: Branch): Observable<Branch> {
 
-    return this.http.post<any>(this.apiUrl+'add-branch', branch);
+    return this.http.post<Branch>(this.apiUrl+'add-branch', branch);
   }
 
-  updateBranch(branch: any): Observable<any> {
- return this.http.put(`${this.apiUrl}Update-Branch/${branch.id}`, branch);
+  updateBranch(branch: Branch): Observable<Branch> {
+ return this.http.put<Branch>(`${this.apiUrl}Update-Branch/${branch.id}`, branch);
 }
 
-deleteBranch(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}Delete-Branch/${id}`);
+deleteBranch(id: number): Observable<Branch> {
+  return this.http.delete<Branch>(`${this.apiUrl}Delete-Branch/${id}`);
 }
 }

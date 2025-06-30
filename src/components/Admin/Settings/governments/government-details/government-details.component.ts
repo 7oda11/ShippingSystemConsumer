@@ -4,7 +4,7 @@ import { Component, OnInit, ElementRef, ViewChild, viewChild } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { GovernmentService } from '../../../../../services/GovernmentServise';
+import { GovernmentService } from '../../../../../services/admin/GovernmentServise';
 
 
 @Component({

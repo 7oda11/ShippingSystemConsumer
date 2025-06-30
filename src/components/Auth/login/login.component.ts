@@ -53,6 +53,7 @@ export class LoginComponent {
       next: (response: AuthResponse) => {
         this.toastr.success('Login successful!', 'Success');
         this.router.navigate(['/dashboard']);
+
         console.log(response);
         // handle successful login (e.g., redirect, store token, etc.)
       },

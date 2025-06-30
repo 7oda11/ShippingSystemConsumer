@@ -28,13 +28,20 @@ export class NavbarsComponent {
       label: 'Products',
     },
     {
-      routeLink: 'pages',
-      icon: 'fal fa-file',
-      label: 'Pages',
+      
+      icon: 'fa fa-users',
+      label: 'Users',
+      children: [
+        { label: 'Vendor', routeLink: '/users/vendors', icon: 'fa fa-users' },
+        { label: 'Employees', routeLink: '/users/employees', icon: 'fa fa-user-shield' },
+        { label: 'Deliveries', routeLink: '/users/deliveries', icon: 'fa fa-truck' },
+      ]
     },
+
     {
       label: 'Settings',
       icon: 'fa fa-cog',
+
 
       children: [
         {
