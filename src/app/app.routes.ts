@@ -16,6 +16,10 @@ import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/a
 import { AddGovernmentComponent } from '../components/Admin/Settings/governments/add-government/add-government.component';
 import { EditGovernmentComponent } from '../components/Admin/Settings/governments/edit-government/edit-government.component';
 import { GovernmentDetailsComponent } from '../components/Admin/Settings/governments/government-details/government-details.component';
+
+import { BaseComponent } from '../components/Admin/base/base.component';
+import { DashboardComponent } from '../components/Admin/dashboard/dashboard.component';
+
 import { StatusComponent } from '../components/Admin/Settings/status/status.component';
 import { AddStatusComponent } from '../components/Admin/Settings/status/add-status/add-status.component';
 import { VendorComponent } from '../components/Users/vendor/vendor.component';
@@ -23,17 +27,68 @@ import { EmployeesComponent } from '../components/Users/employees/employees.comp
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 
 
+
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: 'base', pathMatch: 'full' },
+  { path: 'base', component: BaseComponent },
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'contact', component: ContactComponent },
 
   // Admin Settings Routes
+
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: 'branches', component: BranchesComponent },
+      { path: 'branches/add-branch', component: AddBranchComponent },
+      { path: 'cities', component: CitiesComponent },
+      { path: 'cities/add-city', component: AddCityComponent },
+      { path: 'government', component: GovernmentsComponent },
+      { path: 'government/add-government', component: AddGovernmentComponent },
+
+      {
+        path: 'government/details/:id',
+        component: GovernmentDetailsComponent,
+      },
+      { path: 'government/add-government', component: AddGovernmentComponent },
+      {
+        path: 'government/edit/:id',
+
+        loadComponent: () =>
+          import(
+            '../components/Admin/Settings/governments/edit-government/edit-government.component'
+          ).then((g) => g.EditGovernmentComponent),
+      },
+      { path: 'weightSetting', component: WeightSettingsComponent },
+      { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
+      // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
+    ],
+  },
+
+  {
+    path: 'settings/government/details/:id',
+    component: GovernmentDetailsComponent,
+  },
+  {
+    path: 'settings/government/add-government',
+    component: AddGovernmentComponent,
+  },
+  {
+    path: 'settings/government/edit/:id',
+    loadComponent: () =>
+      import(
+        '../components/Admin/Settings/governments/edit-government/edit-government.component'
+      ).then((g) => g.EditGovernmentComponent),
+  },
+
+  { path: 'settings/weightSetting', component: WeightSettingsComponent },
+
   { path: 'AdminDashboard', component: adminHome },
   { path: 'settings/branches', component: BranchesComponent },
   { path: 'settings/cities', component: CitiesComponent },
@@ -58,4 +113,5 @@ export const routes: Routes = [
   { path: 'users/vendors', component: VendorComponent },
   { path: 'users/employees', component: EmployeesComponent },
   { path: 'users/deliveries', component: DeliveriesComponent }
+
 ];

@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthServiceService } from '../../../services/Auth/auth-service.service';
 import { AuthResponse } from '../../../models/AuthResponse';
@@ -36,19 +42,27 @@ export class LoginComponent {
   login() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.toastr.error('Please fill in all required fields.', 'Validation Error');
+      this.toastr.error(
+        'Please fill in all required fields.',
+        'Validation Error'
+      );
       return;
     }
     const { username, password } = this.loginForm.value;
     this.authService.login(username, password).subscribe({
       next: (response: AuthResponse) => {
         this.toastr.success('Login successful!', 'Success');
-        this.router.navigate(['/AdminDashboard']);
+        this.router.navigate(['/dashboard']);
+
         console.log(response);
         // handle successful login (e.g., redirect, store token, etc.)
       },
       error: (error) => {
-        this.toastr.error(error?.error?.message || 'Login failed. Please check your credentials.', 'Error');
+        this.toastr.error(
+          error?.error?.message ||
+            'Login failed. Please check your credentials.',
+          'Error'
+        );
       },
     });
   }
