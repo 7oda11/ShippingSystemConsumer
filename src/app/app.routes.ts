@@ -26,8 +26,6 @@ import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 
-
-
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -71,47 +69,56 @@ export const routes: Routes = [
     ],
   },
 
-  {
-    path: 'settings/government/details/:id',
-    component: GovernmentDetailsComponent,
-  },
-  {
-    path: 'settings/government/add-government',
-    component: AddGovernmentComponent,
-  },
-  {
-    path: 'settings/government/edit/:id',
-    loadComponent: () =>
-      import(
-        '../components/Admin/Settings/governments/edit-government/edit-government.component'
-      ).then((g) => g.EditGovernmentComponent),
-  },
+  // {
+  //   path: 'settings/government/details/:id',
+  //   component: GovernmentDetailsComponent,
+  // },
+  // {
+  //   path: 'settings/government/add-government',
+  //   component: AddGovernmentComponent,
+  // },
+  // {
+  //   path: 'settings/government/edit/:id',
+  //   loadComponent: () =>
+  //     import(
+  //       '../components/Admin/Settings/governments/edit-government/edit-government.component'
+  //     ).then((g) => g.EditGovernmentComponent),
+  // },
 
-  { path: 'settings/weightSetting', component: WeightSettingsComponent },
+  // { path: 'settings/weightSetting', component: WeightSettingsComponent },
 
-  { path: 'AdminDashboard', component: adminHome },
-  { path: 'settings/branches', component: BranchesComponent },
-  { path: 'settings/cities', component: CitiesComponent },
-  { path: 'settings/branches/add-branch', component: AddBranchComponent },
-  { path: 'settings/government', component: GovernmentsComponent },
-  { path: 'settings/weightSetting', component: WeightSettingsComponent },
-  { path: 'settings/cities/add-city', component: AddCityComponent },
-   { path: 'settings/status', component: StatusComponent },
-   { path: 'settings/status/add-status', component: AddStatusComponent },
+  // { path: 'AdminDashboard', component: adminHome },
+  // { path: 'settings/branches', component: BranchesComponent },
+  // { path: 'settings/cities', component: CitiesComponent },
+  // { path: 'settings/branches/add-branch', component: AddBranchComponent },
+  // { path: 'settings/government', component: GovernmentsComponent },
+  // { path: 'settings/weightSetting', component: WeightSettingsComponent },
+  // { path: 'settings/cities/add-city', component: AddCityComponent },
+  // { path: 'settings/status', component: StatusComponent },
+  // { path: 'settings/status/add-status', component: AddStatusComponent },
 
-  {path:'settings/government/details/:id',component:GovernmentDetailsComponent},
-  {path:'settings/government/add-government', component:AddGovernmentComponent},
-  
-  {path:'settings/government/edit/:id', 
-    loadComponent: ()=>import('../components/Admin/Settings/governments/edit-government/edit-government.component')
-    .then(g=>g.EditGovernmentComponent)},
+  // {
+  //   path: 'settings/government/details/:id',
+  //   component: GovernmentDetailsComponent,
+  // },
+  // {
+  //   path: 'settings/government/add-government',
+  //   component: AddGovernmentComponent,
+  // },
 
-  { path: 'settings/weightSetting', component: WeightSettingsComponent },
+  // {
+  //   path: 'settings/government/edit/:id',
+  //   loadComponent: () =>
+  //     import(
+  //       '../components/Admin/Settings/governments/edit-government/edit-government.component'
+  //     ).then((g) => g.EditGovernmentComponent),
+  // },
+
+  // { path: 'settings/weightSetting', component: WeightSettingsComponent },
 
   //users routes
-  
+
   { path: 'users/vendors', component: VendorComponent },
   { path: 'users/employees', component: EmployeesComponent },
-  { path: 'users/deliveries', component: DeliveriesComponent }
-
+  { path: 'users/deliveries', component: DeliveriesComponent },
 ];

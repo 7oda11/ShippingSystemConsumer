@@ -8,52 +8,50 @@ import { Government } from '../../../../../models/Governmernt';
 
 @Component({
   selector: 'app-add-city',
-  imports: [RouterLink, CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './add-city.component.html',
   styleUrl: './add-city.component.css',
 })
 export class AddCityComponent implements OnInit {
-  newCity :City = {
-    name: '', 
+  newCity: City = {
+    name: '',
     price: 0,
     pickedPrice: 0,
-
-    governmentId: 0,
+    governmentId: '',
     govName: '',
   };
-  governments: any[] = [];
-  selectedGovId: number | null = null;
 
-    governmentId: '',
-    govName: ''
-  };
   governments: Government[] = [];
   selectedGovId: string | null = null;
-  
-  constructor(private cityService: CityService, private router: Router) { }
-
 
   constructor(private cityService: CityService, private router: Router) {}
 
+  ngOnInit(): void {
+    this.getGovernments();
+  }
+
   getGovernments() {
-
     this.cityService.getGovernments().subscribe({
-      next: (data) => (this.governments = data),
-
-    this.cityService.getGovernments().subscribe( {
-     next: (data) => {
-       this.governments = data.map((item: any) => ({
-         id: item.id,
-         name: item.name,
-         listCities: item.listCities ?? []
-       }));
-     },
-
+      next: (data) => {
+        this.governments = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          listCities: item.listCities ?? [],
+        }));
+      },
       error: (err) => {
         console.error('Error fetching governments:', err);
         alert('Failed to load governments. Please try again later.');
       },
     });
+  }
+
+  onGovernmentChange() {
+    const selectedGov = this.governments.find(
+      (g) => g.id === this.selectedGovId
+    );
+    this.newCity.govName = selectedGov ? selectedGov.name : '';
   }
 
   addCity() {
@@ -67,13 +65,9 @@ export class AddCityComponent implements OnInit {
       return;
     }
 
-    this.newCity.governmentId = this.selectedGovId;
+    this.newCity.governmentId = this.selectedGovId!;
 
-    // ✅ ضيف السطر ده هنا مباشرة قبل الإرسال
-    // const selectedGov = this.governments.find(g => g.id === this.selectedGovId);
-    // this.newCity.govName = selectedGov ? selectedGov.name : '';
-
-    console.log('City to submit:', this.newCity); // ✅ تأكد من هنا
+    console.log('City to submit:', this.newCity);
 
     this.cityService.createCity(this.newCity).subscribe({
       next: (response) => {
@@ -85,16 +79,5 @@ export class AddCityComponent implements OnInit {
         alert('Failed to add city. Please try again.');
       },
     });
-  }
-
-  onGovernmentChange() {
-    const selectedGov = this.governments.find(
-      (g) => g.id === this.selectedGovId
-    );
-    this.newCity.govName = selectedGov ? selectedGov.name : '';
-  }
-
-  ngOnInit() {
-    this.getGovernments();
   }
 }
