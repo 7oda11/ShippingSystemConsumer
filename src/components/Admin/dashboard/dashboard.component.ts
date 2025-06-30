@@ -2,11 +2,11 @@ import { Component, HostListener, signal } from '@angular/core';
 import { NavbarsComponent } from '../SideNavBar/navbars.component';
 import { TopnavbarComponent } from '../topnavbar/topnavbar.component';
 import { MainComponent } from '../main/main.component';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NavbarsComponent, MainComponent, RouterOutlet, RouterModule],
+  imports: [NavbarsComponent, MainComponent, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

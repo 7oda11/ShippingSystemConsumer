@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../footer/footer.component';
 import { SharedNavbarComponent } from '../../shared-navbar/shared-navbar.component';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from '../home/home.component';
 @Component({
@@ -12,7 +12,6 @@ import { HomeComponent } from '../home/home.component';
     CommonModule,
     SharedNavbarComponent,
     RouterModule,
-    RouterOutlet,
     FormsModule,
     HomeComponent,
   ],

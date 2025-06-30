@@ -5,7 +5,10 @@
         <h4 class="mb-4 text-primary fw-bold">Cities Management</h4>
       </div>
       <div class="col-6 text-end">
-        <button class="btn btn-primary shadow btn-addcity" routerLink="/settings/cities/add-city">
+        <button
+          class="btn btn-primary shadow btn-addcity"
+          routerLink="/dashboard/cities/add-city"
+        >
           <i class="fas fa-plus me-2"></i>New City
         </button>
       </div>
@@ -15,12 +18,30 @@
       <table class="table table-hover align-middle mb-0 bg-white">
         <thead class="bg-light">
           <tr>
-            <th class="text-center fw-medium text-uppercase" style="color: rgb(58, 56, 56);">#</th>
-            <th class="fw-medium text-uppercase"  style="color: rgb(58, 56, 56);">City Name</th>
-            <th class="fw-medium text-uppercase"  style="color: rgb(58, 56, 56);">Price</th>
-            <th class="fw-medium text-uppercase"  style="color: rgb(58, 56, 56);">Picked Price</th>
-            <th class="fw-medium text-uppercase"  style="color: rgb(58, 56, 56);">Government</th>
-            <th class="text-center fw-medium text-uppercase" style="width: 100px;color: rgb(58, 56, 56);">Actions</th>
+            <th
+              class="text-center fw-medium text-uppercase"
+              style="color: rgb(58, 56, 56)"
+            >
+              #
+            </th>
+            <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
+              City Name
+            </th>
+            <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
+              Price
+            </th>
+            <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
+              Picked Price
+            </th>
+            <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
+              Government
+            </th>
+            <th
+              class="text-center fw-medium text-uppercase"
+              style="width: 100px; color: rgb(58, 56, 56)"
+            >
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -30,20 +51,28 @@
               <p class="fw-semibold mb-1">{{ city.name }}</p>
             </td>
             <td>
-              <span class="text-primary fw-semibold">{{ city.price | currency }}</span>
+              <span class="text-primary fw-semibold">{{
+                city.price | currency
+              }}</span>
             </td>
             <td>
-              <span class="text-success fw-semibold">{{ city.pickedPrice | currency }}</span>
+              <span class="text-success fw-semibold">{{
+                city.pickedPrice | currency
+              }}</span>
             </td>
-              <td>
+            <td>
               <span class="text-success fw-semibold">{{ city.govName }}</span>
             </td>
-           
+
             <td class="text-center">
               <button class="btn btn-sm btn-outline-warning me-2" title="Edit">
                 <i class="far fa-edit"></i>
               </button>
-              <button class="btn btn-sm btn-outline-danger" (click)="deleteCity(city)" title="Delete">
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteCity(city)"
+                title="Delete"
+              >
                 <i class="far fa-trash-alt"></i>
               </button>
             </td>

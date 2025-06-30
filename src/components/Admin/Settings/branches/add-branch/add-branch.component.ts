@@ -6,23 +6,27 @@ import { BranchService } from '../../../../../services/admin/branch.service';
 
 @Component({
   selector: 'app-add-branch',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './add-branch.component.html',
-  styleUrl: './add-branch.component.css'
+  styleUrl: './add-branch.component.css',
 })
 export class AddBranchComponent {
-newBranch = {
+  newBranch = {
     name: '',
     phone: '',
-    address: ''
+    address: '',
   };
- /**
-  *
-  */
- constructor(private branchService: BranchService, private router: Router) {}
+  /**
+   *
+   */
+  constructor(private branchService: BranchService, private router: Router) {}
 
   AddBranch() {
-    if (!this.newBranch.name || !this.newBranch.phone || !this.newBranch.address) {
+    if (
+      !this.newBranch.name ||
+      !this.newBranch.phone ||
+      !this.newBranch.address
+    ) {
       alert('Please fill in all fields');
       return;
     }
@@ -30,15 +34,12 @@ newBranch = {
     this.branchService.addBranch(this.newBranch).subscribe({
       next: (response) => {
         console.log('Branch added successfully:', response);
-        this.router.navigate(['/settings/branches']);
+        this.router.navigate(['/dashboard/branches']);
       },
       error: (error) => {
         console.error('Error adding branch:', error);
         alert('Failed to add branch. Please try again.');
-      }
+      },
     });
   }
-
 }
-
-

@@ -5,19 +5,33 @@
     </div>
     <div class="card-body p-4">
       <form (ngSubmit)="submit()">
-
-        
         <div class="mb-3">
           <label class="form-label fw-semibold">Government Name</label>
-          <input type="text" class="form-control" [(ngModel)]="gov.name" name="name" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="gov.name"
+            name="name"
+            required
+          />
         </div>
 
-       
         <div class="mb-3">
           <label class="form-label fw-semibold">Add City</label>
           <div class="input-group">
-            <input type="text" class="form-control" [(ngModel)]="newCity" name="newCity">
-            <button type="button" class="btn btn-outline-primary" (click)="AddCity()" >Add City</button>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="newCity"
+              name="newCity"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              (click)="AddCity()"
+            >
+              Add City
+            </button>
           </div>
         </div>
 
@@ -25,24 +39,36 @@
         <div *ngIf="gov.listCities.length > 0" class="mb-3">
           <label class="form-label fw-semibold">Cities Added:</label>
           <ul class="list-group">
-            <li  *ngFor="let city of gov.listCities; let i =index;" class="list-group-item d-flex justify-content-between">
-             {{city}}
-              <button type="button" class="btn btn-sm btn-danger" (click)="removeCity(i)">X</button>
+            <li
+              *ngFor="let city of gov.listCities; let i = index"
+              class="list-group-item d-flex justify-content-between"
+            >
+              {{ city }}
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                (click)="removeCity(i)"
+              >
+                X
+              </button>
             </li>
           </ul>
         </div>
 
         <!-- Submit Button -->
         <div class="text-end">
-          <button type="submit" class="btn btn-success"  [disabled]="!gov.name ">
+          <button type="submit" class="btn btn-success" [disabled]="!gov.name">
             Submit
           </button>
         </div>
-
       </form>
     </div>
   </div>
 </div>
-    <div class="col-4 back"><a class="m-4 text-white fw-bold btn btn-primary " routerLink="/settings/government">Back To List</a></div>
-
-
+<div class="col-4 back">
+  <a
+    class="m-4 text-white fw-bold btn btn-primary"
+    routerLink="/dashboard/government"
+    >Back To List</a
+  >
+</div>

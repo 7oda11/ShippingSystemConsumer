@@ -38,7 +38,24 @@ export const routes: Routes = [
       { path: 'cities', component: CitiesComponent },
       { path: 'cities/add-city', component: AddCityComponent },
       { path: 'government', component: GovernmentsComponent },
+      { path: 'government/add-government', component: AddGovernmentComponent },
+
+      {
+        path: 'government/details/:id',
+        component: GovernmentDetailsComponent,
+      },
+      { path: 'government/add-government', component: AddGovernmentComponent },
+      {
+        path: 'government/edit/:id',
+
+        loadComponent: () =>
+          import(
+            '../components/Admin/Settings/governments/edit-government/edit-government.component'
+          ).then((g) => g.EditGovernmentComponent),
+      },
       { path: 'weightSetting', component: WeightSettingsComponent },
+      { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],
   },
