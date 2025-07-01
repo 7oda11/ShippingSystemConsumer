@@ -60,6 +60,8 @@ export class NavbarsComponent {
           routeLink: '/dashboard/weightSetting',
           icon: 'fa fa-weight',
         },
+         { label: 'Status', routeLink: '/dashboard/status', icon: 'fa fa-toggle-on' }
+
       ],
     },
   ];

@@ -48,7 +48,8 @@ export const routes: Routes = [
       { path: 'cities/add-city', component: AddCityComponent },
       { path: 'government', component: GovernmentsComponent },
       { path: 'government/add-government', component: AddGovernmentComponent },
-
+   { path: 'status', component: StatusComponent },
+   { path: 'status/add-status', component: AddStatusComponent },
       {
         path: 'government/details/:id',
         component: GovernmentDetailsComponent,
