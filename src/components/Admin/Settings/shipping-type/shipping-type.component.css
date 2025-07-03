@@ -9,7 +9,8 @@
 .badge.bg-opacity-10 {
   background-color: rgba(var(--bs-primary-rgb), 0.1);
 }
-.add-employee{
+.add-shType-btn {
+  margin-top: 20px;
  margin-top: 50px;
  margin-bottom: 20px;
 }
