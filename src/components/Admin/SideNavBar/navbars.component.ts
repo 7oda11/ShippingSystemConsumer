@@ -23,9 +23,13 @@ export class NavbarsComponent {
       label: 'Home',
     },
     {
-      routeLink: 'products',
+      
       icon: 'fal fa-box-open',
-      label: 'Products',
+      label: 'Order Setting',
+       children: [
+        { label: 'orders', routeLink: '/dashboard/orders', icon: 'fa fa-shopping-cart' },
+    
+      ]
     },
     {
 

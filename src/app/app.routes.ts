@@ -30,6 +30,7 @@ import { AddWeightSettingComponent } from '../components/Admin/Settings/weight-s
 import { AddEmployeeComponent } from '../components/Users/employees/add-employee/add-employee.component';
 import { ShippingTypeComponent } from '../components/Admin/Settings/shipping-type/shipping-type.component';
 import { AddShippingTypeComponent } from '../components/Admin/Settings/shipping-type/add-shipping-type/add-shipping-type.component';
+import { OrdersComponent } from '../components/Admin/Order/orders/orders.component';
 
 import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
 import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
@@ -62,6 +63,8 @@ export const routes: Routes = [
       { path: 'status/add-status', component: AddStatusComponent },
       { path: 'shipping-type', component: ShippingTypeComponent },
       { path: 'shipping-type/add-shipping', component: AddShippingTypeComponent },
+      {path: 'government/details/:id',component: GovernmentDetailsComponent},
+
       {
         path: 'government/details/:id',
         component: GovernmentDetailsComponent,
@@ -96,6 +99,9 @@ export const routes: Routes = [
       {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
     
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
+      //order
+        { path: 'orders', component: OrdersComponent },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],
