@@ -1,0 +1,75 @@
+<div class="container my-5 table-container ">
+    <h4 class="mb-4 text-primary fw-bold">Orders Management</h4>
+
+    <div class="table-responsive rounded-3 shadow">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Date</th>
+                    <th>Customer Info</th>
+                    <th>Governorate</th>
+                    <th>City</th>
+                    <th>Order Cost</th>
+                    <th class="text-center">Details</th>
+                    <th class="text-center">Change Status</th>
+                    <th class="text-center">Delete</th>
+
+
+
+
+
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of pagedOrders">
+                    <td>{{ order.serialNumber }}</td>
+                    <td>{{ order.date | date: 'dd MMM yyyy h:mm a' }}</td>
+                    <td>
+                        {{ order.customerName }}<br />
+                        {{ order.customerPhone }}
+                    </td>
+                    <td>{{ order.governorate }}</td>
+                    <td>{{ order.city }}</td>
+                    <td>{{ order.totalCost }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-info text-white">Status</button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+
+
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav class="mt-3 d-flex justify-content-end">
+        <ul class="pagination pagination-sm">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="changePage(currentPage - 1)">«</button>
+            </li>
+            <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+                <button class="page-link" (click)="changePage(page)" [ngStyle]="page === currentPage ? {
+                    backgroundColor: 'rgb(45, 110, 207)',
+                    color: 'white',
+                    borderColor: 'blue'
+                    } : {}">
+                    {{ page }}
+                </button>
+            </li>
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="changePage(currentPage + 1)">»</button>
+            </li>
+        </ul>
+    </nav>
+</div>

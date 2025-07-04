@@ -28,6 +28,7 @@ import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.c
 import { AddEmployeeComponent } from '../components/Users/employees/add-employee/add-employee.component';
 import { ShippingTypeComponent } from '../components/Admin/Settings/shipping-type/shipping-type.component';
 import { AddShippingTypeComponent } from '../components/Admin/Settings/shipping-type/add-shipping-type/add-shipping-type.component';
+import { OrdersComponent } from '../components/Admin/Order/orders/orders.component';
 
 export const routes: Routes = [
    { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -56,10 +57,7 @@ export const routes: Routes = [
       { path: 'status/add-status', component: AddStatusComponent },
       { path: 'shipping-type', component: ShippingTypeComponent },
       { path: 'shipping-type/add-shipping', component: AddShippingTypeComponent },
-      {
-        path: 'government/details/:id',
-        component: GovernmentDetailsComponent,
-      },
+      {path: 'government/details/:id',component: GovernmentDetailsComponent},
       { path: 'government/add-government', component: AddGovernmentComponent },
       //user
       { path: 'vendors', component: VendorComponent },
@@ -76,6 +74,9 @@ export const routes: Routes = [
       },
       { path: 'weightSetting', component: WeightSettingsComponent },
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
+      //order
+        { path: 'orders', component: OrdersComponent },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],
