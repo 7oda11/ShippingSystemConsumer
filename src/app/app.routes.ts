@@ -25,6 +25,7 @@ import { AddStatusComponent } from '../components/Admin/Settings/status/add-stat
 import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
+import { AddWeightSettingComponent } from '../components/Admin/Settings/weight-settings/add-weight-setting/add-weight-setting.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -53,7 +54,12 @@ export const routes: Routes = [
         path: 'government/details/:id',
         component: GovernmentDetailsComponent,
       },
-      { path: 'government/add-government', component: AddGovernmentComponent },
+      { path: 'weightSetting', component: WeightSettingsComponent },
+      {
+        path: 'weightsetting/add-weightsetting',
+        component: AddWeightSettingComponent,
+      },
+
       {
         path: 'government/edit/:id',
 
@@ -62,7 +68,7 @@ export const routes: Routes = [
             '../components/Admin/Settings/governments/edit-government/edit-government.component'
           ).then((g) => g.EditGovernmentComponent),
       },
-      { path: 'weightSetting', component: WeightSettingsComponent },
+      // { path: 'weightSetting', component: WeightSettingsComponent },
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
