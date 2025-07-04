@@ -25,10 +25,15 @@ import { AddStatusComponent } from '../components/Admin/Settings/status/add-stat
 import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
+
+import { AddWeightSettingComponent } from '../components/Admin/Settings/weight-settings/add-weight-setting/add-weight-setting.component';
 import { AddEmployeeComponent } from '../components/Users/employees/add-employee/add-employee.component';
 import { ShippingTypeComponent } from '../components/Admin/Settings/shipping-type/shipping-type.component';
 import { AddShippingTypeComponent } from '../components/Admin/Settings/shipping-type/add-shipping-type/add-shipping-type.component';
 import { OrdersComponent } from '../components/Admin/Order/orders/orders.component';
+
+import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
+import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
 
 export const routes: Routes = [
    { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -37,6 +42,7 @@ export const routes: Routes = [
 
  
   { path: 'base', component: BaseComponent },
+  {path:'home', component:HomeComponent},
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'contact', component: ContactComponent },
@@ -58,12 +64,26 @@ export const routes: Routes = [
       { path: 'shipping-type', component: ShippingTypeComponent },
       { path: 'shipping-type/add-shipping', component: AddShippingTypeComponent },
       {path: 'government/details/:id',component: GovernmentDetailsComponent},
+
+      {
+        path: 'government/details/:id',
+        component: GovernmentDetailsComponent,
+      },
+
+      { path: 'weightSetting', component: WeightSettingsComponent },
+      {
+        path: 'weightsetting/add-weightsetting',
+        component: AddWeightSettingComponent,
+      },
+
+
       { path: 'government/add-government', component: AddGovernmentComponent },
       //user
       { path: 'vendors', component: VendorComponent },
       { path: 'employees', component: EmployeesComponent },
       { path: 'deliveries', component: DeliveriesComponent },
       { path: 'employees/add-employee', component: AddEmployeeComponent },
+
       {
         path: 'government/edit/:id',
 
@@ -72,7 +92,12 @@ export const routes: Routes = [
             '../components/Admin/Settings/governments/edit-government/edit-government.component'
           ).then((g) => g.EditGovernmentComponent),
       },
+
       { path: 'weightSetting', component: WeightSettingsComponent },
+      {path:'vendors',component:VendorComponent},
+      {path:'vendors/add-vendor', component:AddVendorComponent},
+      {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
+    
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //order
