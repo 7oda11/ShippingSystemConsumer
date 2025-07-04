@@ -203,3 +203,18 @@
   opacity: 0.95;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
+/* Scroll wrapper for the sidebar */
+.sidenav-scroll {
+  overflow-y: auto;
+  height: calc(100vh - 60px); /* Adjust if logo-container height differs */
+  padding-right: 4px;
+}
+
+.sidenav-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidenav-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
