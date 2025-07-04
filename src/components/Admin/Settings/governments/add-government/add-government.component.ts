@@ -50,7 +50,7 @@ export class AddGovernmentComponent implements OnInit  {
    next: ()=>{
     this.toastr.success("Successfully Added!",'success')
     setTimeout(()=>{
-      this.router.navigate(['settings/government'])
+      this.router.navigate(['dashboard/government'])
     },1500)
    },
    error: (err)=> {
