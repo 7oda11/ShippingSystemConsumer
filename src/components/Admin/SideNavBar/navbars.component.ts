@@ -36,8 +36,6 @@ export class NavbarsComponent {
         { label: 'Employees', routeLink: '/dashboard/employees', icon: 'fa fa-user-shield' },
         { label: 'Deliveries', routeLink: '/dashboard/deliveries', icon: 'fa fa-truck' },
 
-
-
       ]
     },
 
