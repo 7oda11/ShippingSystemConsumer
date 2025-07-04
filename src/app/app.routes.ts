@@ -25,6 +25,8 @@ import { AddStatusComponent } from '../components/Admin/Settings/status/add-stat
 import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
+import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
+import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -32,6 +34,7 @@ export const routes: Routes = [
 
   { path: '', redirectTo: 'base', pathMatch: 'full' },
   { path: 'base', component: BaseComponent },
+  {path:'home', component:HomeComponent},
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'contact', component: ContactComponent },
@@ -63,6 +66,10 @@ export const routes: Routes = [
           ).then((g) => g.EditGovernmentComponent),
       },
       { path: 'weightSetting', component: WeightSettingsComponent },
+      {path:'vendors',component:VendorComponent},
+      {path:'vendors/add-vendor', component:AddVendorComponent},
+      {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
+    
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
