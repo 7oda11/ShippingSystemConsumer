@@ -28,7 +28,7 @@ export class AddStatusComponent {
     this.statusService.createStatus(this.newStatus).subscribe({
       next: (response) => {
         console.log('Status added successfully:', response);
-        this.router.navigate(['/settings/status']);
+        this.router.navigate(['/dashboard/status']);
       },
       error: (error) => {
         console.error('Error adding status:', error);

@@ -28,13 +28,14 @@ export class NavbarsComponent {
       label: 'Products',
     },
     {
-      
+
       icon: 'fa fa-users',
       label: 'Users',
       children: [
-        { label: 'Vendor', routeLink: '/users/vendors', icon: 'fa fa-users' },
-        { label: 'Employees', routeLink: '/users/employees', icon: 'fa fa-user-shield' },
-        { label: 'Deliveries', routeLink: '/users/deliveries', icon: 'fa fa-truck' },
+        { label: 'Vendor', routeLink: '/dashboard/vendors', icon: 'fa fa-users' },
+        { label: 'Employees', routeLink: '/dashboard/employees', icon: 'fa fa-user-shield' },
+        { label: 'Deliveries', routeLink: '/dashboard/deliveries', icon: 'fa fa-truck' },
+
       ]
     },
 
@@ -60,6 +61,10 @@ export class NavbarsComponent {
           routeLink: '/dashboard/weightSetting',
           icon: 'fa fa-weight',
         },
+        { label: 'Status', routeLink: '/dashboard/status', icon: 'fa fa-toggle-on' },
+        { label: 'Shipping Type', routeLink: '/dashboard/shipping-type', icon: 'fa fa-shipping-fast' },
+        { label: '', icon: '' }
+
       ],
     },
   ];

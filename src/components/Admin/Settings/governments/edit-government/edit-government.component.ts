@@ -52,7 +52,7 @@ id! :string;
     this.governmentService.updateGovernment(this.id, this.gov).subscribe({
       next:()=>{
         this.toastr.success("Updated Successfully!",'success')
-    this.router.navigate(['settings/government'])
+    this.router.navigate(['dashboard/government'])
       },
       error:(err)=>{
         this.toastr.error("Failed Update",'error')
