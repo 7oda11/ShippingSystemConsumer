@@ -39,7 +39,7 @@ this.vendorId= id
       this.vendorService.DeleteVendor(this.vendorId).subscribe({
         next:()=>{
           this.toastr.success("Deleted Successfully",'success')
-          this.router.navigate(['/vendors'])
+          // this.router.navigate(['/vendors'])
           this.closeModalBtn.nativeElement.click()
           this.getAllVendors()
         },
