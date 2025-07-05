@@ -10,40 +10,43 @@
         <div class="card-body p-4">
           <form (ngSubmit)="addWeightSetting()">
             <div class="mb-4">
-              <label for="WeightRange" class="form-label fw-semibold"
-                >WeightRange</label
+              <label class="form-label fw-semibold"
+                >Shipping extra cost for weight range (e.g. 0 KG to 10
+                KG)</label
               >
+              <!-- <label for="WeightRange" class="form-label">Weight Range</label> -->
               <div class="input-group">
-                <span class="input-group-text bg-light"
-                  ><i class="fas fa-signature text-primary"></i
-                ></span>
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-weight-hanging text-primary"></i>
+                </span>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="newWeightSetting.weightRange"
                   name="weightRange"
                   id="weightRange"
-                  placeholder="Enter weightRange "
+                  placeholder="Enter weight range (e.g. 0-10 KG)"
                   required
                 />
               </div>
             </div>
 
             <div class="mb-4">
-              <label for="extraPrice" class="form-label fw-semibold"
-                >ExtraPrice</label
+              <label class="form-label fw-semibold"
+                >Additional price per KG: 100 EGP</label
               >
+              <!-- <label for="extraPrice" class="form-label">Extra Price</label> -->
               <div class="input-group">
-                <span class="input-group-text bg-light"
-                  ><i class="fas fa-phone-alt text-primary"></i
-                ></span>
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-dollar-sign text-primary"></i>
+                </span>
                 <input
                   type="text"
                   class="form-control"
                   [(ngModel)]="newWeightSetting.extraPrice"
                   name="extraPrice"
                   id="extraPrice"
-                  placeholder="Enter ExtraPrice"
+                  placeholder="Enter extra price"
                   required
                 />
               </div>
@@ -55,7 +58,7 @@
                 class="btn py-2 fw-bold shadow"
                 style="background-color: #155293; color: white"
               >
-                <i class="fas fa-plus-circle me-2"></i>Add WeightSetting
+                <i class="fas fa-plus-circle me-2"></i>Add Weight Setting
               </button>
             </div>
           </form>
