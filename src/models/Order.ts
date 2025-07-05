@@ -11,7 +11,7 @@ export interface AddOrder {
   shippingTypeId: number;
   vendorName: string;
   vendorAddress: string;
- 
+  status?: number;
   totalPrice: number;
   notes?: string;
   totalWeight?: number;
