@@ -35,18 +35,19 @@ import { OrdersComponent } from '../components/Admin/Order/orders/orders.compone
 
 import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
 import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
+import { AddDeliveryComponent } from '../components/Users/deliveries/add-delivery/add-delivery.component';
+import { EditDeliveryComponent } from '../components/Users/deliveries/edit-delivery/edit-delivery.component';
 import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 import { authGuard } from '../../guards/auth.guard';
 
 
 export const routes: Routes = [
-   { path: '', redirectTo: 'base', pathMatch: 'full' },
+  { path: '', redirectTo: 'base', pathMatch: 'full' },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 
- 
   { path: 'base', component: BaseComponent },
-  {path:'home', component:HomeComponent},
+  { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'contact', component: ContactComponent },
@@ -75,8 +76,11 @@ export const routes: Routes = [
       { path: 'status', component: StatusComponent },
       { path: 'status/add-status', component: AddStatusComponent },
       { path: 'shipping-type', component: ShippingTypeComponent },
-      { path: 'shipping-type/add-shipping', component: AddShippingTypeComponent },
-      {path: 'government/details/:id',component: GovernmentDetailsComponent},
+      {
+        path: 'shipping-type/add-shipping',
+        component: AddShippingTypeComponent,
+      },
+      { path: 'government/details/:id', component: GovernmentDetailsComponent },
 
       { path: 'government/add-government', component: AddGovernmentComponent },
         {
@@ -92,11 +96,37 @@ export const routes: Routes = [
         path: 'weightsetting/add-weightsetting',
         component: AddWeightSettingComponent,
       },
+
+
+      { path: 'government/add-government', component: AddGovernmentComponent },
+
       //user
       { path: 'vendors', component: VendorComponent },
       { path: 'employees', component: EmployeesComponent },
       { path: 'deliveries', component: DeliveriesComponent },
       { path: 'employees/add-employee', component: AddEmployeeComponent },
+
+      { path: 'deliveries/add-delivery', component: AddDeliveryComponent },
+      {
+        path: 'deliveries/edit-delivery/:id',
+        component: EditDeliveryComponent,
+      },
+      {
+        path: 'government/edit/:id',
+
+        loadComponent: () =>
+          import(
+            '../components/Admin/Settings/governments/edit-government/edit-government.component'
+          ).then((g) => g.EditGovernmentComponent),
+      },
+
+      { path: 'weightSetting', component: WeightSettingsComponent },
+      { path: 'vendors', component: VendorComponent },
+      { path: 'vendors/add-vendor', component: AddVendorComponent },
+      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent },
+
+      { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
       //vendor
       {path:'vendors',component:VendorComponent},
       {path:'vendors/add-vendor', component:AddVendorComponent},
@@ -106,13 +136,11 @@ export const routes: Routes = [
 
 
       //order
-        { path: 'orders', component: OrdersComponent },
+      { path: 'orders', component: OrdersComponent },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],
-
   },
-
 
   // {
   //   path: 'settings/government/details/:id',
@@ -162,6 +190,4 @@ export const routes: Routes = [
   // { path: 'settings/weightSetting', component: WeightSettingsComponent },
 
   //users routes
-
-
 ];
