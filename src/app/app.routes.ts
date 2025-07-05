@@ -1,4 +1,6 @@
 import { HomeComponent as adminHome } from './../components/Admin/home/home.component';
+import { HomeComponent } from '../components/home/home.component';
+import { AdminHomeComponent } from '../components/Admin/AdminHome/AdminHome.component';
 import { Routes } from '@angular/router';
 import { AboutComponent } from '../components/about/about.component';
 import { ContactComponent } from '../components/contact/contact.component';
@@ -9,7 +11,6 @@ import { CitiesComponent } from '../components/Admin/Settings/cities/cities.comp
 import { AddBranchComponent } from '../components/Admin/Settings/branches/add-branch/add-branch.component';
 import { GovernmentsComponent } from '../components/Admin/Settings/governments/governments.component';
 import { WeightSettingsComponent } from '../components/Admin/Settings/weight-settings/weight-settings.component';
-import { HomeComponent } from '../components/home/home.component';
 import { RegisterComponent } from '../components/Auth/register/register.component';
 import { LoginComponent } from '../components/Auth/login/login.component';
 import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/add-city.component';
@@ -34,6 +35,7 @@ import { OrdersComponent } from '../components/Admin/Order/orders/orders.compone
 
 import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
 import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
+import { authGuard } from '../../guards/auth.guard';
 
 export const routes: Routes = [
    { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -52,7 +54,11 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate:[authGuard],
     children: [
+      { path: '', redirectTo: 'adminhome', pathMatch: 'full' },
+      {path:'adminhome', component: AdminHomeComponent},
+
       { path: 'branches', component: BranchesComponent },
       { path: 'branches/add-branch', component: AddBranchComponent },
       { path: 'cities', component: CitiesComponent },
@@ -65,26 +71,8 @@ export const routes: Routes = [
       { path: 'shipping-type/add-shipping', component: AddShippingTypeComponent },
       {path: 'government/details/:id',component: GovernmentDetailsComponent},
 
-      {
-        path: 'government/details/:id',
-        component: GovernmentDetailsComponent,
-      },
-
-      { path: 'weightSetting', component: WeightSettingsComponent },
-      {
-        path: 'weightsetting/add-weightsetting',
-        component: AddWeightSettingComponent,
-      },
-
-
       { path: 'government/add-government', component: AddGovernmentComponent },
-      //user
-      { path: 'vendors', component: VendorComponent },
-      { path: 'employees', component: EmployeesComponent },
-      { path: 'deliveries', component: DeliveriesComponent },
-      { path: 'employees/add-employee', component: AddEmployeeComponent },
-
-      {
+        {
         path: 'government/edit/:id',
 
         loadComponent: () =>
@@ -92,13 +80,21 @@ export const routes: Routes = [
             '../components/Admin/Settings/governments/edit-government/edit-government.component'
           ).then((g) => g.EditGovernmentComponent),
       },
-
       { path: 'weightSetting', component: WeightSettingsComponent },
+      {
+        path: 'weightsetting/add-weightsetting',
+        component: AddWeightSettingComponent,
+      },
+      //user
+      { path: 'vendors', component: VendorComponent },
+      { path: 'employees', component: EmployeesComponent },
+      { path: 'deliveries', component: DeliveriesComponent },
+      { path: 'employees/add-employee', component: AddEmployeeComponent },
+      //vendor
       {path:'vendors',component:VendorComponent},
       {path:'vendors/add-vendor', component:AddVendorComponent},
       {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
     
-      { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //order
         { path: 'orders', component: OrdersComponent },

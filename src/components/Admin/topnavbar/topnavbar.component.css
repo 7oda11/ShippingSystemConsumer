@@ -27,7 +27,8 @@
 
 .user-info .user-name {
   font-size: 16px;
-  color: rgb(3, 15, 83);
+  /* color: rgb(3, 15, 83); */
+  color: #155293;
   font-weight: 500;
   
 }
