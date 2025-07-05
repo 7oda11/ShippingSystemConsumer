@@ -1,0 +1,165 @@
+<div class="container my-4">
+  <h2 class="text-center mb-4" style="color: rgb(33, 33, 107);">Add Order</h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="submit()" class="row g-3">
+
+    <!-- Customer Info -->
+    <div class="col-md-6">
+      <label>Customer Name *</label>
+      <input class="form-control" formControlName="customerName" />
+       <div class="text-danger" *ngIf="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched">
+    Name is required and must be valid.
+  </div>
+    </div>
+
+    <div class="col-md-6">
+      <label>Primary Phone *</label>
+      <input class="form-control" formControlName="customerPhone1" />
+       <div class="text-danger" *ngIf="orderForm.get('customerPhone1')?.invalid && orderForm.get('customerPhone1')?.touched">
+    Must be a valid Egyptian phone number.
+  </div>
+    </div>
+
+    <div class="col-md-6">
+      <label>Alternate Phone</label>
+      <input class="form-control" formControlName="customerPhone2" />
+       <div class="text-danger" *ngIf="orderForm.get('customerPhone2')?.invalid && orderForm.get('customerPhone1')?.touched">
+    Must be a valid Egyptian phone number.
+  </div>
+    </div>
+
+    <div class="col-md-6">
+      <label>Email</label>
+      <input class="form-control" formControlName="email" />
+        <div class="text-danger" *ngIf="orderForm.get('email')?.invalid && orderForm.get('email')?.touched">
+    Enter a valid email address.
+  </div>
+    </div>
+
+    <!-- Location -->
+    <div class="col-md-6">
+      <label>Governorate *</label>
+      <select class="form-select" formControlName="governmentId" (change)="onGovernmentChange()">
+        <option value="">Select Governorate</option>
+        <option *ngFor="let gov of governmentNames" [value]="gov.id">{{ gov.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label>City *</label>
+      <select class="form-select" formControlName="cityId">
+        <option value="">Select City</option>
+        <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+      </select>
+    </div>
+
+ <div class="col-md-6 mt-5">
+  <div class="d-flex align-items-center">
+    <label class="form-label me-3 mb-0">Deliver to Village?</label>
+    <div class="form-check form-switch mb-0">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        formControlName="isShippedToVillage"
+        id="villageToggle"
+      />
+      <label class="form-check-label ms-2" for="villageToggle">
+        {{ orderForm.get('isShippedToVillage')?.value ? 'Yes' : 'No' }}
+      </label>
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="col-md-6">
+      <label>Village Name *</label>
+      <input class="form-control" formControlName="villageName" />
+      <div class="text-danger" *ngIf="orderForm.get('villageName')?.invalid && orderForm.get('villageName')?.touched">
+    Village name is required.
+  </div>
+    </div>
+
+    <!-- Shipping / Vendor -->
+    <div class="col-md-6">
+      <label>Shipping Type *</label>
+      <select class="form-select" formControlName="shippingTypeId">
+        <option value="">Shipping Type</option>
+        <option *ngFor="let type of ShippingTypes" [value]="type.id">{{ type.shippingTypeName }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label>Vendor Name *</label>
+      <input class="form-control" formControlName="vendorName" />
+    </div>
+
+    <div class="col-md-6">
+      <label>Vendor Address *</label>
+      <input class="form-control" formControlName="vendorAddress" />
+    </div>
+
+    <!-- <div class="col-md-6">
+      <label>Vendor ID (Optional)</label>
+      <input class="form-control" formControlName="vendorId" type="number" />
+    </div> -->
+
+    <!-- Products Section -->
+    <div class="col-12">
+      <div style="display:grid">
+        <h5 class="mt-5">Order Items</h5>
+        <div class="col-12 text-end">
+        <button class="btn btn-primary mb-4" type="button" (click)="addProduct()">Add Product</button>
+      </div>
+      </div>
+      <div formArrayName="orderItems">
+        <div *ngFor="let product of orderItems.controls; let i = index" [formGroupName]="i" class="row align-items-end mb-2">
+          <div class="col-md-3">
+            <label>Product Name *</label>
+            <input class="form-control" formControlName="productName" />
+          </div>
+          <div class="col-md-2">
+            <label>Quantity *</label>
+            <input type="number" class="form-control" formControlName="quantity" />
+          </div>
+          <div class="col-md-2">
+            <label>Weight *</label>
+            <input type="number" class="form-control" formControlName="weight" />
+          </div>
+          <div class="col-md-2">
+            <label>Price *</label>
+            <input type="number" class="form-control" formControlName="price" />
+          </div>
+          <div class="col-md-2 text-end">
+            <button type="button" class="btn btn-danger" (click)="removeProduct(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+    
+    </div>
+
+    <!-- Totals -->
+    <div class="col-md-6">
+      <label>Total Weight *</label>
+      <input type="number" class="form-control" formControlName="totalWeight" />
+    </div>
+
+    <div class="col-md-6">
+      <label>Total Price *</label>
+      <input type="number" class="form-control" formControlName="totalPrice" />
+    </div>
+
+    <!-- Notes -->
+    <div class="col-md-12">
+      <label>Notes</label>
+      <textarea class="form-control" formControlName="notes"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="col-12 text-center mt-4">
+      <button class="btn btn-success" type="submit" >Submit Order</button>
+    </div>
+  </form>
+</div>

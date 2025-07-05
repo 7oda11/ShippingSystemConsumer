@@ -44,7 +44,7 @@ this.vendorId= id
           this.getAllVendors()
         },
         error:(err)=>{
-          this.toastr.error("Failed Delete",'error')
+          this.toastr.error(err.error||"Delete Failed","error")
           console.log("error",err)
         }
       })

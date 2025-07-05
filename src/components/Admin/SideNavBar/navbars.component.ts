@@ -27,10 +27,12 @@ export class NavbarsComponent {
       icon: 'fal fa-box-open',
       label: 'Order Setting',
        children: [
-        { label: 'orders', routeLink: '/dashboard/orders', icon: 'fa fa-shopping-cart' },
+        { label: 'Orders', routeLink: '/dashboard/orders', icon: 'fa fa-shopping-cart' },
+        { label: 'Add order', routeLink: '/dashboard/add-order', icon: 'fa fa-plus' },
     
       ]
     },
+
     {
 
       icon: 'fa fa-users',
@@ -46,8 +48,6 @@ export class NavbarsComponent {
     {
       label: 'Settings',
       icon: 'fa fa-cog',
-
-
       children: [
         {
           label: 'Branches',
@@ -71,6 +71,7 @@ export class NavbarsComponent {
 
       ],
     },
+
   ];
   toggleSubmenu(index: number): void {
     if (this.items[index]?.children) {
