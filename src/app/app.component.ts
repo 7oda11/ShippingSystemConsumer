@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NavbarsComponent } from '../components/Admin/SideNavBar/navbars.component';
 import { RegisterComponent } from '../components/Auth/register/register.component';
-import { HomeComponent } from '../components/Admin/home/home.component';
+import { HomeComponent } from '../components/home/home.component';
 import { MainComponent } from '../components/Admin/main/main.component';
 import { TopnavbarComponent } from '../components/Admin/topnavbar/topnavbar.component';
 import { BranchesComponent } from '../components/Admin/Settings/branches/branches.component';
@@ -18,17 +18,14 @@ import { EmployeesComponent } from '../components/Users/employees/employees.comp
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-
     RouterOutlet,
     RouterModule,
     CommonModule,
     FormsModule,
-   
 
     NavbarsComponent,
     RegisterComponent,
@@ -44,7 +41,7 @@ import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order
     VendorComponent,
     EmployeesComponent,
     DeliveriesComponent,
-    AddOrderComponent
+    AddOrderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

@@ -1,4 +1,4 @@
-import { HomeComponent as adminHome } from './../components/Admin/home/home.component';
+// import { HomeComponent as adminHome } from './../components/Admin/home/home.component';
 import { HomeComponent } from '../components/home/home.component';
 import { AdminHomeComponent } from '../components/Admin/AdminHome/AdminHome.component';
 import { Routes } from '@angular/router';
@@ -18,7 +18,7 @@ import { AddGovernmentComponent } from '../components/Admin/Settings/governments
 import { EditGovernmentComponent } from '../components/Admin/Settings/governments/edit-government/edit-government.component';
 import { GovernmentDetailsComponent } from '../components/Admin/Settings/governments/government-details/government-details.component';
 
-import { BaseComponent } from '../components/Admin/base/base.component';
+import { BaseComponent } from '../components/base/base.component';
 import { DashboardComponent } from '../components/Admin/dashboard/dashboard.component';
 
 import { StatusComponent } from '../components/Admin/Settings/status/status.component';
@@ -40,32 +40,36 @@ import { EditDeliveryComponent } from '../components/Users/deliveries/edit-deliv
 import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 import { authGuard } from '../../guards/auth.guard';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: 'base', pathMatch: 'full' },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 
-  { path: 'base', component: BaseComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'service', component: ServiceComponent },
-  { path: 'contact', component: ContactComponent },
+  {
+    path: '',
+    component: BaseComponent,
+    children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'about', component: AboutComponent },
+      { path: 'service', component: ServiceComponent },
+      { path: 'contact', component: ContactComponent },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+    ],
+  },
 
   // Admin Settings Routes
 
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate:[authGuard],
+    canActivate: [authGuard],
     children: [
-          //order
-       { path: 'orders', component: OrdersComponent },
-       { path: 'add-order', component:AddOrderComponent },
-      
+      //order
+      { path: 'orders', component: OrdersComponent },
+      { path: 'add-order', component: AddOrderComponent },
 
       { path: '', redirectTo: 'adminhome', pathMatch: 'full' },
-      {path:'adminhome', component: AdminHomeComponent},
+      { path: 'adminhome', component: AdminHomeComponent },
 
       { path: 'branches', component: BranchesComponent },
       { path: 'branches/add-branch', component: AddBranchComponent },
@@ -83,7 +87,7 @@ export const routes: Routes = [
       { path: 'government/details/:id', component: GovernmentDetailsComponent },
 
       { path: 'government/add-government', component: AddGovernmentComponent },
-        {
+      {
         path: 'government/edit/:id',
 
         loadComponent: () =>
@@ -96,7 +100,6 @@ export const routes: Routes = [
         path: 'weightsetting/add-weightsetting',
         component: AddWeightSettingComponent,
       },
-
 
       { path: 'government/add-government', component: AddGovernmentComponent },
 
@@ -128,12 +131,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //vendor
-      {path:'vendors',component:VendorComponent},
-      {path:'vendors/add-vendor', component:AddVendorComponent},
-      {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
-    
-       { path: '', redirectTo: 'branches', pathMatch: 'full' },
+      { path: 'vendors', component: VendorComponent },
+      { path: 'vendors/add-vendor', component: AddVendorComponent },
+      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent },
 
+      { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //order
       { path: 'orders', component: OrdersComponent },
