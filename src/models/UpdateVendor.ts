@@ -1,4 +1,5 @@
 export interface UpdateVendor {
+    
     id:string
     name:string
     email:string

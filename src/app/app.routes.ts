@@ -34,6 +34,7 @@ import { OrdersComponent } from '../components/Admin/Order/orders/orders.compone
 
 import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
 import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
+import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 
 export const routes: Routes = [
    { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -53,6 +54,11 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
+          //order
+       { path: 'orders', component: OrdersComponent },
+       { path: 'add-order', component:AddOrderComponent },
+      
+
       { path: 'branches', component: BranchesComponent },
       { path: 'branches/add-branch', component: AddBranchComponent },
       { path: 'cities', component: CitiesComponent },
@@ -98,10 +104,7 @@ export const routes: Routes = [
       {path:'vendors/add-vendor', component:AddVendorComponent},
       {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
     
-      { path: '', redirectTo: 'branches', pathMatch: 'full' },
-
-      //order
-        { path: 'orders', component: OrdersComponent },
+       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],
