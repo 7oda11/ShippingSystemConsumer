@@ -10,6 +10,7 @@ import { CityService } from '../../../../services/admin/city.service';
 import { City } from '../../../../models/City';
 import { ShippingType } from '../../../../models/shippingType';
 import { ShippingTypeService } from '../../../../services/admin/shipping-type.service';
+import { orderStatus } from '../../../../../enums/orderStatus';
 
 @Component({
   selector: 'app-add-order',
@@ -50,6 +51,8 @@ export class AddOrderComponent implements OnInit {
       vendorAddress: ['', [Validators.required]],
       totalPrice: [0, [Validators.required, Validators.min(0)]],
       notes: [''],
+      status: [''],
+      statusId: orderStatus.Pending,
       totalWeight: [0, [Validators.required, Validators.min(0)]],
       orderItems: this.fb.array([this.createProductRow()])
     });
