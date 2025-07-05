@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbars',
@@ -18,9 +18,10 @@ export class NavbarsComponent {
   }
   items = [
     {
-      routeLink: 'AdminDashboard',
+      routeLink: '/dashboard/adminhome',
       icon: 'fal fa-home',
       label: 'Home',
+    
     },
     {
       
