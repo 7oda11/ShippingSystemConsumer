@@ -37,4 +37,8 @@ deleteCity(id: number): Observable<City> {
   getGovernments(): Observable<Government[]> {
     return this.http.get<Government[]>(`https://localhost:7109/api/Government`);
   }
+
+   getCitiesByGovernmentId(governmentId: number): Observable<City[]> {
+    return this.http.get<City[]>(`${this.apiUrl}City/GetCitiesByGovId/${governmentId}`);
+  }
 }

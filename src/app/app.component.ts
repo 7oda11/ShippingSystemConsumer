@@ -16,6 +16,7 @@ import { AddCityComponent } from '../components/Admin/Settings/cities/add-city/a
 import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
+import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 
 
 @Component({
@@ -42,7 +43,8 @@ import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.c
 
     VendorComponent,
     EmployeesComponent,
-    DeliveriesComponent
+    DeliveriesComponent,
+    AddOrderComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

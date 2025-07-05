@@ -35,7 +35,9 @@ import { OrdersComponent } from '../components/Admin/Order/orders/orders.compone
 
 import { AddVendorComponent } from '../components/Users/vendor/add-vendor/add-vendor.component';
 import { EditVendorComponent } from '../components/Users/vendor/edit-vendor/edit-vendor.component';
+import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 import { authGuard } from '../../guards/auth.guard';
+
 
 export const routes: Routes = [
    { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -56,6 +58,11 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate:[authGuard],
     children: [
+          //order
+       { path: 'orders', component: OrdersComponent },
+       { path: 'add-order', component:AddOrderComponent },
+      
+
       { path: '', redirectTo: 'adminhome', pathMatch: 'full' },
       {path:'adminhome', component: AdminHomeComponent},
 
@@ -95,6 +102,8 @@ export const routes: Routes = [
       {path:'vendors/add-vendor', component:AddVendorComponent},
       {path:'vendors/edit-vendor/:id', component:EditVendorComponent},
     
+       { path: '', redirectTo: 'branches', pathMatch: 'full' },
+
 
       //order
         { path: 'orders', component: OrdersComponent },
