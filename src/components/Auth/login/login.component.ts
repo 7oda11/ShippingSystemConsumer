@@ -52,7 +52,25 @@ export class LoginComponent {
     this.authService.login(username, password).subscribe({
       next: (response: AuthResponse) => {
         this.toastr.success('Login successful!', 'Success');
-        this.router.navigate(['/dashboard']);
+        localStorage.setItem('username', response.user.userName);
+
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role',response.user.roles[0]);
+        localStorage.setItem('userid',response.user.id);
+        const role = response.user.roles[0];
+
+          console.log("User object:", response.user);
+          console.log("Username before storing:", response.user.userName);
+
+        if(role=== 'Admin' || role ==='Vendor'|| role=== 'Employee' || role === 'DeliveryMan')
+        {
+
+          this.router.navigate(['/dashboard/adminhome']);
+        }
+        else{
+          this.router.navigate(['/login']);
+
+        }
 
         console.log(response);
         // handle successful login (e.g., redirect, store token, etc.)
