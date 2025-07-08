@@ -46,7 +46,7 @@
             <div class="mb-3">
               <label for="email" class="form-label fw-semibold">phone</label>
               <input
-                type="phone"
+                type="text"
                 id="phone"
                 name="phone"
                 class="form-control"
@@ -57,12 +57,12 @@
             </div>
 
             <!-- Password -->
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
               <label for="password" class="form-label fw-semibold"
                 >Password</label
               >
               <input
-                type="password"
+                [type]="showPassword ? 'text' : 'password'"
                 id="password"
                 name="password"
                 class="form-control"
@@ -70,6 +70,19 @@
                 [(ngModel)]="newDelivery.password"
                 placeholder="Enter password"
               />
+
+              <!-- Eye Icon -->
+              <i
+                class="fa"
+                [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                (click)="togglePasswordVisibility()"
+                style="
+                  position: absolute;
+                  top: 40px;
+                  right: 15px;
+                  cursor: pointer;
+                "
+              ></i>
             </div>
 
             <!-- Full Name -->
@@ -80,7 +93,7 @@
               <input
                 type="text"
                 id="fullName"
-                name="fullName"
+                name="name"
                 class="form-control"
                 required
                 [(ngModel)]="newDelivery.fullName"

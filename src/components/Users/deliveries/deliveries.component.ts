@@ -8,6 +8,7 @@ import { CityService } from '../../../services/admin/city.service';
 import { CityName } from '../../../models/CityName';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { UpdateDelivey } from '../../../models/update-delivey';
 declare var bootstrap: any;
 
 @Component({
@@ -17,17 +18,25 @@ declare var bootstrap: any;
   styleUrl: './deliveries.component.css',
 })
 export class DeliveriesComponent {
-  cityName: CityName[] = [];
+  CityNamee: CityName[] = [];
   deliveries: Delivery[] = [];
   selectedDelivery: Delivery = {
     id: 0,
     userName: '',
     password: '',
     email: '',
-    fullName: '',
+    name: '',
+    cityName: '',
+    phone: '',
+    cityId: 0,
+  };
+  updatedelivery: UpdateDelivey = {
+    id: 0,
+    email: '',
     name: '',
     phone: '',
     cityId: 0,
+    cityName: '',
   };
 
   constructor(
@@ -65,7 +74,7 @@ export class DeliveriesComponent {
   loadCities(): void {
     this.cityService.getCities().subscribe(
       (data) => {
-        this.cityName = data;
+        this.CityNamee = data;
       },
       (error) => {
         console.error('Error fetching deliveries:', error);
@@ -75,20 +84,12 @@ export class DeliveriesComponent {
 
   updateDelivery() {
     const payload: any = {
-      id: this.selectedDelivery.id,
-      fullName: this.selectedDelivery.fullName,
-      email: this.selectedDelivery.email,
-      userName: this.selectedDelivery.userName,
-      branchId: this.selectedDelivery.cityId,
+      id: this.updatedelivery.id,
+      name: this.updatedelivery.name,
+      email: this.updatedelivery.email,
+      cityId: this.updatedelivery.cityId,
+      phone: this.updatedelivery.phone,
     };
-
-    if (
-      this.selectedDelivery.password &&
-      this.selectedDelivery.password.trim() !== ''
-    ) {
-      payload.password = this.selectedDelivery.password;
-    }
-
     this.deliveryService.updateDelivery(payload).subscribe(
       (res) => {
         console.log('Updated:', res);
@@ -110,6 +111,8 @@ export class DeliveriesComponent {
         modalInstance.hide();
       },
       (error) => {
+        console.log(payload);
+        console.error('Error updating delivery:', error);
         console.error('Update failed:', error);
         console.error('Update failed:', error.error.errors);
         Swal.fire({
@@ -176,9 +179,8 @@ export class DeliveriesComponent {
   }
 
   openEditModal(delivery: Delivery) {
-    this.selectedDelivery = {
+    this.updatedelivery = {
       ...delivery,
-      password: '', // Clear password field
       cityId: delivery.cityId ? Number(delivery.cityId) : 0,
     };
 

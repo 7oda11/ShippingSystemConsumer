@@ -1,10 +1,8 @@
-export interface Delivery {
+export interface UpdateDelivey {
   id: number;
-  userName: string;
   email: string;
-  password: string;
-  name: string;
   phone: string;
   cityId: number;
+  name: string;
   cityName?: string;
 }
