@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AddOrder } from '../../models/Order';
 import { Observable } from 'rxjs';
 import { Order, OrderListResponse } from '../../models/GetOrder';
+import { UpdateOrderDTO } from '../../models/UpdateOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,15 @@ export class OrderService {
   return this.http.get<OrderListResponse>(`${this.baseUrl}/GetAllOrders?pageNumber=${page}`);
 }
 
+// get by id
+getById(id:string):Observable<UpdateOrderDTO>{
+  return this.http.get<UpdateOrderDTO>(`${this.baseUrl}/GetOrderById/${id}`)
+}
+
+//update function
+updateOrder(id:string,order:UpdateOrderDTO):Observable<UpdateOrderDTO>{
+  return this.http.put<UpdateOrderDTO>(`${this.baseUrl}/UpdateOrder/${id}`,order)
+}
 
 //delete order
 deleteOrder(id:string):Observable<Order>{

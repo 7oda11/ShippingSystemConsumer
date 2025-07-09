@@ -14,4 +14,5 @@ export interface Order {
   city: string;
   status: string;
   totalPrice: number;
+  vendorName:string;
 }

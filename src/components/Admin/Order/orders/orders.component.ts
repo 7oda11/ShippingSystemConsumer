@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../../services/admin/order.service';
 import { Order, OrderListResponse } from '../../../../models/GetOrder';
 import Swal from 'sweetalert2';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { GovernmentName } from '../../../../models/GovernmentName';
 import { City } from '../../../../models/City';
@@ -26,30 +26,95 @@ declare const bootstrap: any;
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit, AfterViewInit {
+
   orders: Order[] = [];
+  updatedorder = {
+    id: 0,
+    customerName: '',
+    customerPhone1: '',
+    customerPhone2: '',
+    email: '',
+    governmentId: 0,
+    cityId: 0,
+    address: '',
+    isShippedToVillage: false,
+    shippingTypeId: 0,
+    vendorName: '',
+    vendorAddress: '',
+    statusId: 0,
+    vendorId: 0,
+    totalPrice: 0,
+    notes: '',
+    totalWeight: 0,
+    orderItems: [],
+  }
+
   totalPages: number = 0;
   currentPage: number = 1;
-
-  selectedOrder!: UpdateOrderDTO & { id: number };
+  selectedOrder!: UpdateOrderDTO;
   governmentNames: GovernmentName[] = [];
   cities: City[] = [];
   shippingTypes: ShippingType[] = [];
   statusList: Status[] = [];
+  id: string | null = null;
+
+ filteredOrders: Order[] = []; 
+  searchTerm: string = ''; 
 
   constructor(
     private orderService: OrderService,
     private cityService: CityService,
     private governmentService: GovernmentService,
     private shippingTypeService: ShippingTypeService,
-    private statusService: StatusService
-  ) {}
+    private statusService: StatusService,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.loadOrders(this.currentPage);
     this.loadGovernorates();
     this.loadShippingTypes();
-    this.loadStatuses();
+    // this.loadStatuses();
+
+
   }
+ 
+  calculateUpdatedTotals(): void {
+    if (!this.selectedOrder) return;
+
+    let totalPrice = 0;
+    let totalWeight = 0;
+
+    for (const item of this.selectedOrder.orderItems) {
+      const quantity = item.quantity ?? 0;
+      const price = item.price ?? 0;
+      const weight = item.weight ?? 0;
+
+      totalPrice += quantity * price;
+      totalWeight += quantity * weight;
+    }
+
+    this.selectedOrder.totalPrice = totalPrice;
+    this.selectedOrder.totalWeight = totalWeight;
+  }
+onSearch(): void {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  if (!term) {
+    // لو مفيش بحث، رجعي كل الداتا المعروضة حاليًا
+    this.filteredOrders = [...this.orders];
+    return;
+  }
+
+  this.filteredOrders = this.orders.filter(order =>
+    order.customerName?.toLowerCase().includes(term) ||
+    order.vendorName?.toLowerCase().includes(term) ||  
+    order.status.toLowerCase().includes(term)||
+    order.city.toLowerCase().includes(term)||
+    order.governmennt.toLowerCase().includes(term)
+  );
+}
+
 
   ngAfterViewInit() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -62,6 +127,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
         this.orders = res.data;
         this.totalPages = res.totalPages;
         this.currentPage = res.pageNumber;
+        this.onSearch();
       },
       error: (err) => console.error('Error loading orders:', err)
     });
@@ -92,7 +158,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.orderService.deleteOrder(order.id).subscribe({
+        this.orderService.deleteOrder(order.id.toString()).subscribe({
           next: () => {
             Swal.fire('Deleted!', 'Order has been deleted.', 'success');
             this.loadOrders(this.currentPage);
@@ -105,51 +171,199 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openEditModal(order: any): void {
-    const selectedGov = this.governmentNames.find(g => g.name === order.governmennt);
-    const selectedCity = this.cities.find(c => c.name === order.city);
+  // openEditModal(orderId: string): void {
+  //   this.orderService.getById(orderId).subscribe({
+  //     next: (data) => {
+  //       this.selectedOrder = { ...data }; // force full reassignment
 
-    this.selectedOrder = {
-      id: +order.id,
-      customerName: order.customerName,
-      customerPhone1: order.customerPhone1,
-      customerPhone2: order.customerPhone2 ?? '',
-      email: order.email ?? '',
-      governmentId: Number(selectedGov?.id) ?? 0,
-     cityId: Number(selectedCity?.id) ?? 0,
-      villageName: order.villageName ?? '',
-      isShippedToVillage: order.isShippedToVillage ?? false,
-      shippingTypeId: order.shippingTypeId ?? 0,
-      vendorName: order.vendorName ?? '',
-      vendorAddress: order.vendorAddress ?? '',
-      statusId: order.statusId ?? 0,
-      vendorId: order.vendorId ?? undefined,
-      totalPrice: order.totalPrice,
-      notes: order.notes ?? '',
-      totalWeight: order.totalWeight ?? 0,
-      orderItems: order.orderItems ?? []
-    };
+  //       // 👇 احفظ مؤقتًا قيمة المدينة
+  //       const savedCityId = this.selectedOrder.cityId;
 
-    if (selectedGov) this.loadCities(Number(selectedGov.id));
+  //       // 👇 امسح المدن مؤقتًا لإجبار إعادة التحميل
+  //       this.cities = [];
 
-    const modalElement = document.getElementById('editOrderModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+  //       // 👇 حمّل المدن للمحافظة المحددة
+  //       if (this.selectedOrder.governmentId) {
+  //         this.cityService.getCitiesByGovernmentId(this.selectedOrder.governmentId).subscribe({
+  //           next: (cities) => {
+  //             this.cities = cities;
+
+  //             // 👇 أرجع قيمة المدينة بعد تحميل القائمة
+  //             setTimeout(() => {
+  //               this.selectedOrder.cityId = savedCityId;
+  //             });
+
+  //             this.calculateUpdatedTotals();
+
+  //             // 👇 افتح المودال بعد كل شيء
+  //             const modalElement = document.getElementById('editOrderModal');
+  //             if (modalElement) {
+  //               const modal = new bootstrap.Modal(modalElement);
+  //               modal.show();
+  //             }
+  //           },
+  //           error: (err) => console.error('Error loading cities:', err)
+  //         });
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching order by ID:', err);
+  //     }
+  //   });
+  // }
+  openEditModal(orderId: string): void {
+    this.orderService.getById(orderId).subscribe({
+      next: (data) => {
+        this.selectedOrder = { ...data };
+
+        const savedCityId = this.selectedOrder.cityId;
+        this.cities = [];
+
+        if (this.selectedOrder.governmentId) {
+          this.cityService.getCitiesByGovernmentId(this.selectedOrder.governmentId).subscribe({
+            next: (cities) => {
+              this.cities = cities;
+
+              setTimeout(() => {
+                this.selectedOrder.cityId = savedCityId;
+
+                // ✅ بعد تعبئة البيانات، نحسب الوزن والسعر الإجمالي
+                this.calculateUpdatedTotals();
+
+                // ✅ ثم نفتح المودال
+                const modalElement = document.getElementById('editOrderModal');
+                if (modalElement) {
+                  const modal = new bootstrap.Modal(modalElement);
+                  modal.show();
+                }
+              });
+            },
+            error: (err) => console.error('Error loading cities:', err)
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching order by ID:', err);
+      }
+    });
   }
 
+
+  addOrderItem(): void {
+    this.selectedOrder.orderItems.push({
+      productName: '',
+      quantity: 1,
+      weight: 0,
+      price: 0
+    });
+    this.calculateUpdatedTotals();
+  }
+
+  removeOrderItem(index: number): void {
+    if (this.selectedOrder.orderItems.length == 1) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cannot Delete',
+        text: 'At least one product is required in the order.',
+        confirmButtonColor: '#3085d6'
+      });
+
+    } else {
+      this.selectedOrder.orderItems.splice(index, 1);
+      this.calculateUpdatedTotals();
+    }
+
+  }
+
+
+  // updateOrder(): void {
+  //   this.orderService.updateOrder(this.selectedOrder.id.toString(), this.selectedOrder).subscribe({
+
+  //     next: () => {
+  //       Swal.fire('Success!', 'Order updated successfully.', 'success');
+  //       const modalElement = document.getElementById('editOrderModal');
+  //       if (modalElement) {
+  //         const modal = bootstrap.Modal.getInstance(modalElement);
+  //         if (modal) {
+  //           modal.hide();
+  //         }
+  //       }
+  //       this.loadOrders(this.currentPage);
+  //       console.log('Sending order:', this.selectedOrder);
+  //     },
+  //     error: (err) => {
+  //       console.log('Sending order:', this.selectedOrder);
+  //       Swal.fire('Error!', 'Could not update order.', 'error');
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+
   updateOrder(): void {
-    // this.orderService.updateOrder(this.selectedOrder.id, this.selectedOrder).subscribe({
-    //   next: () => {
-    //     Swal.fire('Success!', 'Order updated successfully.', 'success');
-    //     this.loadOrders(this.currentPage);
-    //   },
-    //   error: (err) => {
-    //     Swal.fire('Error!', 'Could not update order.', 'error');
-    //     console.error(err);
-    //   }
-    // });
+    const o = this.selectedOrder;
+
+    if (!o.customerName || !/^[A-Za-z\sأ-ي]{3,}$/.test(o.customerName)) {
+      Swal.fire('Validation Error', 'Please enter a valid Customer Name.', 'warning');
+      return;
+    }
+
+    if (!o.customerPhone1 || !/^01[0-2,5]{1}[0-9]{8}$/.test(o.customerPhone1)) {
+      Swal.fire('Validation Error', 'Please enter a valid Phone 1.', 'warning');
+      return;
+    }
+
+    if (!o.email || o.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email)) {
+      Swal.fire('Validation Error', 'Invalid email format.', 'warning');
+      return;
+    }
+
+    if (!o.governmentId || !o.cityId || !o.address || !o.shippingTypeId || !o.vendorAddress) {
+      Swal.fire('Validation Error', 'All required fields must be filled.', 'warning');
+      return;
+    }
+
+    if (!o.orderItems || o.orderItems.length === 0) {
+      Swal.fire('Validation Error', 'At least one product is required.', 'warning');
+      return;
+    }
+
+    const invalidItem = o.orderItems.find(item =>
+      !item.productName ||
+      item.quantity <= 0 ||
+      item.weight < 0 ||
+      item.price < 0
+    );
+
+    if (invalidItem) {
+      Swal.fire('Validation Error', 'Each product must be valid and non-empty.', 'warning');
+      return;
+    }
+
+    const calculatedPrice = o.orderItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+    const calculatedWeight = o.orderItems.reduce((sum, item) => sum + (item.quantity * item.weight), 0);
+
+    if (o.totalPrice !== calculatedPrice || o.totalWeight !== calculatedWeight) {
+      Swal.fire('Validation Error', 'Totals do not match calculated values.', 'warning');
+      return;
+    }
+
+    // ✅ لو كل شيء تمام، نكمل التحديث
+    this.orderService.updateOrder(o.id.toString(), o).subscribe({
+      next: () => {
+        Swal.fire('Success!', 'Order updated successfully.', 'success');
+        const modalElement = document.getElementById('editOrderModal');
+        if (modalElement) {
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal?.hide();
+        }
+        this.loadOrders(this.currentPage);
+      },
+      error: (err) => {
+        console.error('Sending order:', this.selectedOrder);
+        Swal.fire('Error!', 'Could not update order.', 'error');
+      }
+    });
+
   }
 
   loadGovernorates(): void {
@@ -178,10 +392,10 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     });
   }
 
-  loadStatuses(): void {
-    this.statusService.getStatuses().subscribe({
-      next: (data) => (this.statusList = data),
-      error: (err) => console.error('Error loading statuses:', err)
-    });
-  }
+  // loadStatuses(): void {
+  //   this.statusService.getStatuses().subscribe({
+  //     next: (data) => (this.statusList = data),
+  //     error: (err) => console.error('Error loading statuses:', err)
+  //   });
+  // }
 }
