@@ -27,4 +27,10 @@ export class DeliveryService {
   deleteDelivery(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}${id}`);
   }
+
+
+  getDeliveryMenbyCityId(cityId:number):Observable<any>{
+return this.http.get<any>(`https://localhost:7109/api/DeliveryMan/GetDeliveryMenByCityID/${cityId}`);
+
+}
 }

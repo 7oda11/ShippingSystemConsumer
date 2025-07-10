@@ -15,6 +15,8 @@ import { StatusService } from '../../../../services/admin/status.service';
 import { ShippingType } from '../../../../models/shippingType';
 import { UpdateOrderDTO } from '../../../../models/UpdateOrder';
 import { AddOrder } from '../../../../models/Order';
+import { DeliveryService } from '../../../../services/admin/delivery.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare const bootstrap: any;
 
@@ -36,12 +38,18 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   shippingTypes: ShippingType[] = [];
   statusList: Status[] = [];
 
+  assignSelectedOrder:any = {}
+  selectedDeliveryManId!:number;
+  avilableDeliveryMen: any[] = [];
+
   constructor(
     private orderService: OrderService,
     private cityService: CityService,
     private governmentService: GovernmentService,
     private shippingTypeService: ShippingTypeService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private deliveryService: DeliveryService,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -183,5 +191,56 @@ export class OrdersComponent implements OnInit, AfterViewInit {
       next: (data) => (this.statusList = data),
       error: (err) => console.error('Error loading statuses:', err)
     });
+  }
+
+
+//assign order to delivery man
+  openAssignModal(assignOrder:any){
+  console.log("Assign order clicked:", assignOrder); 
+
+   if(!assignOrder.cityId){
+        this.toastr.error("City ID is missing in selected order"  );
+        return;
+
+
+   }
+    this.assignSelectedOrder = assignOrder
+    const cityId = assignOrder.cityId;
+    this.deliveryService.getDeliveryMenbyCityId(cityId).subscribe({
+      next:(res)=>{
+        this.avilableDeliveryMen= res;
+        console.log(res);
+        const modalAssign = new bootstrap.Modal(document.getElementById('assignModal'));
+       modalAssign.show();
+      },
+      error:(err)=>{
+        this.toastr.error("Failed to load", err.error || ""  )
+        console.log(err)
+      },
+
+    })
+  }
+
+  assignOrderToDeliveryMan(orderId: number, deliveryManId: number): void {
+    if (!deliveryManId) {
+    this.toastr.error("Please select a delivery man.");
+    return;
+  }
+      console.log("Assigning order:", orderId, "To delivery man:", deliveryManId);
+    this.orderService.assignOrderToDeliveryMan(Number(orderId) ,deliveryManId).subscribe({
+      next:(res)=>{
+        // this.toastr.success("Order Assigned Successfully",'success');
+              Swal.fire('Success', 'Order Assigned successfully', 'success');
+        
+        this.ngOnInit();
+        bootstrap.Modal.getInstance(document.getElementById('assignModal'))?.hide();
+      },
+      error: (err) => {
+       Swal.fire('Error', 'Something went wrong!', 'error');
+      this.toastr.error("Failed to assign order.");
+      console.error("error assigning order", err)
+    }
+    })
+
   }
 }

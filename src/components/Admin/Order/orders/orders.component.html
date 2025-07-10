@@ -22,7 +22,7 @@
                     <th>City</th>
                     <th>Order Cost</th>
                     <th class="text-center">Edit</th>
-                    <th class="text-center">Change Status</th>
+                    <th class="text-center">Assign</th>
                     <th class="text-center">Delete</th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                                 class="fas fa-edit"></i></button>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-info text-white">Status</button>
+                        <button class="btn btn-sm btn-primary text-white" (click)="openAssignModal(order)">Assign</button>
                     </td>
                     <td class="text-center">
                         <button class="btn btn-sm btn-danger" (click)="DeleteOrder(order)"><i
@@ -86,7 +86,7 @@
         </ul>
     </nav>
     
-    <!-- Modal --><!-- Modal -->
+    <!--Edit  Modal --><!-- Modal -->
 <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content" *ngIf="selectedOrder">
@@ -199,6 +199,31 @@
           <button type="submit" class="btn btn-success" [disabled]="!editOrderForm.valid">Save Changes</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Assign Modal -->
+<div class="modal fade" id="assignModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" *ngIf="assignSelectedOrder">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white">Assign Delivery Man</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Select Delivery Man</label>
+        <select class="form-select" [(ngModel)]="selectedDeliveryManId">
+          <option *ngFor="let d of avilableDeliveryMen" [value]="d.id">{{ d.name }}</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="assignOrderToDeliveryMan(assignSelectedOrder.id,selectedDeliveryManId)">Assign</button>
+      </div>
     </div>
   </div>
 </div>
