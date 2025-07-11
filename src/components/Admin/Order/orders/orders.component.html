@@ -49,7 +49,7 @@
                     <td>{{ order.totalPrice |currency:'EGP':'symbol-narrow'}}</td>
                     <td class="text-center">
                         <button class="btn btn-sm btn-primary" class="btn btn-sm btn-outline-warning me-2"
-                            (click)="openEditModal(order)" title="Edit" data-bs-toggle="tooltip"><i
+                            (click)="openEditModal(order.id)" title="Edit" data-bs-toggle="tooltip"><i
                                 class="fas fa-edit"></i></button>
                     </td>
                     <td class="text-center">
@@ -193,8 +193,8 @@
         <button class="page-link" (click)="goToPage(currentPage + 1)">»</button>
       </li>
 
-    </ul>
-  </nav>
+    <!-- </ul>
+  </nav> -->
 
   <!-- Modal --><!-- Modal -->
   <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
