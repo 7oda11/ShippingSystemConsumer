@@ -1,4 +1,24 @@
 <div class="container my-5 table-container ">
+<div class="mb-3 d-flex flex-wrap gap-2">
+<!-- "All" button -->
+<button
+  class="btn"
+  [ngClass]="{ 'btn-primary': selectedStatus === null, 'btn-outline-primary': selectedStatus !== null }"
+  (click)="onStatusFilter(null)">
+  All
+</button>
+
+  <button
+  class="btn"
+  *ngFor="let status of statusList"
+  [ngClass]="{
+    'btn-primary': selectedStatus === +status.id,
+    'btn-outline-primary': selectedStatus !== +status.id
+  }"
+  (click)="onStatusFilter(+status.id)">
+  {{ status.name }}
+</button>
+</div>
 
   <div class="row">
     <div class="col-6">
@@ -11,7 +31,7 @@
     class="form-control rounded-start-pill"
     placeholder="🔍 Search by Order ID, Vendor, or Customer"
     [(ngModel)]="searchTerm"
-    (keydown.enter)="onSearch()"
+    (ngModelChange)="onSearch()"
     style="border-right: none;"
   />
   <button
@@ -44,7 +64,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of filteredOrders;  let i = index;">
+        <tr *ngFor="let order of filteredOrders let i = index">
           <td>{{ i + 1 + (currentPage - 1) * 10 }}</td>
 
           <td>{{ order.date| date: 'dd MMM yyyy h:mm a' }}</td>
@@ -71,6 +91,10 @@
 
 
         </tr>
+        <tr *ngIf="filteredOrders.length === 0">
+  <td colspan="10" class="text-center text-danger py-3">No matching orders found.</td>
+</tr>
+
       </tbody>
     </table>
   </div>

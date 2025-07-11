@@ -13,6 +13,7 @@ export interface Order {
   governmennt: string;
   city: string;
   status: string;
+   statusId: number;
   totalPrice: number;
   vendorName:string;
 }

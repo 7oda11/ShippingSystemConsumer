@@ -20,9 +20,22 @@ export class OrderService {
   }
 
   // get all orders
- getAllOrders(page: number): Observable<OrderListResponse> {
-  return this.http.get<OrderListResponse>(`${this.baseUrl}/GetAllOrders?pageNumber=${page}`);
+//  getAllOrders(page: number): Observable<OrderListResponse> {
+//   return this.http.get<OrderListResponse>(`${this.baseUrl}/GetAllOrders?pageNumber=${page}`);
+// }
+getAllOrders(page: number, searchTerm?: string, statusId?: number) {
+  const params: any = {
+    pageNumber: page,
+    pageSize: 4
+  };
+
+  if (searchTerm) params.searchTerm = searchTerm;
+  if (statusId !== undefined) params.status = statusId;
+
+  return this.http.get<OrderListResponse>(`${this.baseUrl}/GetAllOrders`, { params });
 }
+
+
 
 // get by id
 getById(id:string):Observable<UpdateOrderDTO>{

@@ -61,6 +61,8 @@ export class OrdersComponent implements OnInit, AfterViewInit {
  filteredOrders: Order[] = []; 
   searchTerm: string = ''; 
 
+  selectedStatus: number |null=null;
+
   constructor(
     private orderService: OrderService,
     private cityService: CityService,
@@ -71,12 +73,12 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.loadStatuses();
     this.loadOrders(this.currentPage);
     this.loadGovernorates();
     this.loadShippingTypes();
-    // this.loadStatuses();
-
-
+    
   }
  
   calculateUpdatedTotals(): void {
@@ -97,22 +99,69 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     this.selectedOrder.totalPrice = totalPrice;
     this.selectedOrder.totalWeight = totalWeight;
   }
+// onSearch(): void {
+//   const term = this.searchTerm.toLowerCase().trim();
+
+//   if (!term) {
+//     this.filteredOrders = [...this.orders];
+//     return;
+//   }
+
+//   this.filteredOrders = this.orders.filter(order =>
+//     order.customerName?.toLowerCase().includes(term) ||
+//     order.vendorName?.toLowerCase().includes(term) ||
+//     order.status?.toLowerCase().includes(term) ||
+//     order.city?.toLowerCase().includes(term) ||
+//     order.governmennt?.toLowerCase().includes(term)
+//   );
+
+//   // ✅ نعرض أول صفحة للنتائج الجديدة بعد البحث
+//   this.currentPage = 1;
+// }
 onSearch(): void {
+  // const term = this.searchTerm.toLowerCase().trim();
+  // const selectedStatus = this.selectedStatus.toLowerCase().trim();
+
+  // this.filteredOrders = this.orders.filter(order => {
+  //   const matchesSearch =
+  //     order.customerName?.toLowerCase().includes(term) ||
+  //     order.vendorName?.toLowerCase().includes(term) ||
+  //     order.status?.toLowerCase().includes(term) ||
+  //     order.city?.toLowerCase().includes(term) ||
+  //     order.governmennt?.toLowerCase().includes(term);
+
+  //   const matchesStatus =
+  //     !selectedStatus || order.status?.toLowerCase() === selectedStatus;
+
+  //   return matchesSearch && matchesStatus;
+  // });
+
+  // this.currentPage = 1;
+  // this.totalPages = Math.ceil(this.filteredOrders.length / 10);
+  this.loadOrders(1);
+}
+onStatusFilter(statusId: number | null): void {
+  this.selectedStatus = statusId;
+  this.loadOrders(this.currentPage); // استخدم selectedStatus هنا
+}
+filterOrders(): void {
   const term = this.searchTerm.toLowerCase().trim();
 
-  if (!term) {
-    // لو مفيش بحث، رجعي كل الداتا المعروضة حاليًا
-    this.filteredOrders = [...this.orders];
-    return;
-  }
+  this.filteredOrders = this.orders.filter(order => {
+    const matchesSearch =
+      !term || order.customerName?.toLowerCase().includes(term) ||
+      order.vendorName?.toLowerCase().includes(term) ||
+      order.status?.toLowerCase().includes(term) ||
+      order.city?.toLowerCase().includes(term) ||
+      order.governmennt?.toLowerCase().includes(term);
 
-  this.filteredOrders = this.orders.filter(order =>
-    order.customerName?.toLowerCase().includes(term) ||
-    order.vendorName?.toLowerCase().includes(term) ||  
-    order.status.toLowerCase().includes(term)||
-    order.city.toLowerCase().includes(term)||
-    order.governmennt.toLowerCase().includes(term)
-  );
+    const matchesStatus =
+      this.selectedStatus === null || order.statusId === this.selectedStatus;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  this.currentPage = 1;
 }
 
 
@@ -121,23 +170,31 @@ onSearch(): void {
     tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
   }
 
-  loadOrders(page: number): void {
-    this.orderService.getAllOrders(page).subscribe({
-      next: (res: OrderListResponse) => {
-        this.orders = res.data;
-        this.totalPages = res.totalPages;
-        this.currentPage = res.pageNumber;
-        this.onSearch();
-      },
-      error: (err) => console.error('Error loading orders:', err)
-    });
-  }
+loadOrders(page: number): void {
+  this.orderService.getAllOrders(page,this.searchTerm.trim(),  this.selectedStatus ?? undefined).subscribe({
+    next: (res: OrderListResponse) => {
+      this.orders = res.data;
+       this.filteredOrders = res.data; 
+      this.totalPages = res.totalPages;
+      this.currentPage = res.pageNumber;
+     console.log('Loaded Orders:', this.orders);
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.loadOrders(page);
-    }
+      // 🔄 مهم جدًا
+      // this.filterOrders(); 
+     
+    },
+    error: (err) => console.error('Error loading orders:', err)
+  });
+}
+
+
+
+goToPage(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.loadOrders(page);
   }
+}
+
 
   DeleteOrder(order: Order): void {
     Swal.fire({
@@ -392,10 +449,10 @@ onSearch(): void {
     });
   }
 
-  // loadStatuses(): void {
-  //   this.statusService.getStatuses().subscribe({
-  //     next: (data) => (this.statusList = data),
-  //     error: (err) => console.error('Error loading statuses:', err)
-  //   });
-  // }
+  loadStatuses(): void {
+    this.statusService.getStatuses().subscribe({
+      next: (data) => (this.statusList = data),
+      error: (err) => console.error('Error loading statuses:', err)
+    });
+  }
 }
