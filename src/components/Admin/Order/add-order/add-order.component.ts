@@ -24,17 +24,15 @@ export class AddOrderComponent implements OnInit {
   governmentNames: GovernmentName[] = [];
   cities: City[] = [];
   ShippingTypes: ShippingType[] = [];
-  orders:AddOrder[]=[];
+  orders: AddOrder[] = [];
 
-
-  
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
     private governmentService: GovernmentService,
     private cityService: CityService,
     private shippingTypeService: ShippingTypeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.orderForm = this.fb.group({
@@ -45,7 +43,7 @@ export class AddOrderComponent implements OnInit {
       governmentId: ['', [Validators.required]],
       cityId: ['', [Validators.required]],
       isShippedToVillage: [false],
-      villageName: [{ value: '', disabled: true }, [Validators.required]],
+      address: ['', [Validators.required]],
       shippingTypeId: ['', [Validators.required]],
       vendorName: [''],
       vendorAddress: ['', [Validators.required]],
@@ -57,25 +55,14 @@ export class AddOrderComponent implements OnInit {
       orderItems: this.fb.array([this.createProductRow()])
     });
 
-    this.orderForm.get('isShippedToVillage')?.valueChanges.subscribe((value: boolean) => {
-      const villageControl = this.orderForm.get('villageName');
-      if (value === true) {
-        villageControl?.enable();
-        villageControl?.setValidators([
-          Validators.required,
-          Validators.pattern(/^[A-Za-z\sأ-ي]{3,}$/)
-        ]);
-      } else {
-        villageControl?.disable();
-        villageControl?.clearValidators();
-        villageControl?.setValue('');
-      }
-      villageControl?.updateValueAndValidity();
-    });
-
+    this.orderForm.get('totalPrice')?.disable();
+    this.orderForm.get('totalWeight')?.disable();
     this.loadGovernorates();
     this.getShippingTypes();
-    
+
+    this.orderItems.valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
   }
 
   get orderItems(): FormArray {
@@ -93,76 +80,135 @@ export class AddOrderComponent implements OnInit {
 
   addProduct(): void {
     this.orderItems.push(this.createProductRow());
+    this.calculateTotals();
   }
 
   removeProduct(index: number): void {
+    if (this.orderItems.length === 1) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cannot Delete',
+        text: 'At least one product is required in the order.',
+        confirmButtonColor: '#3085d6'
+      });
+      return;
+    }
     this.orderItems.removeAt(index);
+    this.calculateTotals();
   }
 
+  // calculateTotals(): void {
+  //   let totalPrice = 0;
+  //   let totalWeight = 0;
+
+  //   const items = this.orderItems.controls;
+
+  //   items.forEach((group: FormGroup) => {
+  //     const quantity = +group.get('quantity')?.value || 0;
+  //     const weight = +group.get('weight')?.value || 0;
+  //     const price = +group.get('price')?.value || 0;
+
+  //     totalPrice += quantity * price;
+  //     totalWeight += quantity * weight;
+  //   });
+
+  //   this.orderForm.patchValue({
+  //     totalPrice,
+  //     totalWeight
+  //   }, { emitEvent: false });
+  // }
+calculateTotals(): void {
+  let totalPrice = 0;
+  let totalWeight = 0;
+
+  this.orderItems.controls.forEach(control => {
+    const group = control as FormGroup;
+
+    const quantity = +group.get('quantity')?.value || 0;
+    const weight = +group.get('weight')?.value || 0;
+    const price = +group.get('price')?.value || 0;
+
+    totalPrice += quantity * price;
+    totalWeight += quantity * weight;
+  });
+
+  this.orderForm.patchValue({
+    totalPrice,
+    totalWeight
+  }, { emitEvent: false });
+}
 
   submit(): void {
+    const customerName = this.orderForm.get('customerName')?.value;
+    const customerPhone1 = this.orderForm.get('customerPhone1')?.value;
+    const customerPhone2 = this.orderForm.get('customerPhone2')?.value;
+    const email = this.orderForm.get('email')?.value;
+    const address = this.orderForm.get('address')?.value;
+    const govId = this.orderForm.get('governmentId')?.value;
+    const cityId = this.orderForm.get('cityId')?.value;
+    const shippingTypeId = this.orderForm.get('shippingTypeId')?.value;
 
-const govId = this.orderForm.get('governmentId')?.value;
-const cityId = this.orderForm.get('cityId')?.value;
-const shippingTypeId = this.orderForm.get('shippingTypeId')?.value;
+    // Manual required field validation
+    if (!customerName || !customerPhone1 || !customerPhone2 || !email || !address || !govId || !cityId || !shippingTypeId) {
+      Swal.fire('Validation Error', 'Please fill in all required fields.', 'warning');
+      return;
+    }
 
-if (!govId) {
-  Swal.fire('Validation Error', 'Please select a governorate.', 'warning');
-  return;
-}
+    const orderItems: { productName: string, quantity: number, weight: number, price: number }[] = this.orderItems.value;
 
-if (!cityId) {
-  Swal.fire('Validation Error', 'Please select a city.', 'warning');
-  return;
-}
+    if (!orderItems || orderItems.length === 0) {
+      Swal.fire('Validation Error', 'Order must contain at least one product.', 'error');
+      return;
+    }
 
-if (!shippingTypeId) {
-  Swal.fire('Validation Error', 'Please select a shipping type.', 'warning');
-  return;
-}
-  const formData: AddOrder = this.orderForm.value;
-
-  // ✅ Calculate total weight and total price from orderItems
-  const orderItems = formData.orderItems;
-  if (!orderItems || orderItems.length === 0) {
-    Swal.fire('Validation Error', 'Order must contain at least one item.', 'error');
-    return;
-  }
-
-  const calculatedWeight = orderItems.reduce((sum, item) => sum + (item.weight * item.quantity), 0);
-  const calculatedPrice = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-  
-
-  if (formData.totalPrice !== calculatedPrice) {
-    Swal.fire('Validation Error', 'Total price does not match the sum of item prices.', 'error');
-    return;
-  }
-if ((formData.totalWeight ?? 0) <= 0 || (formData.totalWeight ?? 0) !== calculatedWeight) {
-    Swal.fire('Validation Error', 'Total weight is invalid or incorrect.', 'error');
-    return;
-  }
-  // ✅ All validations passed, submit the order
-  this.orderService.addOrder(formData).subscribe({
-    next: () => {
-      Swal.fire('Success', 'Order created successfully', 'success');
-      this.orderForm.reset();
-      this.orderItems.clear();
-      this.orderItems.push(this.createProductRow());
-    },
-    error: (error) => {
-      console.error('Error submitting order:', error.error);
-
-      if (error.error && typeof error.error === 'object') {
-        const validationMessages = Object.values(error.error).flat();
-        Swal.fire('Validation Error', validationMessages.join('<br>'), 'error');
-      } else {
-        Swal.fire('Error', 'Something went wrong!', 'error');
+    for (let i = 0; i < orderItems.length; i++) {
+      const item = orderItems[i];
+      if (!item.productName?.trim()) {
+        Swal.fire('Validation Error', `Product name is required for item #${i + 1}.`, 'warning');
+        return;
+      }
+      if (!item.quantity || item.quantity <= 0) {
+        Swal.fire('Validation Error', `Quantity must be greater than 0 for item #${i + 1}.`, 'warning');
+        return;
+      }
+      if (item.weight == null || item.weight < 0) {
+        Swal.fire('Validation Error', `Weight must be 0 or more for item #${i + 1}.`, 'warning');
+        return;
+      }
+      if (item.price == null || item.price < 0) {
+        Swal.fire('Validation Error', `Price must be 0 or more for item #${i + 1}.`, 'warning');
+        return;
       }
     }
-  });
-}
 
+    const formData: AddOrder = this.orderForm.getRawValue();
+
+    const calculatedWeight = orderItems.reduce((sum, item) => sum + (item.weight * item.quantity), 0);
+    const calculatedPrice = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    if ((formData.totalWeight ?? 0) <= 0 || formData.totalWeight !== calculatedWeight) {
+      Swal.fire('Validation Error', 'Total weight is invalid or incorrect.', 'error');
+      return;
+    }
+
+    this.orderService.addOrder(formData).subscribe({
+      next: () => {
+        Swal.fire('Success', 'Order created successfully', 'success');
+        this.orderForm.reset();
+        this.orderItems.clear();
+        this.orderItems.push(this.createProductRow());
+      },
+      error: (error) => {
+        console.error('Error submitting order:', error.error);
+        if (error.error && typeof error.error === 'object') {
+          const validationMessages = Object.values(error.error).flat();
+          Swal.fire('Validation Error', validationMessages.join('<br>'), 'error');
+        } else {
+          Swal.fire('Error', 'Something went wrong!', 'error');
+        }
+      }
+    });
+  }
 
   loadGovernorates(): void {
     this.governmentService.getAllGovernments().subscribe({
@@ -190,6 +236,4 @@ if ((formData.totalWeight ?? 0) <= 0 || (formData.totalWeight ?? 0) !== calculat
       error: (err) => console.error('Error loading shipping types:', err)
     });
   }
-
- 
 }

@@ -17,9 +17,7 @@ declare var bootstrap: any;
 })
 export class BranchesComponent implements OnInit {
   selectedBranch: Branch = { id: '0', name: '', phone: '', address: '' };
-
   branches: Branch[] = [];
-
   constructor(private branchService: BranchService) { }
 
 
