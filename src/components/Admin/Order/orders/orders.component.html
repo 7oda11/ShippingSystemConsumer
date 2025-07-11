@@ -10,58 +10,19 @@
     <button class="btn" *ngFor="let status of statusList" [ngClass]="{
     'btn-primary': selectedStatus === +status.id,
     'btn-outline-primary': selectedStatus !== +status.id
+
   }"
   (click)="onStatusFilter(+status.id)">
   {{ status.name }}
 </button>
 </div>
 
-    <div class="table-responsive rounded-3 shadow">
-        <table class="table table-hover align-middle mb-0 bg-white">
-            <thead class="bg-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Customer Info</th>
-                    <th>Governorate</th>
-                    <th>City</th>
-                    <th>Order Cost</th>
-                    <th class="text-center">Edit</th>
-                    <th class="text-center">Assign</th>
-                    <th class="text-center">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let order of orders;  let i = index;">
-                    <td>{{ i + 1 + (currentPage - 1) * 10 }}</td>
-
-                    <td>{{ order.date| date: 'dd MMM yyyy h:mm a' }}</td>
-                    <td>
-                        {{ order.customerName }}<br />
-                        {{ order.customerPhone }}
-                    </td>
-                    <td>{{ order.governmennt }}</td>
-                    <td>{{ order.city }}</td>
-                    <td>{{ order.totalPrice |currency:'EGP':'symbol-narrow'}}</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary" class="btn btn-sm btn-outline-warning me-2"
-                            (click)="openEditModal(order.id)" title="Edit" data-bs-toggle="tooltip"><i
-                                class="fas fa-edit"></i></button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary text-white" (click)="openAssignModal(order)">Assign</button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-danger" (click)="DeleteOrder(order)"><i
-                                class="fas fa-trash-alt"></i></button>
-                    </td>
+   
 
 
-
-                </tr>
-            </tbody>
-        </table>
-
+  <div class="row">
+    <div class="col-6">
+      <h4 class="mb-4 text-primary fw-bold">Orders Management</h4>
     </div>
     <div class="col-6 text-end">
       <div class="input-group mb-4" style="max-width: 500px; margin: auto;">
@@ -145,35 +106,9 @@
           color: 'white',
           borderColor: 'blue'
         } : {}">
-                    {{ p + 1 }}
-                </button>
-            </li>
-
-            <!-- Next Button -->
-            <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <button class="page-link" (click)="goToPage(currentPage + 1)">»</button>
-            </li>
-
-        </ul>
-    </nav>
-    
-    <!--Edit  Modal --><!-- Modal -->
-<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" *ngIf="selectedOrder">
-      <form #editOrderForm="ngForm" (ngSubmit)="updateOrder()" novalidate>
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-
-        <div class="modal-body row g-3">
-          <!-- Customer Info -->
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Customer Name</label>
-            <input type="text" class="form-control" name="customerName" [(ngModel)]="selectedOrder.customerName" required />
-          </div>
-
+          {{ p + 1 }}
+        </button>
+      </li>
 
       <!-- Next Button -->
       <li class="page-item" [class.disabled]="currentPage === totalPages">
