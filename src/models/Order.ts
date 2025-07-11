@@ -1,12 +1,13 @@
 import {AddOrderItem} from './AddOrderItem'
 export interface AddOrder {
+  
   customerName: string;
   customerPhone1: string;
   customerPhone2?: string;
   email?: string;
   governmentId: number;
   cityId: number;
-  villageName?: string;
+  address: string;
   isShippedToVillage: boolean;
   shippingTypeId: number;
   vendorName: string;
