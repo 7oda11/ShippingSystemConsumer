@@ -52,6 +52,11 @@ deleteOrder(id:string):Observable<Order>{
   return this.http.delete<Order>(`${this.baseUrl}/DeleteOrder/${id}`);
 }
 
-
+assignOrderToDeliveryMan(orderId:number, deliveryManId:number):Observable<any>{
+  return this.http.put<any>(`${this.baseUrl}/EmployeeAssignOrderToDeliveyMan/${orderId}/${deliveryManId}`, {}, {
+    responseType:'text' as 'json'
+  })
+}
 
 }
+
