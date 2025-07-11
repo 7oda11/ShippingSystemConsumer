@@ -26,14 +26,13 @@
               #
             </th>
             <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
-              User Name
+              Name
             </th>
+
             <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
               Email
             </th>
-            <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
-              Full Name
-            </th>
+
             <th class="fw-medium text-uppercase" style="color: rgb(58, 56, 56)">
               City Name
             </th>
@@ -48,11 +47,13 @@
         <tbody>
           <tr *ngFor="let del of deliveries; let i = index" class="border-top">
             <td class="text-center text-muted fw-semibold">{{ i + 1 }}</td>
-            <td>{{ del.userName }}</td>
-            <td>{{ del.email }}</td>
-            <td>{{ del.fullName }}</td>
-            <td>{{ del.phone }}</td>
+            <!-- <td>{{ del.userName }}</td> -->
             <td>{{ del.name }}</td>
+            <td>{{ del.email }}</td>
+
+            <td>{{ del.cityName }}</td>
+            <td>{{ del.phone }}</td>
+
             <td class="text-center">
               <button
                 class="btn btn-sm btn-outline-warning me-2"
@@ -83,6 +84,7 @@
     aria-labelledby="editModalLabel"
     aria-hidden="true"
   >
+    <!-- (ngSubmit)="updateDelivery()" -->
     <div class="modal-dialog">
       <div class="modal-content">
         <form #editForm="ngForm" (ngSubmit)="updateDelivery()" novalidate>
@@ -100,7 +102,7 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="selectedDelivery.userName"
+                [(ngModel)]="updatedelivery.name"
                 name="userName"
                 required
               />
@@ -110,47 +112,55 @@
               <input
                 type="email"
                 class="form-control"
-                [(ngModel)]="selectedDelivery.email"
+                [(ngModel)]="updatedelivery.email"
                 name="email"
                 required
               />
             </div>
+            <div class="mb-4">
+              <label for="phone" class="form-label fw-semibold">Phone</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-hand-holding-usd text-warning"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter delivery Phone"
+                  required
+                  [(ngModel)]="updatedelivery.phone"
+                  #phone="ngModel"
+                />
+                <p *ngIf="phone.errors?.['required']">Phone is Required</p>
+              </div>
+            </div>
+            <div *ngIf="phone.invalid && phone.touched">
+              <p *ngIf="phone.errors?.['required']">Email is Required</p>
+            </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label class="form-label fw-semibold">Full Name</label>
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="selectedDelivery.fullName"
-                name="fullName"
+                [(ngModel)]="selectedDelivery.name"
+                name="name"
                 required
               />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label for="password" class="form-label fw-semibold"
-                >Reset Password</label
-              >
-              <input
-                type="password"
-                id="password"
-                name="password"
-                class="form-control"
-                [(ngModel)]="selectedDelivery.password"
-                placeholder="Enter password"
-              />
-            </div>
-            <!-- city Dropdown -->
+            </div> -->
+
             <div class="mb-3">
               <label for="branchId" class="form-label fw-semibold">City</label>
               <select
                 class="form-select"
-                id="branchId"
-                name="branchId"
+                id="cityId"
+                name="cityName"
                 required
-                [(ngModel)]="selectedDelivery.cityId"
+                [(ngModel)]="updatedelivery.cityId"
               >
-                <option *ngFor="let city of cityName" [value]="city.id">
+                <option *ngFor="let city of CityNamee" [value]="city.id">
                   {{ city.name }}
                 </option>
               </select>

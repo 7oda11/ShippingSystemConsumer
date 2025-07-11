@@ -34,8 +34,7 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
   }
-
-  togglePasswordVisibility() {
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
@@ -55,21 +54,22 @@ export class LoginComponent {
         localStorage.setItem('username', response.user.userName);
 
         localStorage.setItem('token', response.token);
-        localStorage.setItem('role',response.user.roles[0]);
-        localStorage.setItem('userid',response.user.id);
+        localStorage.setItem('role', response.user.roles[0]);
+        localStorage.setItem('userid', response.user.id);
         const role = response.user.roles[0];
 
-          console.log("User object:", response.user);
-          console.log("Username before storing:", response.user.userName);
+        console.log('User object:', response.user);
+        console.log('Username before storing:', response.user.userName);
 
-        if(role=== 'Admin' || role ==='Vendor'|| role=== 'Employee' || role === 'DeliveryMan')
-        {
-
+        if (
+          role === 'Admin' ||
+          role === 'Vendor' ||
+          role === 'Employee' ||
+          role === 'DeliveryMan'
+        ) {
           this.router.navigate(['/dashboard/adminhome']);
-        }
-        else{
+        } else {
           this.router.navigate(['/login']);
-
         }
 
         console.log(response);

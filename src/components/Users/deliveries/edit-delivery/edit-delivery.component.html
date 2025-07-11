@@ -1,1 +1,172 @@
-<p>edit-delivery works!</p>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-12 col-md-8">
+      <div class="card shadow border-0">
+        <div class="card-header text-white py-3">
+          <h4 class="mb-0 fw-bold text-center" style="color: aliceblue">
+            <i class="fas fa-city me-2"></i> Edit Delivey
+          </h4>
+        </div>
+        <div class="card-body p-4">
+          <form
+            class="needs-validation"
+            novalidate
+            #editForm="ngForm"
+            (ngSubmit)="saveChanges(editForm)"
+          >
+            <div class="mb-4">
+              <label for="name" class="form-label fw-semibold">Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-signature text-primary"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  id="name"
+                  placeholder="Enter Vendor name"
+                  required
+                  [(ngModel)]="delivery.cityName"
+                  #name="ngModel"
+                />
+              </div>
+            </div>
+            <div *ngIf="name.invalid && name.touched">
+              <p *ngIf="name.errors?.['required']">Name is Required</p>
+            </div>
+
+            <!--Email-->
+            <div class="mb-4 mt-2">
+              <label for="email" class="form-label fw-semibold">Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-money-bill-wave text-success"></i>
+                </span>
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  placeholder="Enter Email"
+                  required
+                  [(ngModel)]="delivery.email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  #email="ngModel"
+                />
+              </div>
+            </div>
+            <div *ngIf="email.invalid && email.touched">
+              <p *ngIf="email.errors?.['required']">Email is Required</p>
+              <p *ngIf="email.errors?.['pattern']">
+                Enter a Valid Email Address
+              </p>
+            </div>
+
+            <div class="mb-4">
+              <label for="phone" class="form-label fw-semibold">Phone</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-hand-holding-usd text-warning"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter delivery Phone"
+                  required
+                  [(ngModel)]="delivery.phone"
+                  #phone="ngModel"
+                />
+              </div>
+            </div>
+            <div *ngIf="phone.invalid && phone.touched">
+              <p *ngIf="phone.errors?.['required']">Email is Required</p>
+            </div>
+
+            <!-- <div class="mb-4">
+              <label for="phone" class="form-label fw-semibold">Phone</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-telephone-fill"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter Vendor Phone"
+                  required
+                  [(ngModel)]="delivery.phone"
+                  #phone="ngModel"
+                />
+              </div>
+            </div> -->
+
+            <!-- Government Dropdown -->
+            <div class="mb-4">
+              <label for="govName" class="form-label fw-semibold">City</label>
+              <!-- <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-landmark text-info"></i>
+                </span>
+                <select
+                  class="form-select"
+                  id="cityName"
+                  name="cityId"
+                  required
+                  [(ngModel)]="delivery.cityId"
+                  (change)="GetAllCities()"
+                >
+                  <option value="0" selected>Select a government</option>
+                  <option *ngFor="let gov of Governments" [value]="gov.id">
+                    {{ gov.name }}
+                  </option>
+                </select>
+              </div> -->
+            </div>
+
+            <!-- Hidden GovName input -->
+            <input type="hidden" name="govName" />
+            <h2></h2>
+
+            <!-- City Dropdown -->
+            <div class="mb-4">
+              <label for="cityName" class="form-label fw-semibold">City</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-buildings-fill"></i>
+                </span>
+                <select
+                  class="form-select"
+                  id="cityName"
+                  name="CityId"
+                  required
+                  [(ngModel)]="delivery.cityId"
+                >
+                  <option value="0" selected>Select City</option>
+                  <option *ngFor="let city of cities" [value]="city.id">
+                    {{ city.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-end">
+              <button
+                type="submit"
+                class="btn py-2 fw-bold shadow"
+                style="background-color: #155293; color: white"
+                [disabled]="editForm.invalid"
+              >
+                <i class="fas fa-plus-circle me-2"></i>Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,6 +17,7 @@ import { VendorComponent } from '../components/Users/vendor/vendor.component';
 import { EmployeesComponent } from '../components/Users/employees/employees.component';
 import { DeliveriesComponent } from '../components/Users/deliveries/deliveries.component';
 import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
+// import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',

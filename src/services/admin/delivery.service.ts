@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Delivery } from '../../models/delivery';
+import { AddDelivery } from '../../models/add-delivery';
+import { UpdateDelivey } from '../../models/update-delivey';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +16,21 @@ export class DeliveryService {
   getDeliveries(): Observable<Delivery[]> {
     return this.http.get<Delivery[]>(this.baseUrl);
   }
+  getDeliveryById(id: number): Observable<Delivery> {
+    return this.http.get<Delivery>(this.baseUrl + id);
+  }
 
   // Add a new employee
-  addDelivery(delivery: Delivery): Observable<Delivery> {
-    return this.http.post<Delivery>(this.baseUrl + 'Create', delivery);
+  addDelivery(delivery: AddDelivery): Observable<AddDelivery> {
+    return this.http.post<AddDelivery>(this.baseUrl + 'Create', delivery);
   }
   // Update an existing employee
-  updateDelivery(delivery: Delivery): Observable<Delivery> {
-    return this.http.put<Delivery>(`${this.baseUrl}`, delivery);
+  updateDelivery(delivery: UpdateDelivey): Observable<UpdateDelivey> {
+    return this.http.put<UpdateDelivey>(`${this.baseUrl}`, delivery);
   }
   // Delete an employee
-  deleteDelivery(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}${id}`);
+  deleteDelivery(id: number) {
+    return this.http.delete(`https://localhost:7109/api/DeliveryMan/${id}`);
   }
 
 

@@ -6,6 +6,7 @@ import { Delivery } from '../../../../models/delivery';
 import { DeliveryService } from '../../../../services/admin/delivery.service';
 import { CityService } from '../../../../services/admin/city.service';
 import { CityName } from '../../../../models/CityName';
+import { AddDelivery } from '../../../../models/add-delivery';
 @Component({
   selector: 'app-add-delivery',
   imports: [CommonModule, RouterLink, FormsModule],
@@ -13,16 +14,16 @@ import { CityName } from '../../../../models/CityName';
   styleUrl: './add-delivery.component.css',
 })
 export class AddDeliveryComponent {
+  showPassword: boolean = false;
   cityName: CityName[] = [];
-  newDelivery: Delivery = {
+  newDelivery: AddDelivery = {
     email: '',
     fullName: '',
     userName: '',
     password: '',
     cityId: 0,
-    name: '',
+    cityName: '',
     phone: '',
-    id: 0,
   };
 
   constructor(
@@ -49,8 +50,8 @@ export class AddDeliveryComponent {
           userName: '',
           password: '',
           cityId: 0,
-          id: 0,
-          name: '',
+
+          cityName: '',
           phone: '',
         };
         this.router.navigate(['/dashboard/deliveries']);
@@ -59,6 +60,7 @@ export class AddDeliveryComponent {
         console.error('Error adding deliveryh:', error);
         if (error.status === 400) {
           const validationErrors = error.error;
+          console.log('validation error:', error.error);
           if (Array.isArray(validationErrors)) {
             validationErrors.forEach((e: any) => {
               console.warn('Validation error:', e);
@@ -82,5 +84,8 @@ export class AddDeliveryComponent {
         console.error('Error fetching cities:', error);
       }
     );
+  }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
