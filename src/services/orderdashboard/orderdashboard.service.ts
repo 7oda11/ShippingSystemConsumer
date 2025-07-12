@@ -19,6 +19,12 @@ constructor(private httpClient:HttpClient) { }
      return this.httpClient.get<any[]>(`${this.baseUrl}TrackORders`, { params });
 
   }
+
+  changeStatusByDeliveryMan(body:any):Observable<any>{
+    return this.httpClient.put<any>(`https://localhost:7109/api/DeliveryStatistics/change-status`, body, {
+      responseType: 'text' as 'json'
+    });
+  }
  
   
  }

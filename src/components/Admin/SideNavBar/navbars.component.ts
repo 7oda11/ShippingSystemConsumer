@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
@@ -8,10 +8,14 @@ import { RouterLink, RouterModule } from '@angular/router';
   templateUrl: './navbars.component.html',
   styleUrl: './navbars.component.css',
 })
-export class NavbarsComponent {
+export class NavbarsComponent implements OnInit {
+  ngOnInit(): void {
+   this.role = localStorage.getItem('role') ;
+  }
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
   submenuState: { [index: number]: boolean } = {};
+  role:string | null = null;
 
   isSubmenuOpen(index: number): boolean {
     return this.submenuState[index];
@@ -21,6 +25,7 @@ export class NavbarsComponent {
       routeLink: '/dashboard/adminhome',
       icon: 'fal fa-home',
       label: 'Home',
+      visibleFor: ['Admin','Employee', 'Vendor', 'DeliveryMan'],
     
     },
     {
@@ -30,8 +35,24 @@ export class NavbarsComponent {
        children: [
         { label: 'Orders', routeLink: '/dashboard/orders', icon: 'fa fa-shopping-cart' },
         { label: 'Add order', routeLink: '/dashboard/add-order', icon: 'fa fa-plus' },
+        
     
-      ]
+      ],
+      visibleFor:['Admin','Employee']
+    },
+
+    {
+       routeLink: '/dashboard/deliverymanorders',
+      icon: 'fal fa-box-open',
+      label: 'DeliveryMan Orders',
+      visibleFor:['DeliveryMan'],
+    },
+      {
+       routeLink: '/dashboard/vendororders',
+      icon: 'fal fa-box-open',
+      label: 'Vendor Orders',
+       role: 'Vendor',
+        visibleFor: ['Vendor']
     },
 
     {
@@ -43,7 +64,9 @@ export class NavbarsComponent {
         { label: 'Employees', routeLink: '/dashboard/employees', icon: 'fa fa-user-shield' },
         { label: 'Deliveries', routeLink: '/dashboard/deliveries', icon: 'fa fa-truck' },
 
-      ]
+      ],
+      visibleFor:['Admin','Employee']
+
     },
 
     {
@@ -71,6 +94,8 @@ export class NavbarsComponent {
         { label: '', icon: '' }
 
       ],
+      visibleFor:['Admin','Employee']
+
     },
 
   ];

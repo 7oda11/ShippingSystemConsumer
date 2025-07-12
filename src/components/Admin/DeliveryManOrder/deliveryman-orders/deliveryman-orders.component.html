@@ -1,0 +1,102 @@
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item" *ngFor="let status of statusList" >
+    <a
+      class="nav-link"
+      [class.active] ="selectedStatus === status.id"
+      (click)="onStatusTabClick(status.id)"
+      href="javascript:void(0)"
+    >
+   {{status.name}}
+    </a>
+  </li>
+</ul>
+
+<div class="table-responsive">
+  <table   *ngIf="orders.length > 0" class="table table-hover align-middle mb-0 bg-white">
+    <thead class="bg-light">
+      <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Vendor Name</th>
+        <th>Customer Name</th>
+        <th>Cust Phone</th>
+        <th>Cust Address</th>
+        <th>Total Price</th>
+        <th>Shippment Cost</th>
+        <th>Setting</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders;let i = index">
+        <td>{{i +1}}</td>
+        <td>{{order.id}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.vendorName}}</td>
+        <td>{{order.customerName}}</td>
+        <td>{{order.customerPhone}}</td>
+        <td>{{order.address}}</td>
+        <td>{{order.totalPrice}}</td>
+        <td>{{order.shippingCost}}</td>
+     
+     <!--  class="btn btn-sm btn-primary" -->
+        <td  >
+          <button *ngIf="role== 'DeliveryMan'"
+           [ngClass]="{
+            'btn btn-sm btn-primary text-white border-0': order.status !== 'Delivered',
+            'btn btn-sm btn-secondary disabled': order.status === 'Delivered'
+           }"
+            (click)="openChangeStatusModal(order)">
+          Status
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="orders.length === 0"   class="text-center text-muted">
+    No Orders For This Status
+  </div>
+</div>
+
+<!-- Change Status Modal -->
+ <!-- Modal -->
+<div class="modal fade" id="changestatusModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" *ngIf="selectedOrder">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white">Change Order Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Select New Status</label>
+        <select class="form-select" [(ngModel)]="selectedStatusId">
+          <option *ngFor="let s of statuses" [value]="s.id">{{ s.name }}</option>
+        </select>
+
+        <div class="mt-3" >
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" [(ngModel)]="cancellationNote"></textarea>
+        </div>
+
+        <div *ngIf="selectedStatusId == deliveredStatusId" class="mt-3 text-muted">
+          <p><strong>Total Cost:</strong> {{ selectedOrder.totalCost }}</p>
+          <p><strong>Shipping Cost:</strong> {{ selectedOrder.shippingCost }}</p>
+          
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="changeOrderStatus()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+ 
+
