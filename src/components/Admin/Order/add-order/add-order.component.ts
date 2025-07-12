@@ -11,6 +11,8 @@ import { City } from '../../../../models/City';
 import { ShippingType } from '../../../../models/shippingType';
 import { ShippingTypeService } from '../../../../services/admin/shipping-type.service';
 import { orderStatus } from '../../../../../enums/orderStatus';
+import { VendorServiceService } from '../../../../services/VendorService.service';
+import { Vendor } from '../../../../models/Vendor';
 
 @Component({
   selector: 'app-add-order',
@@ -25,13 +27,14 @@ export class AddOrderComponent implements OnInit {
   cities: City[] = [];
   ShippingTypes: ShippingType[] = [];
   orders: AddOrder[] = [];
-
+  vendors:Vendor[]=[];
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
     private governmentService: GovernmentService,
     private cityService: CityService,
-    private shippingTypeService: ShippingTypeService
+    private shippingTypeService: ShippingTypeService,
+    private vendorService:VendorServiceService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +48,7 @@ export class AddOrderComponent implements OnInit {
       isShippedToVillage: [false],
       address: ['', [Validators.required]],
       shippingTypeId: ['', [Validators.required]],
-      vendorName: [''],
+      vendorName: ['',[Validators.required]],
       vendorAddress: ['', [Validators.required]],
       totalPrice: [0, [Validators.required, Validators.min(0)]],
       notes: [''],
@@ -59,9 +62,9 @@ export class AddOrderComponent implements OnInit {
     this.orderForm.get('totalWeight')?.disable();
     this.loadGovernorates();
     this.getShippingTypes();
-
+    this.getAllVendors();
     this.orderItems.valueChanges.subscribe(() => {
-      this.calculateTotals();
+    this.calculateTotals();
     });
   }
 
@@ -147,9 +150,9 @@ calculateTotals(): void {
     const govId = this.orderForm.get('governmentId')?.value;
     const cityId = this.orderForm.get('cityId')?.value;
     const shippingTypeId = this.orderForm.get('shippingTypeId')?.value;
-
+    const vendorName = this.orderForm.get('vendorName')?.value;
     // Manual required field validation
-    if (!customerName || !customerPhone1 || !customerPhone2 || !email || !address || !govId || !cityId || !shippingTypeId) {
+    if (!customerName || !customerPhone1 || !customerPhone2 || !email || !address || !govId || !cityId || !shippingTypeId || !vendorName) {
       Swal.fire('Validation Error', 'Please fill in all required fields.', 'warning');
       return;
     }
@@ -179,6 +182,7 @@ calculateTotals(): void {
         Swal.fire('Validation Error', `Price must be 0 or more for item #${i + 1}.`, 'warning');
         return;
       }
+
     }
 
     const formData: AddOrder = this.orderForm.getRawValue();
@@ -236,4 +240,28 @@ calculateTotals(): void {
       error: (err) => console.error('Error loading shipping types:', err)
     });
   }
+
+  getAllVendors(){
+    this.vendorService.getAllVendors().subscribe({
+       next: (data) => (this.vendors = data),
+      error: (err) => console.error('Error loading vendors :', err)
+    })
+  }
+
+  onVendorChange(event: Event): void {
+    
+  const selectedVendorName = (event.target as HTMLSelectElement).value;
+  const selectedVendor = this.vendors.find(v => v.name === selectedVendorName);
+
+  if (selectedVendor) {
+    this.orderForm.patchValue({
+      vendorAddress: selectedVendor.address
+    });
+  } else {
+    this.orderForm.patchValue({
+      vendorAddress: ''
+    });
+  }
+}
+
 }

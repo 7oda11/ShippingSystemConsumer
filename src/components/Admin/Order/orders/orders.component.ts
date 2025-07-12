@@ -17,6 +17,8 @@ import { UpdateOrderDTO } from '../../../../models/UpdateOrder';
 import { AddOrder } from '../../../../models/Order';
 import { DeliveryService } from '../../../../services/admin/delivery.service';
 import { ToastrService } from 'ngx-toastr';
+import { Vendor } from '../../../../models/Vendor';
+import { VendorServiceService } from '../../../../services/VendorService.service';
 
 declare const bootstrap: any;
 
@@ -49,6 +51,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     notes: '',
     totalWeight: 0,
     orderItems: [],
+    cancelledOrReturnedNotes:''
   }
 
   totalPages: number = 0;
@@ -60,7 +63,7 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   statusList: Status[] = [];
   id: string | null = null;
 
- filteredOrders: Order[] = []; 
+  filteredOrders: Order[] = []; 
   searchTerm: string = ''; 
 
   selectedStatus: number |null=null;
@@ -68,7 +71,9 @@ export class OrdersComponent implements OnInit, AfterViewInit {
   assignSelectedOrder:any = {}
   selectedDeliveryManId!:number;
   avilableDeliveryMen: any[] = [];
-
+  shippedStatusId: number | null = null;
+  assignedStatusId: number | null = null;
+  vendors: Vendor[] = [];
   constructor(
     private orderService: OrderService,
     private cityService: CityService,
@@ -76,7 +81,8 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     private shippingTypeService: ShippingTypeService,
     private statusService: StatusService,
     private deliveryService: DeliveryService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private vendorService:VendorServiceService
   ) {}
 
 
@@ -86,9 +92,92 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     this.loadOrders(this.currentPage);
     this.loadGovernorates();
     this.loadShippingTypes();
+    this.loadVendors();
     
   }
- 
+
+  loadVendors(): void {
+  this.vendorService.getAllVendors().subscribe({
+    next: (data) => this.vendors = data,
+    error: (err) => console.error('Error loading vendors:', err)
+  });
+}
+
+onVendorChange(event: Event): void {
+  const selectedVendorName = (event.target as HTMLSelectElement).value;
+  const selectedVendor = this.vendors.find(v => v.name === selectedVendorName);
+
+  if (selectedVendor) {
+    this.selectedOrder.vendorName = selectedVendor.name;
+    this.selectedOrder.vendorAddress = selectedVendor.address;
+    console.log("Address updated to:", selectedVendor.address);
+  } else {
+    this.selectedOrder.vendorAddress = '';
+  }
+}
+
+
+
+orderReason(order: Order): void {
+  const reason = order.cancelledOrReturnedNotes || 'No reason provided.';
+ console.log(order.cancelledOrReturnedNotes);
+  Swal.fire({
+    title: order.status?.toLowerCase() === 'canceled' ? 'Cancellation Reason' : 'Return Reason',
+    text: reason,
+    icon: 'info',
+    confirmButtonColor: '#3085d6'
+  });
+}
+
+
+shipStatus(orderId: number, newStatusId: number): void {
+  if (!newStatusId) {
+    Swal.fire('Error', 'Shipped status is not loaded yet.', 'error');
+    return;
+  }
+
+  Swal.fire({
+    title: 'Do you want to ship this order?',
+    text: "You are about to mark this order as shipped.",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#198754',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, ship it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.orderService.updateOrderStatus(orderId, newStatusId).subscribe({
+        next: () => {
+          Swal.fire('Success!', 'Order status updated to Shipped.', 'success');
+          this.loadOrders(this.currentPage);
+        },
+        error: (err) => {
+          Swal.fire('Error!', 'Failed to update status.', 'error');
+          console.error('Error updating status:', err);
+        }
+      });
+    }
+  });
+}
+
+isReturnedOrCanceled(order: Order): boolean {
+  const statusName = order.status?.toLowerCase();
+  return statusName === 'returned' || statusName === 'canceled';
+}
+
+isReturnedOrCanceledView(): boolean {
+  const selectedStatusObj = this.statusList.find(s => +s.id === this.selectedStatus);
+
+  const name = selectedStatusObj?.name?.toLowerCase();
+  return name === 'returned' || name === 'canceled';
+}
+showStatusText(order: Order): boolean {
+  const status = order.status?.toLowerCase();
+  return status === 'pending' || status === 'delivered' || status === 'canceled' || status === 'returned';
+}
+
+
   calculateUpdatedTotals(): void {
     if (!this.selectedOrder) return;
 
@@ -107,45 +196,9 @@ export class OrdersComponent implements OnInit, AfterViewInit {
     this.selectedOrder.totalPrice = totalPrice;
     this.selectedOrder.totalWeight = totalWeight;
   }
-// onSearch(): void {
-//   const term = this.searchTerm.toLowerCase().trim();
 
-//   if (!term) {
-//     this.filteredOrders = [...this.orders];
-//     return;
-//   }
-
-//   this.filteredOrders = this.orders.filter(order =>
-//     order.customerName?.toLowerCase().includes(term) ||
-//     order.vendorName?.toLowerCase().includes(term) ||
-//     order.status?.toLowerCase().includes(term) ||
-//     order.city?.toLowerCase().includes(term) ||
-//     order.governmennt?.toLowerCase().includes(term)
-//   );
-
-//   // ✅ نعرض أول صفحة للنتائج الجديدة بعد البحث
-//   this.currentPage = 1;
-// }
 onSearch(): void {
-  // const term = this.searchTerm.toLowerCase().trim();
-  // const selectedStatus = this.selectedStatus.toLowerCase().trim();
-
-  // this.filteredOrders = this.orders.filter(order => {
-  //   const matchesSearch =
-  //     order.customerName?.toLowerCase().includes(term) ||
-  //     order.vendorName?.toLowerCase().includes(term) ||
-  //     order.status?.toLowerCase().includes(term) ||
-  //     order.city?.toLowerCase().includes(term) ||
-  //     order.governmennt?.toLowerCase().includes(term);
-
-  //   const matchesStatus =
-  //     !selectedStatus || order.status?.toLowerCase() === selectedStatus;
-
-  //   return matchesSearch && matchesStatus;
-  // });
-
-  // this.currentPage = 1;
-  // this.totalPages = Math.ceil(this.filteredOrders.length / 10);
+  
   this.loadOrders(1);
 }
 onStatusFilter(statusId: number | null): void {
@@ -236,46 +289,7 @@ goToPage(page: number): void {
     });
   }
 
-  // openEditModal(orderId: string): void {
-  //   this.orderService.getById(orderId).subscribe({
-  //     next: (data) => {
-  //       this.selectedOrder = { ...data }; // force full reassignment
 
-  //       // 👇 احفظ مؤقتًا قيمة المدينة
-  //       const savedCityId = this.selectedOrder.cityId;
-
-  //       // 👇 امسح المدن مؤقتًا لإجبار إعادة التحميل
-  //       this.cities = [];
-
-  //       // 👇 حمّل المدن للمحافظة المحددة
-  //       if (this.selectedOrder.governmentId) {
-  //         this.cityService.getCitiesByGovernmentId(this.selectedOrder.governmentId).subscribe({
-  //           next: (cities) => {
-  //             this.cities = cities;
-
-  //             // 👇 أرجع قيمة المدينة بعد تحميل القائمة
-  //             setTimeout(() => {
-  //               this.selectedOrder.cityId = savedCityId;
-  //             });
-
-  //             this.calculateUpdatedTotals();
-
-  //             // 👇 افتح المودال بعد كل شيء
-  //             const modalElement = document.getElementById('editOrderModal');
-  //             if (modalElement) {
-  //               const modal = new bootstrap.Modal(modalElement);
-  //               modal.show();
-  //             }
-  //           },
-  //           error: (err) => console.error('Error loading cities:', err)
-  //         });
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching order by ID:', err);
-  //     }
-  //   });
-  // }
   openEditModal(orderId: string): void {
     this.orderService.getById(orderId).subscribe({
       next: (data) => {
@@ -341,28 +355,7 @@ goToPage(page: number): void {
   }
 
 
-  // updateOrder(): void {
-  //   this.orderService.updateOrder(this.selectedOrder.id.toString(), this.selectedOrder).subscribe({
 
-  //     next: () => {
-  //       Swal.fire('Success!', 'Order updated successfully.', 'success');
-  //       const modalElement = document.getElementById('editOrderModal');
-  //       if (modalElement) {
-  //         const modal = bootstrap.Modal.getInstance(modalElement);
-  //         if (modal) {
-  //           modal.hide();
-  //         }
-  //       }
-  //       this.loadOrders(this.currentPage);
-  //       console.log('Sending order:', this.selectedOrder);
-  //     },
-  //     error: (err) => {
-  //       console.log('Sending order:', this.selectedOrder);
-  //       Swal.fire('Error!', 'Could not update order.', 'error');
-  //       console.error(err);
-  //     }
-  //   });
-  // }
 
   updateOrder(): void {
     const o = this.selectedOrder;
@@ -457,12 +450,66 @@ goToPage(page: number): void {
     });
   }
 
-  loadStatuses(): void {
-    this.statusService.getStatuses().subscribe({
-      next: (data) => (this.statusList = data),
-      error: (err) => console.error('Error loading statuses:', err)
-    });
-  }
+loadStatuses(): void {
+  this.statusService.getStatuses().subscribe({
+    next: (data) => {
+      this.statusList = data;
+
+      // ابحث عن الحالة اللي اسمها "Shipped"
+      const shipped = data.find(status => status.name.toLowerCase() === 'shipped');
+      this.shippedStatusId = shipped ? parseInt(shipped.id)  : null;
+      console.log( this.shippedStatusId);
+
+        // Get status ID for "Assigned"
+      const assigned = data.find(s => s.name.toLowerCase() === 'assigned');
+      this.assignedStatusId = assigned ? +assigned.id : null;
+    },
+    error: (err) => console.error('Error loading statuses:', err)
+  });
+}
+
+isShipped(order: Order): boolean {
+  const shipped = this.statusList.find(s => s.name.toLowerCase() === 'shipped');
+  return order.statusId === (shipped ? +shipped.id : -1);
+}
+
+isAssigned(order: Order): boolean {
+  return order.statusId === this.assignedStatusId;
+}
+printOrderInvoice(orderId: number): void {
+  Swal.fire({
+    title: 'Do you want to print the invoice?',
+    text: 'You are about to print this order\'s invoice.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#198754',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, print it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.orderService.printOrderInvoice(orderId).subscribe({
+        next: (blob) => {
+          const fileURL = URL.createObjectURL(blob);
+          window.open(fileURL, '_blank');
+          Swal.fire({
+            icon: 'success',
+            title: 'Invoice opened',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Print failed',
+            text: 'Something went wrong while printing the invoice.'
+          });
+        }
+      });
+    }
+  });
+}
 
 
 //assign order to delivery man
@@ -514,4 +561,5 @@ goToPage(page: number): void {
     })
 
   }
+  
 }

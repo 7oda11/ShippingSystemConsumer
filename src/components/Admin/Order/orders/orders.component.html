@@ -11,18 +11,15 @@
     'btn-primary': selectedStatus === +status.id,
     'btn-outline-primary': selectedStatus !== +status.id
 
-  }"
-  (click)="onStatusFilter(+status.id)">
-  {{ status.name }}
-</button>
-</div>
-
-   
+  }" (click)="onStatusFilter(+status.id)">
+      {{ status.name }}
+    </button>
+  </div>
 
 
   <div class="row">
     <div class="col-6">
-      <h4 class="mb-4 text-primary fw-bold">Orders Management</h4>
+      <h4 class="mb-4 text-primary fw-bold"></h4>
     </div>
     <div class="col-6 text-end">
       <div class="input-group mb-4" style="max-width: 500px; margin: auto;">
@@ -50,8 +47,12 @@
           <th>City</th>
           <th>Order Cost</th>
           <th class="text-center">Edit</th>
-          <th class="text-center">Assign</th>
+          <th class="text-center" *ngIf="isReturnedOrCanceledView()">Reason</th>
+          <th class="text-center" *ngIf="!isReturnedOrCanceledView()">Assign</th>
+          <th class="text-center">Status</th>
+          <th class="text-center">Print</th>
           <th class="text-center">Delete</th>
+
         </tr>
       </thead>
       <tbody>
@@ -63,23 +64,73 @@
             {{ order.customerName }}<br />
             {{ order.customerPhone }}
           </td>
-          <td>{{ order.governmennt }}</td>
+          <td class="text-center">{{ order.governmennt }}</td>
           <td>{{ order.city }}</td>
-          <td>{{ order.totalPrice |currency:'EGP':'symbol-narrow'}}</td>
+          <td>{{ order.totalPrice | currency:'EGP ':'symbol' }}</td>
+
           <td class="text-center">
             <button class="btn btn-sm btn-primary" class="btn btn-sm btn-outline-warning me-2"
               (click)="openEditModal(order.id)" title="Edit" data-bs-toggle="tooltip"><i
                 class="fas fa-edit"></i></button>
           </td>
-          <!-- <td> <h1>id: {{order.id}}</h1></td> -->
-          <td class="text-center">
-            <button class="btn btn-sm btn-primary text-white" (click)="openAssignModal(order)">Assign</button>
+
+          <!-- إظهار سبب الإرجاع أو الإلغاء -->
+          <td class="text-center" *ngIf="isReturnedOrCanceled(order)">
+            <button class="btn btn-sm btn-reason text-white" (click)="orderReason(order)" title="View Reason">
+              <i class="fas fa-info-circle"></i>
+            </button>
           </td>
+
+         
+          <td class="text-center" *ngIf="!isReturnedOrCanceled(order)">
+            <button class="btn btn-sm btn-primary text-white" [disabled]="isShipped(order)"
+              (click)="openAssignModal(order)">{{ isAssigned(order) ? 'Assigned' : 'Assign' }}
+
+            </button>
+          </td>
+
+          
+          <td class="text-center">
+            <!-- Show "Ship" or "Shipped" button -->
+                        <button *ngIf="isAssigned(order) || isShipped(order)" class="btn btn-sm" [ngClass]="{
+                  'btn-success text-white': !isShipped(order),
+                  'border border-success text-success bg-transparent': isShipped(order)
+                }" [disabled]="isShipped(order)" (click)="shipStatus(+order.id, shippedStatusId!)">
+                          {{ isShipped(order) ? 'Shipped' : 'Ship' }}
+            </button>
+
+            <!-- Show status as badge if not assigned or shipped -->
+            <ng-container *ngIf="!isAssigned(order) && !isShipped(order)">
+              <span *ngIf="order.status?.toLowerCase() === 'pending'"
+                class="btn btn-sm  border border-secondary text-secondary bg-transparent fs-6">
+                {{ order.status }}
+              </span>
+              <span *ngIf="order.status?.toLowerCase() === 'delivered'"
+                class="btn btn-sm  border border-success text-success bg-transparent fs-6">
+                {{ order.status }}
+              </span>
+              <span *ngIf="order.status?.toLowerCase() === 'canceled'"
+                class="btn btn-sm  border border-danger text-danger bg-transparent fs-6">
+                {{ order.status }}
+              </span>
+              <span *ngIf="order.status?.toLowerCase() === 'returned'"
+                class="btn btn-sm  border border-warning text-warning bg-transparent fs-6">
+                {{ order.status }}
+              </span>
+            </ng-container>
+          </td>
+
+
+          <td class="text-center">
+            <button class="btn btn-sm btn-secondary" style="background-color: rgb(112, 112, 112);"
+              (click)="printOrderInvoice(+order.id)">
+              <i class="fas fa-print"></i>
+            </button>
+          </td>
+
           <td class="text-center">
             <button class="btn btn-sm btn-danger" (click)="DeleteOrder(order)"><i class="fas fa-trash-alt"></i></button>
           </td>
-
-
 
         </tr>
         <tr *ngIf="filteredOrders.length === 0">
@@ -108,203 +159,210 @@
         } : {}">
           {{ p + 1 }}
         </button>
-      </li>
 
-      <!-- Next Button -->
+        <!-- Next Button -->
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <button class="page-link" (click)="goToPage(currentPage + 1)">»</button>
       </li>
 
-    <!-- </ul>
-  </nav> -->
 
-  <!-- Modal --><!-- Modal -->
-  <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content" *ngIf="selectedOrder">
-        <form #editOrderForm="ngForm" (ngSubmit)="updateOrder()" novalidate>
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
 
-          <div class="modal-body row g-3">
-            <!-- Customer Info -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Customer Name</label>
-              <input type="text" class="form-control" name="customerName" [(ngModel)]="selectedOrder.customerName"
-                required pattern="^[A-Za-z\sأ-ي]{3,}$" />
-
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Phone 1</label>
-              <input type="text" class="form-control" name="customerPhone1" [(ngModel)]="selectedOrder.customerPhone1"
-                required pattern="^01[0-2,5]{1}[0-9]{8}$" />
-
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Phone 2</label>
-              <input type="text" class="form-control" name="customerPhone2" [(ngModel)]="selectedOrder.customerPhone2"
-                required pattern="^01[0-2,5]{1}[0-9]{8}$" />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Email</label>
-              <input type="email" class="form-control" name="email" [(ngModel)]="selectedOrder.email" />
-            </div>
-
-            <!-- Location -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Governorate</label>
-              <select class="form-select" name="governmentId" [(ngModel)]="selectedOrder.governmentId"
-                (change)="onGovernmentChange(selectedOrder.governmentId)" required>
-                <option value="" disabled>Select Governorate</option>
-                <option *ngFor="let gov of governmentNames" [value]="gov.id">{{ gov.name }}</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">City</label>
-              <select class="form-select" name="cityId" [(ngModel)]="selectedOrder.cityId" required>
-                <option value="" disabled>Select City</option>
-                <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Address</label>
-              <input type="text" class="form-control" name="address" [(ngModel)]="selectedOrder.address" required />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Shipped To Village</label>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="selectedOrder.isShippedToVillage"
-                  name="isShippedToVillage" />
-                <label class="form-check-label">Yes / No</label>
+      <!-- Modal --><!-- Modal -->
+      <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content" *ngIf="selectedOrder">
+            <form #editOrderForm="ngForm" (ngSubmit)="updateOrder()" novalidate>
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-            </div>
 
-            <!-- Shipping Info -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Shipping Type</label>
-              <select class="form-select" name="shippingTypeId" [(ngModel)]="selectedOrder.shippingTypeId" required>
-                <option value="" disabled>Select Shipping Type</option>
-                <option *ngFor="let type of shippingTypes" [value]="type.id">{{ type.shippingTypeName }}</option>
-              </select>
-            </div>
+              <div class="modal-body row g-3">
+                <!-- Customer Info -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Customer Name</label>
+                  <input type="text" class="form-control" name="customerName" [(ngModel)]="selectedOrder.customerName"
+                    required pattern="^[A-Za-z\sأ-ي]{3,}$" />
 
-            <!-- Vendor Info -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Vendor Name</label>
-              <input type="text" class="form-control" name="vendorName" [(ngModel)]="selectedOrder.vendorName"
-                required />
-            </div>
+                </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Vendor Address</label>
-              <input type="text" class="form-control" name="vendorAddress" [(ngModel)]="selectedOrder.vendorAddress"
-                required />
-            </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone 1</label>
+                  <input type="text" class="form-control" name="customerPhone1"
+                    [(ngModel)]="selectedOrder.customerPhone1" required pattern="^01[0-2,5]{1}[0-9]{8}$" />
 
-            <!-- Status -->
-            <!-- <div class="col-md-6">
-            <label class="form-label fw-semibold">Status</label>
-            <select class="form-select" name="statusId" [(ngModel)]="selectedOrder.statusId" required>
-              <option value="" disabled>Select Status</option>
-              <option *ngFor="let s of statusList" [value]="s.id">{{ s.name }}</option>
-            </select>
-          </div> -->
-            <hr />
-            <div class="col-12">
-              <h5 class="fw-bold mb-3">Order Items</h5>
-              <div class="text-end">
-                <button type="button" class="btn btn-primary" (click)="addOrderItem()">Add Product</button>
-              </div>
-              <div *ngFor="let item of selectedOrder.orderItems; let i = index" class="row align-items-end g-2 mb-3">
-                <div class="col-md-3">
-                  <label class="form-label">Product Name *</label>
-                  <input type="text" class="form-control" [(ngModel)]="item.productName" name="productName{{i}}"
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone 2</label>
+                  <input type="text" class="form-control" name="customerPhone2"
+                    [(ngModel)]="selectedOrder.customerPhone2" required pattern="^01[0-2,5]{1}[0-9]{8}$" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Email</label>
+                  <input type="email" class="form-control" name="email" [(ngModel)]="selectedOrder.email" />
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Governorate</label>
+                  <select class="form-select" name="governmentId" [(ngModel)]="selectedOrder.governmentId"
+                    (change)="onGovernmentChange(selectedOrder.governmentId)" required>
+                    <option value="" disabled>Select Governorate</option>
+                    <option *ngFor="let gov of governmentNames" [value]="gov.id">{{ gov.name }}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">City</label>
+                  <select class="form-select" name="cityId" [(ngModel)]="selectedOrder.cityId" required>
+                    <option value="" disabled>Select City</option>
+                    <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Address</label>
+                  <input type="text" class="form-control" name="address" [(ngModel)]="selectedOrder.address" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Shipped To Village</label>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="selectedOrder.isShippedToVillage"
+                      name="isShippedToVillage" />
+                    <label class="form-check-label">Yes / No</label>
+                  </div>
+                </div>
+
+                <!-- Shipping Info -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Shipping Type</label>
+                  <select class="form-select" name="shippingTypeId" [(ngModel)]="selectedOrder.shippingTypeId" required>
+                    <option value="" disabled>Select Shipping Type</option>
+                    <option *ngFor="let type of shippingTypes" [value]="type.id">{{ type.shippingTypeName }}</option>
+                  </select>
+                </div>
+
+                <!-- Vendor Info -->
+                <!-- <div class="col-md-6">
+                  <label class="form-label fw-semibold">Vendor Name</label>
+                  <input type="text" class="form-control" name="vendorName" [(ngModel)]="selectedOrder.vendorName"
                     required />
+                </div> -->
+                <!-- 
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Vendor Address</label>
+                  <input type="text" class="form-control" name="vendorAddress" [(ngModel)]="selectedOrder.vendorAddress"
+                    required />
+                </div> -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Vendor Name</label>
+                  <select class="form-select" name="vendorName" [ngModel]="selectedOrder.vendorName"
+                    (change)="onVendorChange($event)" required>
+                    <option value="" disabled>Select Vendor</option>
+                    <option *ngFor="let v of vendors" [value]="v.name">{{ v.name }}</option>
+                  </select>
                 </div>
-                <div class="col-md-2">
-                  <label class="form-label">Quantity *</label>
-                  <input type="number" class="form-control" [(ngModel)]="item.quantity" name="quantity{{i}}"
-                    (ngModelChange)="calculateUpdatedTotals()" min="1" required />
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Vendor Address</label>
+                  <input type="text" class="form-control" name="vendorAddress" [(ngModel)]="selectedOrder.vendorAddress"
+                    readonly />
                 </div>
-                <div class="col-md-2">
-                  <label class="form-label">Weight *</label>
-                  <input type="number" class="form-control" [(ngModel)]="item.weight" name="weight{{i}}"
-                    (ngModelChange)="calculateUpdatedTotals()" min="0" required />
-                </div>
-                <div class="col-md-2">
-                  <label class="form-label">Price *</label>
-                  <input type="number" class="form-control" [(ngModel)]="item.price" name="price{{i}}"
-                    (ngModelChange)="calculateUpdatedTotals()" min="0" required />
+
+
+                <hr />
+                <div class="col-12">
+                  <h5 class="fw-bold mb-3">Order Items</h5>
+                  <div class="text-end">
+                    <button type="button" class="btn btn-primary" (click)="addOrderItem()">Add Product</button>
+                  </div>
+                  <div *ngFor="let item of selectedOrder.orderItems; let i = index"
+                    class="row align-items-end g-2 mb-3">
+                    <div class="col-md-3">
+                      <label class="form-label">Product Name *</label>
+                      <input type="text" class="form-control" [(ngModel)]="item.productName" name="productName{{i}}"
+                        required />
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Quantity *</label>
+                      <input type="number" class="form-control" [(ngModel)]="item.quantity" name="quantity{{i}}"
+                        (ngModelChange)="calculateUpdatedTotals()" min="1" required />
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Weight *</label>
+                      <input type="number" class="form-control" [(ngModel)]="item.weight" name="weight{{i}}"
+                        (ngModelChange)="calculateUpdatedTotals()" min="0" required />
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Price *</label>
+                      <input type="number" class="form-control" [(ngModel)]="item.price" name="price{{i}}"
+                        (ngModelChange)="calculateUpdatedTotals()" min="0" required />
+
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn btn-danger mt-4" (click)="removeOrderItem(i)">X</button>
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                  </div>
 
                 </div>
-                <div class="col-md-2">
-                  <button type="button" class="btn btn-danger mt-4" (click)="removeOrderItem(i)">X</button>
 
+                <!-- Financial Info -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Total Price</label>
+                  <input type="number" class="form-control" name="totalPrice" [(ngModel)]="selectedOrder.totalPrice"
+                    min="0" required readonly />
                 </div>
-                <div class="col-md-2">
 
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Total Weight</label>
+                  <input type="number" class="form-control" name="totalWeight" [(ngModel)]="selectedOrder.totalWeight"
+                    min="0" readonly />
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label fw-semibold">Notes</label>
+                  <textarea class="form-control" name="notes" [(ngModel)]="selectedOrder.notes" rows="2"></textarea>
                 </div>
               </div>
 
-            </div>
-
-            <!-- Financial Info -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Total Price</label>
-              <input type="number" class="form-control" name="totalPrice" [(ngModel)]="selectedOrder.totalPrice" min="0"
-                required readonly />
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Total Weight</label>
-              <input type="number" class="form-control" name="totalWeight" [(ngModel)]="selectedOrder.totalWeight"
-                min="0" readonly />
-            </div>
-
-            <div class="col-md-12">
-              <label class="form-label fw-semibold">Notes</label>
-              <textarea class="form-control" name="notes" [(ngModel)]="selectedOrder.notes" rows="2"></textarea>
-            </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success">Save Changes</button>
+              </div>
+            </form>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Save Changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Assign Modal -->
-  <div class="modal fade" id="assignModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content" *ngIf="assignSelectedOrder">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title text-white">Assign Delivery Man</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-          <label class="form-label">Select Delivery Man</label>
-          <select class="form-select" [(ngModel)]="selectedDeliveryManId">
-            <option *ngFor="let d of avilableDeliveryMen" [value]="d.id">{{ d.name }}</option>
-          </select>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success"
-            (click)="assignOrderToDeliveryMan(assignSelectedOrder.id,selectedDeliveryManId)">Assign</button>
         </div>
       </div>
-    </div>
-  </div>
+
+      <!-- Assign Modal -->
+      <div class="modal fade" id="assignModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content" *ngIf="assignSelectedOrder">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title text-white">Assign Delivery Man</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+              <label class="form-label">Select Delivery Man</label>
+              <select class="form-select" [(ngModel)]="selectedDeliveryManId">
+                <option *ngFor="let d of avilableDeliveryMen" [value]="d.id">{{ d.name }}</option>
+              </select>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-success"
+                (click)="assignOrderToDeliveryMan(assignSelectedOrder.id,selectedDeliveryManId)">Assign</button>
+            </div>
+          </div>
+        </div>
+      </div>

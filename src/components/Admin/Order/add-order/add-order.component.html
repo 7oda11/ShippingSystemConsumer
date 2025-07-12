@@ -90,14 +90,23 @@
       </select>
     </div>
 
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <label>Vendor Name *</label>
       <input class="form-control" formControlName="vendorName" />
+    </div> -->
+<div class="col-md-6">
+      <label>Vendor Name *</label>
+      <select class="form-select" formControlName="vendorName" (change)="onVendorChange($event)">
+        <option value="">vendor Name</option>
+        <option *ngFor="let vendor of vendors" [value]="vendor.name">{{ vendor.name }}</option>
+      </select>
     </div>
+
 
     <div class="col-md-6">
       <label>Vendor Address *</label>
-      <input class="form-control" formControlName="vendorAddress" />
+      <input class="form-control" formControlName="vendorAddress" [readonly]="true" />
+
     </div>
 
     <!-- <div class="col-md-6">

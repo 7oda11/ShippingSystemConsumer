@@ -58,5 +58,18 @@ assignOrderToDeliveryMan(orderId:number, deliveryManId:number):Observable<any>{
   })
 }
 
+
+//update sorder status to shipped
+updateOrderStatus(orderId: number, statusId: number) {
+  return this.http.put(`${this.baseUrl}/UpdateOrderStatus/${orderId}/${statusId}`, {});
+}
+
+
+//print orderInvoice
+printOrderInvoice(orderId: number) : Observable<Blob>{
+  return this.http.get(`${this.baseUrl}/ExportInvoice/${orderId}`, {responseType: 'blob'});
+}
+
+
 }
 

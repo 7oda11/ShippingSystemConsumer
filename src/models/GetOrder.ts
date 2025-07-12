@@ -16,4 +16,5 @@ export interface Order {
    statusId: number;
   totalPrice: number;
   vendorName:string;
+  cancelledOrReturnedNotes?:string
 }
