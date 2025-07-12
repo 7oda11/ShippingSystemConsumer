@@ -7,7 +7,7 @@
       All
     </button>
 
-    <button class="btn" *ngFor="let status of statusList" [ngClass]="{
+    <button class="btn btn_hover" *ngFor="let status of statusList" [ngClass]="{
     'btn-primary': selectedStatus === +status.id,
     'btn-outline-primary': selectedStatus !== +status.id
 

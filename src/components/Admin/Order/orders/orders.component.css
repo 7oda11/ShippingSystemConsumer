@@ -22,3 +22,6 @@ input:focus {
 .btn-reason{
   background-color: rgb(112, 144, 231);
 }
+.btn_hover:hover{
+ color: white !important;
+}

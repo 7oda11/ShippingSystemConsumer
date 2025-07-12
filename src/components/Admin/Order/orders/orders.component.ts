@@ -203,7 +203,8 @@ onSearch(): void {
 }
 onStatusFilter(statusId: number | null): void {
   this.selectedStatus = statusId;
-  this.loadOrders(this.currentPage); // استخدم selectedStatus هنا
+  this.currentPage = 1;
+  this.loadOrders(this.currentPage);
 }
 filterOrders(): void {
   const term = this.searchTerm.toLowerCase().trim();
@@ -353,7 +354,6 @@ goToPage(page: number): void {
     }
 
   }
-
 
 
 
