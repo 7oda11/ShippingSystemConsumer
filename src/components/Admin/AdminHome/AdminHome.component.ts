@@ -21,7 +21,9 @@ statusList = [
   { id: orderStatus.Shipped, name: 'Shipped' },
   { id: orderStatus.Delivered, name: 'Delivered' },
   { id: orderStatus.Cancelled, name: 'Cancelled' },
-  { id: orderStatus.Returned, name: 'Returned' }
+  { id: orderStatus.Returned, name: 'Returned' },
+  {id: orderStatus.OnHold, name: 'OnHold'},
+  {id:orderStatus.Refunded,name:'Refused'}
 ];
 
   constructor(private orderdashboardService:OrderdashboardService , private toastrService:ToastrService) { }

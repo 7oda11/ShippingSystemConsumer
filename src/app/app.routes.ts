@@ -1,3 +1,4 @@
+import { DeliverymanOrdersComponent } from './../components/Admin/DeliveryManOrder/deliveryman-orders/deliveryman-orders.component';
 // import { HomeComponent as adminHome } from './../components/Admin/home/home.component';
 import { HomeComponent } from '../components/home/home.component';
 import { AdminHomeComponent } from '../components/Admin/AdminHome/AdminHome.component';
@@ -39,6 +40,11 @@ import { AddDeliveryComponent } from '../components/Users/deliveries/add-deliver
 import { EditDeliveryComponent } from '../components/Users/deliveries/edit-delivery/edit-delivery.component';
 import { AddOrderComponent } from '../components/Admin/Order/add-order/add-order.component';
 import { authGuard } from '../../guards/auth.guard';
+import { VendorOrdersComponent } from '../components/Admin/VendorOrders/vendor-orders/vendor-orders.component';
+import { roleguardGuard } from '../../guards/roleguard.guard';
+import { UnauthorizedComponent } from '../components/Admin/Unauthorized/unauthorized/unauthorized.component';
+
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'base', pathMatch: 'full' },
@@ -57,6 +63,9 @@ export const routes: Routes = [
     ],
   },
 
+  //Unauthorized 
+       {path:'unauthorized', component:UnauthorizedComponent},
+
   // Admin Settings Routes
 
   {
@@ -65,28 +74,75 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       //order
-      { path: 'orders', component: OrdersComponent },
+      { path: 'orders', component: OrdersComponent,
+        canActivate:[roleguardGuard],
+        data: {roles:['Admin', 'Employee']  },
+              // {role: 'Employee'},
+       },
       { path: 'add-order', component: AddOrderComponent },
 
       { path: '', redirectTo: 'adminhome', pathMatch: 'full' },
       { path: 'adminhome', component: AdminHomeComponent },
+      {path:'deliverymanorders', component:DeliverymanOrdersComponent,
+        // canActivate:[deliverymanroleguardGuard]
+        canActivate:[roleguardGuard],
+        data: {roles: ['DeliveryMan'] }
+      },
+      {path:'vendororders',component:VendorOrdersComponent,
+        // canActivate:[vendorroleguardGuard]
+        canActivate: [roleguardGuard],
+        data:{roles: ['Vendor']}
+      },
 
-      { path: 'branches', component: BranchesComponent },
-      { path: 'branches/add-branch', component: AddBranchComponent },
-      { path: 'cities', component: CitiesComponent },
-      { path: 'cities/add-city', component: AddCityComponent },
-      { path: 'government', component: GovernmentsComponent },
-      { path: 'government/add-government', component: AddGovernmentComponent },
-      { path: 'status', component: StatusComponent },
-      { path: 'status/add-status', component: AddStatusComponent },
-      { path: 'shipping-type', component: ShippingTypeComponent },
+      { path: 'branches', component: BranchesComponent,
+        canActivate:[roleguardGuard],
+        data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'branches/add-branch', component: AddBranchComponent,
+          canActivate:[roleguardGuard],
+       data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'cities', component: CitiesComponent ,
+          canActivate:[roleguardGuard],
+        data:{roles:['Admin', 'Employee']  }
+      },
+      { path: 'cities/add-city', component: AddCityComponent,
+          canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'government', component: GovernmentsComponent,
+          canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'government/add-government', component: AddGovernmentComponent ,
+           canActivate:[roleguardGuard],
+         data:{roles:['Admin', 'Employee']  }
+      },
+      { path: 'status', component: StatusComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'status/add-status', component: AddStatusComponent,
+           canActivate:[roleguardGuard],
+           data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'shipping-type', component: ShippingTypeComponent,
+           canActivate:[roleguardGuard],
+            data:{roles:['Admin', 'Employee']  }
+       },
       {
         path: 'shipping-type/add-shipping',
         component: AddShippingTypeComponent,
       },
-      { path: 'government/details/:id', component: GovernmentDetailsComponent },
+      { path: 'government/details/:id', component: GovernmentDetailsComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
 
-      { path: 'government/add-government', component: AddGovernmentComponent },
+      { path: 'government/add-government', component: AddGovernmentComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
       {
         path: 'government/edit/:id',
 
@@ -94,25 +150,52 @@ export const routes: Routes = [
           import(
             '../components/Admin/Settings/governments/edit-government/edit-government.component'
           ).then((g) => g.EditGovernmentComponent),
+             canActivate:[roleguardGuard],
+            data:{roles:['Admin', 'Employee']  }
       },
-      { path: 'weightSetting', component: WeightSettingsComponent },
+      { path: 'weightSetting', component: WeightSettingsComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
       {
         path: 'weightsetting/add-weightsetting',
         component: AddWeightSettingComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
       },
 
-      { path: 'government/add-government', component: AddGovernmentComponent },
+      { path: 'government/add-government', component: AddGovernmentComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
 
       //user
-      { path: 'vendors', component: VendorComponent },
-      { path: 'employees', component: EmployeesComponent },
-      { path: 'deliveries', component: DeliveriesComponent },
-      { path: 'employees/add-employee', component: AddEmployeeComponent },
+      { path: 'vendors', component: VendorComponent ,
+           canActivate:[roleguardGuard],
+           data:{roles:['Admin', 'Employee']  }
+      },
+      { path: 'employees', component: EmployeesComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
+      { path: 'deliveries', component: DeliveriesComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'employees/add-employee', component: AddEmployeeComponent,
+           canActivate:[roleguardGuard],
+           data:{roles:['Admin', 'Employee']  }
+       },
 
-      { path: 'deliveries/add-delivery', component: AddDeliveryComponent },
+      { path: 'deliveries/add-delivery', component: AddDeliveryComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
       {
         path: 'deliveries/edit-delivery/:id',
         component: EditDeliveryComponent,
+           canActivate:[roleguardGuard],
+           data:{roles:['Admin', 'Employee']  }
       },
       {
         path: 'government/edit/:id',
@@ -121,24 +204,50 @@ export const routes: Routes = [
           import(
             '../components/Admin/Settings/governments/edit-government/edit-government.component'
           ).then((g) => g.EditGovernmentComponent),
+             canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
       },
 
-      { path: 'weightSetting', component: WeightSettingsComponent },
-      { path: 'vendors', component: VendorComponent },
-      { path: 'vendors/add-vendor', component: AddVendorComponent },
-      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent },
+      { path: 'weightSetting', component: WeightSettingsComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'vendors', component: VendorComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'vendors/add-vendor', component: AddVendorComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
+      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
 
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //vendor
-      { path: 'vendors', component: VendorComponent },
-      { path: 'vendors/add-vendor', component: AddVendorComponent },
-      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent },
+      { path: 'vendors', component: VendorComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'vendors/add-vendor', component: AddVendorComponent,
+           canActivate:[roleguardGuard],
+            data:{roles:['Admin', 'Employee']  }
+       },
+      { path: 'vendors/edit-vendor/:id', component: EditVendorComponent,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+       },
 
       { path: '', redirectTo: 'branches', pathMatch: 'full' },
 
       //order
-      { path: 'orders', component: OrdersComponent },
+      { path: 'orders', component: OrdersComponent ,
+           canActivate:[roleguardGuard],
+          data:{roles:['Admin', 'Employee']  }
+      },
 
       // example: { path: '', redirectTo: 'branches', pathMatch: 'full' } // optional default inside dashboard
     ],

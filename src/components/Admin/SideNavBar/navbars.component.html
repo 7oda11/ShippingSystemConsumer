@@ -15,7 +15,8 @@
   <!-- 🟢 Scrollable Sidebar Navigation -->
   <div class="sidenav-scroll">
     <ul class="sidenav-nav">
-      <li class="sidenav-nav-item" *ngFor="let item of items; let i = index">
+      <ng-container *ngFor="let item of items; let i = index">
+      <li class="sidenav-nav-item" *ngIf="!item.visibleFor ||item.visibleFor.includes(role!) " >
         <a
           class="sidenav-nav-link"
           [routerLink]="item.routeLink"
@@ -58,6 +59,7 @@
           </li>
         </ul>
       </li>
+      </ng-container>
     </ul>
   </div>
 </div>
