@@ -119,7 +119,7 @@ deleteShippingType(shippingType: any) {
         error: () => {
           Swal.fire({
             title: 'Error!',
-            text: 'Something went wrong while deleting.',
+            text: 'Cannot delete this shipping type because it is used in existing orders.',
             icon: 'error',
             background: '#fff3f3',
             color: '#d33',
