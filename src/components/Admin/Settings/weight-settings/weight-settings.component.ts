@@ -56,6 +56,8 @@ export class WeightSettingsComponent {
         const modalElement = document.getElementById('editModal');
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
+
+        Swal.fire('Success', 'Status Changed Successsfully', 'success');
       },
       error: (err) => {
         console.error('Update failed:', err);
