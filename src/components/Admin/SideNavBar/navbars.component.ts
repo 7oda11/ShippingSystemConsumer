@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, OnInit, output } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbars',
@@ -9,6 +9,7 @@ import { RouterLink, RouterModule } from '@angular/router';
   styleUrl: './navbars.component.css',
 })
 export class NavbarsComponent implements OnInit {
+  constructor(private router:Router) {}
   ngOnInit(): void {
    this.role = localStorage.getItem('role') ;
   }
@@ -114,4 +115,13 @@ export class NavbarsComponent implements OnInit {
   closeSidenav(): void {
     this.changeIsLeftSidebarCollapsed.emit(true);
   }
+
+  Logout(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userid');
+    this.router.navigate(['/login']);
+ 
+
+    }
 }

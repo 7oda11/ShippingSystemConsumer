@@ -241,7 +241,7 @@ export const routes: Routes = [
           data:{roles:['Admin', 'Employee']  }
        },
 
-      { path: '', redirectTo: 'branches', pathMatch: 'full' },
+      
 
       //order
       { path: 'orders', component: OrdersComponent ,
