@@ -91,7 +91,9 @@ export class NavbarsComponent implements OnInit {
         },
         { label: 'Status', routeLink: '/dashboard/status', icon: 'fa fa-toggle-on' },
         { label: 'Shipping Type', routeLink: '/dashboard/shipping-type', icon: 'fa fa-shipping-fast' },
-        { label: '', icon: '' }
+        { label: '', icon: '' },
+          { label: '', icon: '' },
+            { label: '', icon: '' }
 
       ],
       visibleFor:['Admin','Employee']
