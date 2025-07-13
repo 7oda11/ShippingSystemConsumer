@@ -88,6 +88,13 @@ export class DeliverymanOrdersComponent implements OnInit {
  openChangeStatusModal(order:any){
   this.selectedOrder = order;
   this.selectedStatusId = order.statusId;
+
+  //   if (order.statusId === this.deliveredStatusId || !order.statusId) {
+  //   this.selectedStatusId = orderStatus.Assigned;
+  // } else {
+  //   this.selectedStatusId = order.statusId;
+  // }
+
   this.cancellationNote = '';
 
   setTimeout(() => {

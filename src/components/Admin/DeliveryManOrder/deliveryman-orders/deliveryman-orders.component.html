@@ -72,7 +72,11 @@
       <div class="modal-body">
         <label class="form-label">Select New Status</label>
         <select class="form-select" [(ngModel)]="selectedStatusId">
-          <option *ngFor="let s of statuses" [value]="s.id">{{ s.name }}</option>
+          <option *ngFor="let s of statuses"
+           [value]="s.id"
+           [disabled]="s.name== 'pending'"
+             [ngClass]="{'text-muted': s.name === 'pending'}"
+          >{{ s.name }}</option>
         </select>
 
         <div class="mt-3" >
