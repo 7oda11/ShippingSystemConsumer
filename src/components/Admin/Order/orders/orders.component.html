@@ -83,7 +83,7 @@
 
          
           <td class="text-center" *ngIf="!isReturnedOrCanceled(order)">
-            <button class="btn btn-sm btn-primary text-white" [disabled]="isShipped(order)"
+            <button class="btn btn-sm btn-primary text-white" [disabled]="isShipped(order) || isDelivered(order)"
               (click)="openAssignModal(order)">{{ isAssigned(order) ? 'Assigned' : 'Assign' }}
 
             </button>
