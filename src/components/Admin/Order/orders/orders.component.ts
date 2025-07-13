@@ -165,6 +165,10 @@ isReturnedOrCanceled(order: Order): boolean {
   const statusName = order.status?.toLowerCase();
   return statusName === 'returned' || statusName === 'canceled';
 }
+isDelivered(order: Order): boolean {
+  const statusName = order.status?.toLowerCase();
+  return statusName ==="delivered";
+}
 
 isReturnedOrCanceledView(): boolean {
   const selectedStatusObj = this.statusList.find(s => +s.id === this.selectedStatus);
