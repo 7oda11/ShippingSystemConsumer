@@ -26,7 +26,7 @@
           <tr *ngFor="let type of shippingTypes; let i = index" class="border-top">
             <td class="text-center text-muted fw-semibold">{{ i + 1 }}</td>
             <td>{{ type.shippingTypeName }}</td>
-            <td>{{ type.shippingPrice | currency:'USD' }}</td>
+            <td>{{ type.shippingPrice | currency:'EGP ':'symbol' }}</td>
             <td class="text-center">
               <button class="btn btn-sm btn-outline-warning me-2" (click)="openEditModal(type)" title="Edit">
                 <i class="far fa-edit"></i>
