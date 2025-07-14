@@ -39,24 +39,50 @@ export class BranchesComponent implements OnInit {
   }
 
   //update branch
-  updateBranch() {
-    this.branchService.updateBranch(this.selectedBranch).subscribe({
-      next: (res) => {
-        console.log('Updated:', res);
+ updateBranch() {
+  // Debug: Verify the data being sent
+  console.log('Pre-update data:', JSON.stringify(this.selectedBranch));
+  
+  this.branchService.updateBranch(this.selectedBranch).subscribe({
+    next: (res) => {
+      console.log('API Response:', res);
+      
+      // Verify the response contains updated data
+      if (res && res.id) {
         this.gitBranches();
-        console.log('Sending data to API:', this.selectedBranch);
-
-        // Close modal manually
-        const modalElement = document.getElementById('editModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        modalInstance.hide();
-      },
-      error: (err) => {
-        console.error('Update failed:', err);
-        alert('Failed to update branch');
+        
+        // Show success with actual updated data
+        Swal.fire({
+          title: 'Updated!',
+          text: `Branch "${res.name}" updated successfully`,
+          icon: 'success'
+        });
+      } else {
+        Swal.fire('Warning', 'Update completed but no changes detected', 'warning');
       }
-    });
+
+      this.closeModal();
+    },
+    error: (err) => {
+      console.error('Full error:', err);
+      Swal.fire({
+        title: 'Update Failed',
+        text: err.error?.message || 'Unknown error occurred',
+        icon: 'error'
+      });
+    }
+  });
+}
+
+closeModal() {
+  const modalElement = document.getElementById('editModal');
+  if (modalElement) {
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    modalInstance?.hide();
+    // Reset selection
+    this.selectedBranch = { id: '0', name: '', phone: '', address: '' };
   }
+}
 
   //delete branch
 deleteBranch(branch: any) {
