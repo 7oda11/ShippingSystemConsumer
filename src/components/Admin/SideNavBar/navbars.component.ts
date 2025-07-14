@@ -114,8 +114,7 @@ export class NavbarsComponent implements OnInit {
           icon: 'fa fa-shipping-fast',
         },
         { label: '', icon: '' },
-        { label: '', icon: '' },
-        { label: '', icon: '' },
+     
       ],
       visibleFor: ['Admin', 'Employee'],
     },
@@ -125,6 +124,17 @@ export class NavbarsComponent implements OnInit {
       routeLink: '/dashboard/chat',
       visibleFor: ['Admin', 'Employee'],
     },
+    {
+          label: '',
+          routeLink: '',
+          icon: '',
+        },
+        
+    {
+          label: '',
+          routeLink: '',
+          icon: '',
+        },
   ];
   toggleSubmenu(index: number): void {
     if (this.items[index]?.children) {
