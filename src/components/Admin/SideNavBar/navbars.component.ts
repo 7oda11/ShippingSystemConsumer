@@ -9,14 +9,14 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
   styleUrl: './navbars.component.css',
 })
 export class NavbarsComponent implements OnInit {
-  constructor(private router:Router) {}
+  constructor(private router: Router) {}
   ngOnInit(): void {
-   this.role = localStorage.getItem('role') ;
+    this.role = localStorage.getItem('role');
   }
   isLeftSidebarCollapsed = input.required<boolean>();
   changeIsLeftSidebarCollapsed = output<boolean>();
   submenuState: { [index: number]: boolean } = {};
-  role:string | null = null;
+  role: string | null = null;
 
   isSubmenuOpen(index: number): boolean {
     return this.submenuState[index];
@@ -26,48 +26,61 @@ export class NavbarsComponent implements OnInit {
       routeLink: '/dashboard/adminhome',
       icon: 'fal fa-home',
       label: 'Home',
-      visibleFor: ['Admin','Employee', 'Vendor', 'DeliveryMan'],
-    
+      visibleFor: ['Admin', 'Employee', 'Vendor', 'DeliveryMan'],
     },
     {
-      
       icon: 'fal fa-box-open',
       label: 'Order Setting',
-       children: [
-        { label: 'Orders', routeLink: '/dashboard/orders', icon: 'fa fa-shopping-cart' },
-        { label: 'Add order', routeLink: '/dashboard/add-order', icon: 'fa fa-plus' },
-        
-    
+      children: [
+        {
+          label: 'Orders',
+          routeLink: '/dashboard/orders',
+          icon: 'fa fa-shopping-cart',
+        },
+        {
+          label: 'Add order',
+          routeLink: '/dashboard/add-order',
+          icon: 'fa fa-plus',
+        },
       ],
-      visibleFor:['Admin','Employee']
+      visibleFor: ['Admin', 'Employee'],
     },
 
     {
-       routeLink: '/dashboard/deliverymanorders',
+      routeLink: '/dashboard/deliverymanorders',
       icon: 'fal fa-box-open',
       label: 'DeliveryMan Orders',
-      visibleFor:['DeliveryMan'],
+      visibleFor: ['DeliveryMan'],
     },
-      {
-       routeLink: '/dashboard/vendororders',
+    {
+      routeLink: '/dashboard/vendororders',
       icon: 'fal fa-box-open',
       label: 'Vendor Orders',
-       role: 'Vendor',
-        visibleFor: ['Vendor']
+      role: 'Vendor',
+      visibleFor: ['Vendor'],
     },
 
     {
-
       icon: 'fa fa-users',
       label: 'Users',
       children: [
-        { label: 'Vendor', routeLink: '/dashboard/vendors', icon: 'fa fa-users' },
-        { label: 'Employees', routeLink: '/dashboard/employees', icon: 'fa fa-user-shield' },
-        { label: 'Deliveries', routeLink: '/dashboard/deliveries', icon: 'fa fa-truck' },
-
+        {
+          label: 'Vendor',
+          routeLink: '/dashboard/vendors',
+          icon: 'fa fa-users',
+        },
+        {
+          label: 'Employees',
+          routeLink: '/dashboard/employees',
+          icon: 'fa fa-user-shield',
+        },
+        {
+          label: 'Deliveries',
+          routeLink: '/dashboard/deliveries',
+          icon: 'fa fa-truck',
+        },
       ],
-      visibleFor:['Admin','Employee']
-
+      visibleFor: ['Admin', 'Employee'],
     },
 
     {
@@ -90,17 +103,28 @@ export class NavbarsComponent implements OnInit {
           routeLink: '/dashboard/weightSetting',
           icon: 'fa fa-weight',
         },
-        { label: 'Status', routeLink: '/dashboard/status', icon: 'fa fa-toggle-on' },
-        { label: 'Shipping Type', routeLink: '/dashboard/shipping-type', icon: 'fa fa-shipping-fast' },
+        {
+          label: 'Status',
+          routeLink: '/dashboard/status',
+          icon: 'fa fa-toggle-on',
+        },
+        {
+          label: 'Shipping Type',
+          routeLink: '/dashboard/shipping-type',
+          icon: 'fa fa-shipping-fast',
+        },
         { label: '', icon: '' },
-          { label: '', icon: '' },
-            { label: '', icon: '' }
-
+        { label: '', icon: '' },
+        { label: '', icon: '' },
       ],
-      visibleFor:['Admin','Employee']
-
+      visibleFor: ['Admin', 'Employee'],
     },
-
+    {
+      icon: 'fa fa-comments',
+      label: 'Assistant Chat',
+      routeLink: '/dashboard/chat',
+      visibleFor: ['Admin', 'Employee'],
+    },
   ];
   toggleSubmenu(index: number): void {
     if (this.items[index]?.children) {
@@ -116,12 +140,10 @@ export class NavbarsComponent implements OnInit {
     this.changeIsLeftSidebarCollapsed.emit(true);
   }
 
-  Logout(){
+  Logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('userid');
     this.router.navigate(['/login']);
- 
-
-    }
+  }
 }

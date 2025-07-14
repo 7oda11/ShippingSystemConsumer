@@ -1,0 +1,28 @@
+<div class="chat-container">
+  <div class="chat-header">Branch Assistant Chat</div>
+
+  <div class="chat-body" id="chatBody">
+    <div *ngFor="let msg of messages">
+      <div
+        [ngClass]="{ 'user-message': msg.isUser, 'bot-message': !msg.isUser }"
+      >
+        <div class="message-content">{{ msg.text }}</div>
+        <div class="message-time">{{ msg.time }}</div>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="bot-message">
+      <div class="message-content">Thinking...</div>
+    </div>
+  </div>
+
+  <div class="chat-footer">
+    <input
+      [(ngModel)]="question"
+      (keyup.enter)="sendMessage()"
+      placeholder="Ask a question..."
+    />
+    <button (click)="sendMessage()" [disabled]="isLoading">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
